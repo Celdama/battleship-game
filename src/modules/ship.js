@@ -9,7 +9,7 @@ const setShipLength = (length) => {
 
 const isBetweenRange = (position) => SHIP_MIN_LENGTH <= position && position <= SHIP_MAX_LENGTH;
 
-const shipFactory = (length) => {
+const shipFactory = ({ length }) => {
   const lives = [];
   const shipLength = setShipLength(length);
 
@@ -17,34 +17,24 @@ const shipFactory = (length) => {
 
   const getLives = () => [...lives];
 
-  const hit = (position) => {
+  const isSunk = () => lives.join('').length === shipLength;
+
+  function hit({ position }) {
+    const self = this;
     if (isBetweenRange(position) && position <= shipLength) {
       lives[position - 1] = 'x';
     }
-  };
 
-  const isSunk = () => lives.join('').length === shipLength;
+    return self;
+  }
 
   return {
     getLength,
     getLives,
-    hit,
     isSunk,
+    hit,
+
   };
 };
-
-console.log(isBetweenRange(4));
-
-const ship = shipFactory(3);
-
-console.log(ship.getLength());
-// ship.hit(4);
-// ship.hit(5);
-// ship.hit(1);
-// ship.hit(2);
-
-console.log(ship.getLives());
-
-console.log(ship.isSunk());
 
 export default shipFactory;
