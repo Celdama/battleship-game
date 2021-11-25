@@ -1,0 +1,33 @@
+{
+  "name": "battleship-game",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html",
+    "test": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Celdama/battleship-game.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Celdama/battleship-game/issues"
+  },
+  "homepage": "https://github.com/Celdama/battleship-game#readme",
+  "devDependencies": {
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "@parcel/transformer-sass": "^2.0.1",
+    "babel-jest": "^27.3.1",
+    "eslint": "^8.3.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.25.3",
+    "jest": "^27.3.1",
+    "parcel": "^2.0.1",
+    "parcel-bundler": "^1.12.5"
+  }
+}
