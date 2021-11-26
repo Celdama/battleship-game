@@ -2,23 +2,23 @@ import shipFactory from '../modules/ship';
 
 describe('createShip', () => {
   it('create a ship with length 3', () => {
-    expect(shipFactory({ length: 3 }).getLength()).toBe(3);
+    expect(shipFactory({ shipId: 1, length: 3 }).getLength()).toBe(3);
   });
 
   it('returns length = 5 if provided length > 5', () => {
-    expect(shipFactory({ length: 6 }).getLength()).toBe(5);
+    expect(shipFactory({ shipId: 1, length: 6 }).getLength()).toBe(5);
   });
 
   it('returns length = 1 if provided length < 1', () => {
-    expect(shipFactory({ length: 0 }).getLength()).toBe(1);
+    expect(shipFactory({ shipId: 1, length: 0 }).getLength()).toBe(1);
   });
 
   it('new created ship should be not sunk', () => {
-    expect(shipFactory({ length: 3 }).isSunk()).toBe(false);
+    expect(shipFactory({ shipId: 1, length: 3 }).isSunk()).toBe(false);
   });
 
   it('ship is not hit if position hitted is too big or too small', () => {
-    const ship = shipFactory({ length: 2 });
+    const ship = shipFactory({ shipId: 1, length: 2 });
 
     expect(
       ship
@@ -36,7 +36,7 @@ describe('createShip', () => {
   });
 
   it('ship is hit if position hitted is in range of ship length', () => {
-    const ship = shipFactory({ length: 4 });
+    const ship = shipFactory({ shipId: 1, length: 4 });
 
     expect(
       ship
@@ -55,14 +55,14 @@ describe('createShip', () => {
 
   it('ship is sunk if the ship was destroyed', () => {
     expect(
-      shipFactory({ length: 1 })
+      shipFactory({ shipId: 1, length: 1 })
         .hit({ position: 1 })
         .isSunk(),
     ).toBe(true);
   });
 
   it('a ship with 1 or more lives is not sunk', () => {
-    const ship = shipFactory({ length: 5 });
+    const ship = shipFactory({ shipId: 1, length: 5 });
 
     expect(ship.isSunk()).toBe(false);
     expect(ship.hit({ position: 1 }).isSunk()).toBe(false);
@@ -73,13 +73,13 @@ describe('createShip', () => {
   });
 
   it('return an empty array if the ship is unhit', () => {
-    const ship = shipFactory({ length: 3 });
+    const ship = shipFactory({ shipId: 1, length: 3 });
 
     expect(ship.getLives().join('')).toBe('');
   });
 
   it('return an array full of x equal with ship length if it was sunk', () => {
-    const ship = shipFactory({ length: 3 });
+    const ship = shipFactory({ shipId: 1, length: 3 });
 
     expect(
       ship

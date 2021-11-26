@@ -117,9 +117,286 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"script.js":[function(require,module,exports) {
+})({"modules/ship.js":[function(require,module,exports) {
+"use strict";
 
-},{}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var SHIP_MAX_LENGTH = 5;
+var SHIP_MIN_LENGTH = 1;
+
+var setShipLength = function setShipLength(length) {
+  if (length > SHIP_MAX_LENGTH) return SHIP_MAX_LENGTH;
+  if (length < SHIP_MIN_LENGTH) return SHIP_MIN_LENGTH;
+  return length;
+};
+
+var isBetweenRange = function isBetweenRange(position) {
+  return SHIP_MIN_LENGTH <= position && position <= SHIP_MAX_LENGTH;
+};
+
+var shipFactory = function shipFactory(_ref) {
+  var shipId = _ref.shipId,
+      length = _ref.length;
+  var lives = [];
+  var shipLength = setShipLength(length);
+
+  var getLength = function getLength() {
+    return shipLength;
+  };
+
+  var getLives = function getLives() {
+    return [].concat(lives);
+  };
+
+  var isSunk = function isSunk() {
+    return lives.join('').length === shipLength;
+  };
+
+  function hit(_ref2) {
+    var position = _ref2.position;
+    var self = this;
+
+    if (isBetweenRange(position) && position <= shipLength) {
+      lives[position - 1] = 'x';
+    }
+
+    return self;
+  }
+
+  return {
+    shipId: shipId,
+    getLength: getLength,
+    getLives: getLives,
+    isSunk: isSunk,
+    hit: hit
+  };
+};
+
+var _default = shipFactory;
+exports.default = _default;
+},{}],"modules/gameboard.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _ship = _interopRequireDefault(require("./ship"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var gameboardFactory = function gameboardFactory() {
+  var board = [[null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null]];
+  var coordOfEachShipInGameboard = {};
+  var listOfShipInGameboard = [];
+  var listOfCoordAlreadyFill = [];
+
+  var renderGameBoard = function renderGameBoard() {
+    // first [] = y
+    // second [] = x
+    console.table(board);
+  };
+
+  var renderShipInGame = function renderShipInGame() {
+    return console.log(coordOfEachShipInGameboard);
+  };
+
+  var coordIsEmpty = function coordIsEmpty(coordY, coordX, shipLength, isVertical) {
+    if (isVertical) {
+      for (var i = 0; i < shipLength; i += 1) {
+        if (listOfCoordAlreadyFill.includes("".concat(coordY + i, "-").concat(coordX))) {
+          return false;
+        }
+      }
+    } else {
+      for (var _i = 0; _i < shipLength; _i += 1) {
+        if (listOfCoordAlreadyFill.includes("".concat(coordY, "-").concat(coordX + _i))) {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  };
+
+  var placeShipInGameBoard = function placeShipInGameBoard(_ref) {
+    var coordY = _ref.coordY,
+        coordX = _ref.coordX,
+        _ref$vertical = _ref.vertical,
+        vertical = _ref$vertical === void 0 ? false : _ref$vertical;
+    var ship = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
+
+    if (ship === undefined) {
+      return 'ship not provided';
+    }
+
+    if (coordY === undefined || coordX === undefined || vertical === undefined) {
+      return "one or more option to set ship ".concat(ship.shipId, " position not provided");
+    }
+
+    var shipId = ship.shipId,
+        getLength = ship.getLength;
+    var shipCoordInGameboard = [];
+    var shipLength = getLength();
+
+    if (coordIsEmpty(coordY, coordX, shipLength, vertical)) {
+      for (var i = 0; i < shipLength; i += 1) {
+        if (!vertical) {
+          board[coordY][coordX + i] = "".concat(shipId);
+          shipCoordInGameboard.push("".concat(coordY, "-").concat(coordX + i));
+          listOfCoordAlreadyFill.push("".concat(coordY, "-").concat(coordX + i));
+        } else {
+          board[coordY + i][coordX] = "".concat(shipId);
+          shipCoordInGameboard.push("".concat(coordY + i, "-").concat(coordX));
+          listOfCoordAlreadyFill.push("".concat(coordY + i, "-").concat(coordX));
+        }
+      }
+
+      coordOfEachShipInGameboard[shipId] = shipCoordInGameboard;
+      listOfShipInGameboard.push(ship); // for now, this return is only usefull for my test.
+
+      return board;
+    }
+
+    return "impossible to place ship ".concat(shipId, " here, the place is already fill.");
+  };
+
+  var createShip = function createShip(_ref2) {
+    var shipId = _ref2.shipId,
+        length = _ref2.length;
+    var newShip = (0, _ship.default)({
+      shipId: shipId,
+      length: length
+    });
+    return newShip;
+  };
+
+  return {
+    createShip: createShip,
+    renderGameBoard: renderGameBoard,
+    renderShipInGame: renderShipInGame,
+    placeShipInGameBoard: placeShipInGameBoard
+  };
+};
+
+var _default = gameboardFactory; // DONE: able to place ships at specific coordinates by calling ship factory
+// should have receiveAttack()
+// take a pair of coordinates
+// determines whether or not the attach hit a ship
+// and then send the hit() to the correct ship
+// or record the coordinates of the missed shot
+// keep track of missed attacks so they can display them properly
+// should be able to report wheter or not all of their ships have been sunk
+
+exports.default = _default;
+},{"./ship":"modules/ship.js"}],"script.js":[function(require,module,exports) {
+"use strict";
+
+var _gameboard = _interopRequireDefault(require("./modules/gameboard"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var game = (0, _gameboard.default)();
+var createShip = game.createShip,
+    placeShipInGameBoard = game.placeShipInGameBoard;
+var ship1 = createShip({
+  shipId: 1,
+  length: 5
+});
+var ship2 = createShip({
+  shipId: 2,
+  length: 3
+});
+var ship3 = createShip({
+  shipId: 3,
+  length: 1
+});
+var ship4 = createShip({
+  shipId: 4,
+  length: 4
+});
+var ship5 = createShip({
+  shipId: 5,
+  length: 5
+});
+var ship6 = createShip({
+  shipId: 6,
+  length: 2
+});
+var ship7 = createShip({
+  shipId: 7,
+  length: 4
+});
+var ship8 = createShip({
+  shipId: 8,
+  length: 5
+});
+var ship9 = createShip({
+  shipId: 9,
+  length: 4
+});
+var ship10 = createShip({
+  shipId: 10,
+  length: 1
+});
+placeShipInGameBoard({
+  coordY: 4,
+  coordX: 1
+}, ship1);
+placeShipInGameBoard({
+  coordY: 0,
+  coordX: 5,
+  vertical: true
+}, ship2);
+placeShipInGameBoard({
+  coordY: 9,
+  coordX: 0
+}, ship3);
+placeShipInGameBoard({
+  coordY: 0,
+  coordX: 0,
+  vertical: true
+}, ship4);
+placeShipInGameBoard({
+  coordY: 5,
+  coordX: 9,
+  vertical: true
+}, ship5);
+placeShipInGameBoard({
+  coordY: 6,
+  coordX: 0
+}, ship6);
+placeShipInGameBoard({
+  coordY: 9,
+  coordX: 2
+}, ship7);
+placeShipInGameBoard({
+  coordY: 3,
+  coordX: 7,
+  vertical: true
+}, ship8);
+placeShipInGameBoard({
+  coordY: 2,
+  coordX: 6,
+  vertical: true
+}, ship9);
+placeShipInGameBoard({
+  coordY: 0,
+  coordX: 8
+}, ship10);
+game.renderGameBoard(); // console.log(ship1.getLength());
+// ship1.hit({ position: 1 });
+// ship1.hit({ position: 2 });
+// ship1.hit({ position: 3 });
+// ship1.hit({ position: 4 });
+// ship1.hit({ position: 5 });
+// console.log(ship1.shipId);
+// console.log(ship1.isSunk());
+},{"./modules/gameboard":"modules/gameboard.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -147,7 +424,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54312" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59684" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

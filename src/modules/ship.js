@@ -9,7 +9,7 @@ const setShipLength = (length) => {
 
 const isBetweenRange = (position) => SHIP_MIN_LENGTH <= position && position <= SHIP_MAX_LENGTH;
 
-const shipFactory = ({ length }) => {
+const shipFactory = ({ shipId, length }) => {
   const lives = [];
   const shipLength = setShipLength(length);
 
@@ -29,11 +29,11 @@ const shipFactory = ({ length }) => {
   }
 
   return {
+    shipId,
     getLength,
     getLives,
     isSunk,
     hit,
-
   };
 };
 
