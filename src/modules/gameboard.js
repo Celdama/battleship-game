@@ -17,6 +17,7 @@ const gameboardFactory = () => {
   const coordOfEachShipInGameboard = {};
   const listOfShipInGameboard = [];
   const listOfCoordAlreadyFill = [];
+  const listOfMissedShot = [];
 
   const renderGameBoard = () => {
     // first [] = y
@@ -88,11 +89,33 @@ const gameboardFactory = () => {
     return newShip;
   };
 
+  const receiveAttack = ({ coordY, coordX }) => {
+    // determines whether or not the attach hit a ship
+    console.table(board[coordY][coordX]);
+
+    if (board[coordY][coordX]) {
+    // and then sends the hits function to the correct ship
+
+      const coordId = Number(board[coordY][coordX]);
+      const shipHitted = listOfShipInGameboard.find((ship) => ship.shipId === coordId);
+
+      shipHitted.hit({ position: 3 });
+    } else {
+    // or record the coord of the missed shot
+      const coordMissedShot = `${[coordY]}-${[coordX]}`;
+      listOfMissedShot.push(coordMissedShot);
+
+      console.log('unhitted');
+      console.log(listOfMissedShot);
+    }
+  };
+
   return {
     createShip,
     renderGameBoard,
     renderShipInGame,
     placeShipInGameBoard,
+    receiveAttack,
   };
 };
 

@@ -194,6 +194,7 @@ var gameboardFactory = function gameboardFactory() {
   var coordOfEachShipInGameboard = {};
   var listOfShipInGameboard = [];
   var listOfCoordAlreadyFill = [];
+  var listOfMissedShot = [];
 
   var renderGameBoard = function renderGameBoard() {
     // first [] = y
@@ -275,11 +276,36 @@ var gameboardFactory = function gameboardFactory() {
     return newShip;
   };
 
+  var receiveAttack = function receiveAttack(_ref3) {
+    var coordY = _ref3.coordY,
+        coordX = _ref3.coordX;
+    // determines whether or not the attach hit a ship
+    console.table(board[coordY][coordX]);
+
+    if (board[coordY][coordX]) {
+      // and then sends the hits function to the correct ship
+      var coordId = Number(board[coordY][coordX]);
+      var shipHitted = listOfShipInGameboard.find(function (ship) {
+        return ship.shipId === coordId;
+      });
+      shipHitted.hit({
+        position: 3
+      });
+    } else {
+      // or record the coord of the missed shot
+      var coordMissedShot = "".concat([coordY], "-").concat([coordX]);
+      listOfMissedShot.push(coordMissedShot);
+      console.log('unhitted');
+      console.log(listOfMissedShot);
+    }
+  };
+
   return {
     createShip: createShip,
     renderGameBoard: renderGameBoard,
     renderShipInGame: renderShipInGame,
-    placeShipInGameBoard: placeShipInGameBoard
+    placeShipInGameBoard: placeShipInGameBoard,
+    receiveAttack: receiveAttack
   };
 };
 
@@ -398,7 +424,11 @@ placeShipInGameBoard({
   coordX: 8,
   ship: ship10
 });
-game.renderGameBoard(); // console.log(ship1.getLength());
+game.renderGameBoard();
+game.receiveAttack({
+  coordY: 0,
+  coordX: 1
+}); // console.log(ship1.getLength());
 // ship1.hit({ position: 1 });
 // ship1.hit({ position: 2 });
 // ship1.hit({ position: 3 });

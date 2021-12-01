@@ -38,6 +38,8 @@ placeShipInGameBoard({ coordY: 0, coordX: 8, ship: ship10 });
 
 game.renderGameBoard();
 
+game.receiveAttack({ coordY: 0, coordX: 1 });
+
 // console.log(ship1.getLength());
 // ship1.hit({ position: 1 });
 // ship1.hit({ position: 2 });
