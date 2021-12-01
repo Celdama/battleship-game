@@ -276,27 +276,34 @@ var gameboardFactory = function gameboardFactory() {
     return newShip;
   };
 
+  var allShipAreSunk = function allShipAreSunk() {
+    return listOfShipInGameboard.every(function (ship) {
+      return ship.isSunk();
+    });
+  };
+
   var receiveAttack = function receiveAttack(_ref3) {
     var coordY = _ref3.coordY,
         coordX = _ref3.coordX;
-    // determines whether or not the attach hit a ship
-    console.table(board[coordY][coordX]);
 
+    // determines whether or not the attach hit a ship
     if (board[coordY][coordX]) {
       // and then sends the hits function to the correct ship
       var coordId = Number(board[coordY][coordX]);
       var shipHitted = listOfShipInGameboard.find(function (ship) {
         return ship.shipId === coordId;
-      });
+      }); // determine where the ship was hit
+
+      var positionHit = coordOfEachShipInGameboard[coordId].indexOf("".concat(coordY, "-").concat(coordX)); // add one because ship start to 1
+
       shipHitted.hit({
-        position: 3
+        position: positionHit + 1
       });
+      console.log(allShipAreSunk());
     } else {
       // or record the coord of the missed shot
       var coordMissedShot = "".concat([coordY], "-").concat([coordX]);
       listOfMissedShot.push(coordMissedShot);
-      console.log('unhitted');
-      console.log(listOfMissedShot);
     }
   };
 
@@ -427,7 +434,39 @@ placeShipInGameBoard({
 game.renderGameBoard();
 game.receiveAttack({
   coordY: 0,
-  coordX: 1
+  coordX: 0
+});
+game.receiveAttack({
+  coordY: 1,
+  coordX: 0
+});
+game.receiveAttack({
+  coordY: 2,
+  coordX: 0
+});
+game.receiveAttack({
+  coordY: 3,
+  coordX: 0
+});
+game.receiveAttack({
+  coordY: 7,
+  coordX: 9
+});
+game.receiveAttack({
+  coordY: 0,
+  coordX: 9
+});
+game.receiveAttack({
+  coordY: 8,
+  coordX: 0
+});
+game.receiveAttack({
+  coordY: 7,
+  coordX: 3
+});
+game.receiveAttack({
+  coordY: 0,
+  coordX: 8
 }); // console.log(ship1.getLength());
 // ship1.hit({ position: 1 });
 // ship1.hit({ position: 2 });
