@@ -61,3 +61,44 @@ describe('check if gameboard coord is empty', () => {
     expect(placeShipInGameBoard({ ship: newShip })).toBe('one or more option to set ship 2 position not provided');
   });
 });
+
+describe('check if receive attack work', () => {
+  const game = gameboardFactory();
+  const { createShip, placeShipInGameBoard, receiveAttack } = game;
+  let newBoard = [];
+  const newShip = createShip({ shipId: 4, length: 4 });
+  const anotherShip = createShip({ shipId: 10, length: 1 });
+
+  newBoard = placeShipInGameBoard({
+    coordY: 0, coordX: 0, ship: newShip, vertical: true,
+  });
+
+  newBoard = placeShipInGameBoard({ coordY: 0, coordX: 8, ship: anotherShip });
+
+  it('attack on ship work', () => {
+    console.table(newBoard);
+    expect(receiveAttack({ coordY: 0, coordX: 0 })).toBe('ship 4 was hit at position 1 of 4');
+    expect(receiveAttack({ coordY: 1, coordX: 0 })).toBe('ship 4 was hit at position 2 of 4');
+    expect(receiveAttack({ coordY: 2, coordX: 0 })).toBe('ship 4 was hit at position 3 of 4');
+    expect(receiveAttack({ coordY: 3, coordX: 0 })).toBe('ship 4 was hit at position 4 of 4');
+  });
+
+  it('ship was sunk if all position are hit', () => {
+    expect(newShip.isSunk()).toBe(true);
+  });
+
+  it('ship was not sunk if all position are not hit', () => {
+    expect(anotherShip.isSunk()).toBe(false);
+  });
+
+  it('after position was hit, ship of 1 length was sunk', () => {
+    expect(receiveAttack({ coordY: 0, coordX: 8 })).toBe('ship 10 was hit at position 1 of 1');
+    expect(anotherShip.isSunk()).toBe(true);
+  });
+
+  it('shot missed if coord doesnt contains ship', () => {
+    expect(receiveAttack({ coordY: 9, coordX: 4 })).toBe('shot missed at coord 9-4');
+    expect(receiveAttack({ coordY: 9, coordX: 1 })).toBe('shot missed at coord 9-1');
+    expect(receiveAttack({ coordY: 4, coordX: 6 })).toBe('shot missed at coord 4-6');
+  });
+});

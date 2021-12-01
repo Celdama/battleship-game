@@ -300,11 +300,13 @@ var gameboardFactory = function gameboardFactory() {
         position: positionHit + 1
       });
       console.log(allShipAreSunk());
-    } else {
-      // or record the coord of the missed shot
-      var coordMissedShot = "".concat([coordY], "-").concat([coordX]);
-      listOfMissedShot.push(coordMissedShot);
-    }
+      return "ship ".concat(shipHitted.shipId, " was hit at position ").concat(positionHit + 1, " of ").concat(shipHitted.getLength());
+    } // or record the coord of the missed shot
+
+
+    var coordMissedShot = "".concat([coordY], "-").concat([coordX]);
+    listOfMissedShot.push(coordMissedShot);
+    return "shot missed at coord ".concat([coordY], "-").concat([coordX]);
   };
 
   return {
@@ -432,14 +434,14 @@ placeShipInGameBoard({
   ship: ship10
 });
 game.renderGameBoard();
-game.receiveAttack({
+console.log(game.receiveAttack({
   coordY: 0,
   coordX: 0
-});
-game.receiveAttack({
+}));
+console.log(game.receiveAttack({
   coordY: 1,
   coordX: 0
-});
+}));
 game.receiveAttack({
   coordY: 2,
   coordX: 0

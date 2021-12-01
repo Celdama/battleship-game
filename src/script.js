@@ -38,8 +38,8 @@ placeShipInGameBoard({ coordY: 0, coordX: 8, ship: ship10 });
 
 game.renderGameBoard();
 
-game.receiveAttack({ coordY: 0, coordX: 0 });
-game.receiveAttack({ coordY: 1, coordX: 0 });
+console.log(game.receiveAttack({ coordY: 0, coordX: 0 }));
+console.log(game.receiveAttack({ coordY: 1, coordX: 0 }));
 game.receiveAttack({ coordY: 2, coordX: 0 });
 game.receiveAttack({ coordY: 3, coordX: 0 });
 game.receiveAttack({ coordY: 7, coordX: 9 });

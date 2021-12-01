@@ -107,11 +107,14 @@ const gameboardFactory = () => {
       shipHitted.hit({ position: positionHit + 1 });
 
       console.log(allShipAreSunk());
-    } else {
-    // or record the coord of the missed shot
-      const coordMissedShot = `${[coordY]}-${[coordX]}`;
-      listOfMissedShot.push(coordMissedShot);
+
+      return `ship ${shipHitted.shipId} was hit at position ${positionHit + 1} of ${shipHitted.getLength()}`;
     }
+    // or record the coord of the missed shot
+    const coordMissedShot = `${[coordY]}-${[coordX]}`;
+    listOfMissedShot.push(coordMissedShot);
+
+    return `shot missed at coord ${[coordY]}-${[coordX]}`;
   };
 
   return {
