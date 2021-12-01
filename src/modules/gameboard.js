@@ -44,12 +44,14 @@ const gameboardFactory = () => {
     return true;
   };
 
-  const placeShipInGameBoard = ({ coordY, coordX, vertical = false }, ship = undefined) => {
+  const placeShipInGameBoard = ({
+    coordY, coordX, ship, vertical = false,
+  }) => {
     if (ship === undefined) {
       return 'ship not provided';
     }
 
-    if (coordY === undefined || coordX === undefined || vertical === undefined) {
+    if (coordY === undefined || coordX === undefined) {
       return `one or more option to set ship ${ship.shipId} position not provided`;
     }
 

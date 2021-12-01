@@ -29,10 +29,10 @@ describe('check if gameboard coord is empty', () => {
   let newBoard = [];
 
   it('add correctly ship in gameboard at the right coord', () => {
-    const ship = createShip({ shipId: 1, length: 5 });
+    const newShip = createShip({ shipId: 1, length: 5 });
 
-    newBoard = placeShipInGameBoard({ coordY: 0, coordX: 0 }, ship);
-    expect(placeShipInGameBoard({ coordY: 0, coordX: 0 }, ship)).not.toBe(board);
+    newBoard = placeShipInGameBoard({ coordY: 0, coordX: 0, ship: newShip });
+    expect(placeShipInGameBoard({ coordY: 0, coordX: 0, ship: newShip })).not.toBe(board);
     expect(newBoard[0][0]).toBe('1');
     expect(newBoard[0][1]).toBe('1');
     expect(newBoard[0][2]).toBe('1');
@@ -45,8 +45,8 @@ describe('check if gameboard coord is empty', () => {
   it('not add ship in gameboard if one coord is already fill by another ship', () => {
     const anotherShip = createShip({ shipId: 2, length: 3 });
 
-    newBoard = placeShipInGameBoard({ coordY: 0, coordX: 3 }, anotherShip);
-    expect(placeShipInGameBoard({ coordY: 0, coordX: 3 }, anotherShip))
+    newBoard = placeShipInGameBoard({ coordY: 0, coordX: 3, ship: anotherShip });
+    expect(placeShipInGameBoard({ coordY: 0, coordX: 3, ship: anotherShip }))
       .toBe('impossible to place ship 2 here, the place is already fill.');
   });
 
@@ -55,9 +55,9 @@ describe('check if gameboard coord is empty', () => {
   });
 
   it('return an error message if one or more coord is not provided', () => {
-    const ship = createShip({ shipId: 2, length: 3 });
+    const newShip = createShip({ shipId: 2, length: 3 });
 
-    expect(placeShipInGameBoard({ coordY: 0 }, ship)).toBe('one or more option to set ship 2 position not provided');
-    expect(placeShipInGameBoard({}, ship)).toBe('one or more option to set ship 2 position not provided');
+    expect(placeShipInGameBoard({ coordY: 0, ship: newShip })).toBe('one or more option to set ship 2 position not provided');
+    expect(placeShipInGameBoard({ ship: newShip })).toBe('one or more option to set ship 2 position not provided');
   });
 });

@@ -226,15 +226,15 @@ var gameboardFactory = function gameboardFactory() {
   var placeShipInGameBoard = function placeShipInGameBoard(_ref) {
     var coordY = _ref.coordY,
         coordX = _ref.coordX,
+        ship = _ref.ship,
         _ref$vertical = _ref.vertical,
         vertical = _ref$vertical === void 0 ? false : _ref$vertical;
-    var ship = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : undefined;
 
     if (ship === undefined) {
       return 'ship not provided';
     }
 
-    if (coordY === undefined || coordX === undefined || vertical === undefined) {
+    if (coordY === undefined || coordX === undefined) {
       return "one or more option to set ship ".concat(ship.shipId, " position not provided");
     }
 
@@ -345,49 +345,59 @@ var ship10 = createShip({
 });
 placeShipInGameBoard({
   coordY: 4,
-  coordX: 1
-}, ship1);
+  coordX: 1,
+  ship: ship1
+});
 placeShipInGameBoard({
   coordY: 0,
   coordX: 5,
+  ship: ship2,
   vertical: true
-}, ship2);
+});
 placeShipInGameBoard({
   coordY: 9,
-  coordX: 0
-}, ship3);
+  coordX: 0,
+  ship: ship3
+});
 placeShipInGameBoard({
   coordY: 0,
   coordX: 0,
+  ship: ship4,
   vertical: true
-}, ship4);
+});
 placeShipInGameBoard({
   coordY: 5,
   coordX: 9,
+  ship: ship5,
   vertical: true
-}, ship5);
+});
 placeShipInGameBoard({
   coordY: 6,
-  coordX: 0
-}, ship6);
+  coordX: 0,
+  ship: ship6
+});
 placeShipInGameBoard({
   coordY: 9,
-  coordX: 2
-}, ship7);
+  coordX: 2,
+  ship: ship7
+});
 placeShipInGameBoard({
   coordY: 3,
   coordX: 7,
+  ship: ship8,
   vertical: true
-}, ship8);
+});
 placeShipInGameBoard({
   coordY: 2,
   coordX: 6,
+  ship: ship9,
   vertical: true
-}, ship9);
+});
 placeShipInGameBoard({
   coordY: 0,
-  coordX: 8
-}, ship10);
+  coordX: 8,
+  ship: ship10
+});
 game.renderGameBoard(); // console.log(ship1.getLength());
 // ship1.hit({ position: 1 });
 // ship1.hit({ position: 2 });
@@ -424,7 +434,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59684" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53729" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
