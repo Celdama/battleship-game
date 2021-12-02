@@ -194,12 +194,16 @@ var gameboardFactory = function gameboardFactory() {
   var coordOfEachShipInGameboard = {};
   var listOfShipInGameboard = [];
   var listOfCoordAlreadyFill = [];
-  var listOfMissedShot = [];
+  var listOfMissedShot = []; // first [] = y
+  // second [] = x
 
   var renderGameBoard = function renderGameBoard() {
-    // first [] = y
-    // second [] = x
     console.table(board);
+    return board;
+  };
+
+  var renderListOfShipInGameBoard = function renderListOfShipInGameBoard() {
+    return listOfShipInGameboard;
   };
 
   var renderShipInGame = function renderShipInGame() {
@@ -314,38 +318,195 @@ var gameboardFactory = function gameboardFactory() {
     renderGameBoard: renderGameBoard,
     renderShipInGame: renderShipInGame,
     placeShipInGameBoard: placeShipInGameBoard,
-    receiveAttack: receiveAttack
+    receiveAttack: receiveAttack,
+    renderListOfShipInGameBoard: renderListOfShipInGameBoard
   };
 };
 
-var _default = gameboardFactory; // DONE: able to place ships at specific coordinates by calling ship factory
-// should have receiveAttack()
-// take a pair of coordinates
-// determines whether or not the attach hit a ship
-// and then send the hit() to the correct ship
-// or record the coordinates of the missed shot
-// keep track of missed attacks so they can display them properly
-// should be able to report wheter or not all of their ships have been sunk
-
+var _default = gameboardFactory;
 exports.default = _default;
-},{"./ship":"modules/ship.js"}],"script.js":[function(require,module,exports) {
+},{"./ship":"modules/ship.js"}],"modules/game.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _gameboard = _interopRequireDefault(require("./gameboard"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var game = function () {
+  var humanPlayer = (0, _gameboard.default)();
+  var AIPlayer = (0, _gameboard.default)(); // const humanGameboard = humanPlayer.renderGameBoard();
+
+  var createAndPlaceShipPlayer = function createAndPlaceShipPlayer(human) {
+    var ship1 = human.createShip({
+      shipId: 1,
+      length: 5
+    });
+    var ship2 = human.createShip({
+      shipId: 2,
+      length: 4
+    });
+    var ship3 = human.createShip({
+      shipId: 3,
+      length: 3
+    });
+    var ship4 = human.createShip({
+      shipId: 4,
+      length: 3
+    });
+    var ship5 = human.createShip({
+      shipId: 5,
+      length: 1
+    });
+    human.placeShipInGameBoard({
+      coordY: 3,
+      coordX: 1,
+      ship: ship1
+    });
+    human.placeShipInGameBoard({
+      coordY: 0,
+      coordX: 9,
+      ship: ship2,
+      vertical: true
+    });
+    human.placeShipInGameBoard({
+      coordY: 0,
+      coordX: 0,
+      ship: ship3
+    });
+    human.placeShipInGameBoard({
+      coordY: 9,
+      coordX: 3,
+      ship: ship4
+    });
+    human.placeShipInGameBoard({
+      coordY: 6,
+      coordX: 7,
+      ship: ship5
+    });
+  };
+
+  var createAndPlaceShipComputer = function createAndPlaceShipComputer(computer) {
+    var ship1 = computer.createShip({
+      shipId: 1,
+      length: 5
+    });
+    var ship2 = computer.createShip({
+      shipId: 2,
+      length: 4
+    });
+    var ship3 = computer.createShip({
+      shipId: 3,
+      length: 3
+    });
+    var ship4 = computer.createShip({
+      shipId: 4,
+      length: 3
+    });
+    var ship5 = computer.createShip({
+      shipId: 5,
+      length: 1
+    });
+    computer.placeShipInGameBoard({
+      coordY: 6,
+      coordX: 0,
+      ship: ship1
+    });
+    computer.placeShipInGameBoard({
+      coordY: 0,
+      coordX: 0,
+      ship: ship2,
+      vertical: true
+    });
+    computer.placeShipInGameBoard({
+      coordY: 2,
+      coordX: 4,
+      ship: ship3
+    });
+    computer.placeShipInGameBoard({
+      coordY: 4,
+      coordX: 6,
+      ship: ship4
+    });
+    computer.placeShipInGameBoard({
+      coordY: 0,
+      coordX: 5,
+      ship: ship5
+    });
+  };
+
+  var renderGameboardFilled = function renderGameboardFilled() {
+    humanPlayer.renderGameBoard();
+    AIPlayer.renderGameBoard();
+  };
+
+  var initGame = function initGame() {
+    createAndPlaceShipPlayer(humanPlayer);
+    createAndPlaceShipComputer(AIPlayer);
+    renderGameboardFilled();
+    console.log(humanPlayer.receiveAttack({
+      coordY: 0,
+      coordX: 0
+    }));
+    console.log(AIPlayer.receiveAttack({
+      coordY: 0,
+      coordX: 1
+    })); // const ship1 = humanPlayer.createShip({ shipId: 1, length: 5 });
+    // // console.log(ship1);
+    // humanPlayer.placeShipInGameBoard({ coordY: 3, coordX: 1, ship: ship1 });
+  };
+
+  return {
+    initGame: initGame
+  };
+}();
+
+var _default = game;
+exports.default = _default;
+},{"./gameboard":"modules/gameboard.js"}],"script.js":[function(require,module,exports) {
 "use strict";
 
 var _gameboard = _interopRequireDefault(require("./modules/gameboard"));
 
+var _game = _interopRequireDefault(require("./modules/game"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var game = (0, _gameboard.default)();
-var createShip = game.createShip,
-    placeShipInGameBoard = game.placeShipInGameBoard;
+_game.default.initGame(); // const game = gameboardFactory();
+
+
+var gameboard = (0, _gameboard.default)();
+var createShip = gameboard.createShip,
+    placeShipInGameBoard = gameboard.placeShipInGameBoard;
 var ship1 = createShip({
   shipId: 1,
   length: 5
 });
 var ship2 = createShip({
   shipId: 2,
-  length: 3
+  length: 5
 });
+var player1 = (0, _gameboard.default)();
+var playerAI = (0, _gameboard.default)();
+player1.placeShipInGameBoard({
+  coordY: 4,
+  coordX: 1,
+  ship: ship1
+});
+playerAI.placeShipInGameBoard({
+  coordY: 0,
+  coordX: 5,
+  ship: ship2,
+  vertical: true
+}); // player1.renderGameBoard();
+// playerAI.renderGameBoard();
+// console.log(player1.receiveAttack({ coordY: 4, coordX: 3 }));
+// console.log(playerAI.receiveAttack({ coordY: 1, coordX: 5 }));
+
 var ship3 = createShip({
   shipId: 3,
   length: 1
@@ -432,44 +593,17 @@ placeShipInGameBoard({
   coordY: 0,
   coordX: 8,
   ship: ship10
-});
-game.renderGameBoard();
-console.log(game.receiveAttack({
-  coordY: 0,
-  coordX: 0
-}));
-console.log(game.receiveAttack({
-  coordY: 1,
-  coordX: 0
-}));
-game.receiveAttack({
-  coordY: 2,
-  coordX: 0
-});
-game.receiveAttack({
-  coordY: 3,
-  coordX: 0
-});
-game.receiveAttack({
-  coordY: 7,
-  coordX: 9
-});
-game.receiveAttack({
-  coordY: 0,
-  coordX: 9
-});
-game.receiveAttack({
-  coordY: 8,
-  coordX: 0
-});
-game.receiveAttack({
-  coordY: 7,
-  coordX: 3
-});
-game.receiveAttack({
-  coordY: 0,
-  coordX: 8
-}); // console.log(ship1.getLength());
+}); // game.renderGameBoard();
+// game.receiveAttack({ coordY: 0, coordX: 0 });
+// game.receiveAttack({ coordY: 1, coordX: 0 });
+// game.receiveAttack({ coordY: 2, coordX: 0 });
+// game.receiveAttack({ coordY: 3, coordX: 0 });
+// game.receiveAttack({ coordY: 7, coordX: 9 });
+// game.receiveAttack({ coordY: 0, coordX: 9 });
+// game.receiveAttack({ coordY: 8, coordX: 0 });
+// game.receiveAttack({ coordY: 7, coordX: 3 });
+// game.receiveAttack({ coordY: 0, coordX: 8 });
+// console.log(ship1.getLength());
 // ship1.hit({ position: 1 });
 // ship1.hit({ position: 2 });
 // ship1.hit({ position: 3 });
@@ -477,7 +611,7 @@ game.receiveAttack({
 // ship1.hit({ position: 5 });
 // console.log(ship1.shipId);
 // console.log(ship1.isSunk());
-},{"./modules/gameboard":"modules/gameboard.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./modules/gameboard":"modules/gameboard.js","./modules/game":"modules/game.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -505,7 +639,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53729" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54103" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

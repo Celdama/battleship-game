@@ -19,11 +19,14 @@ const gameboardFactory = () => {
   const listOfCoordAlreadyFill = [];
   const listOfMissedShot = [];
 
+  // first [] = y
+  // second [] = x
   const renderGameBoard = () => {
-    // first [] = y
-    // second [] = x
     console.table(board);
+    return board;
   };
+
+  const renderListOfShipInGameBoard = () => listOfShipInGameboard;
 
   const renderShipInGame = () => console.log(coordOfEachShipInGameboard);
 
@@ -123,16 +126,8 @@ const gameboardFactory = () => {
     renderShipInGame,
     placeShipInGameBoard,
     receiveAttack,
+    renderListOfShipInGameBoard,
   };
 };
 
 export default gameboardFactory;
-
-// DONE: able to place ships at specific coordinates by calling ship factory
-// should have receiveAttack()
-// take a pair of coordinates
-// determines whether or not the attach hit a ship
-// and then send the hit() to the correct ship
-// or record the coordinates of the missed shot
-// keep track of missed attacks so they can display them properly
-// should be able to report wheter or not all of their ships have been sunk

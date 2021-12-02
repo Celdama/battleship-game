@@ -76,7 +76,6 @@ describe('check if receive attack work', () => {
   newBoard = placeShipInGameBoard({ coordY: 0, coordX: 8, ship: anotherShip });
 
   it('attack on ship work', () => {
-    console.table(newBoard);
     expect(receiveAttack({ coordY: 0, coordX: 0 })).toBe('ship 4 was hit at position 1 of 4');
     expect(receiveAttack({ coordY: 1, coordX: 0 })).toBe('ship 4 was hit at position 2 of 4');
     expect(receiveAttack({ coordY: 2, coordX: 0 })).toBe('ship 4 was hit at position 3 of 4');
