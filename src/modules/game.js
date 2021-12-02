@@ -71,7 +71,7 @@ const game = (() => {
         if (player.playerTurn({ coordY, coordX })) {
           td.textContent = computerGameboard[coordY][coordX];
           if (player.checkIfAllComputerShipAreSunk()) {
-            alert('you won mother fucker');
+            alert('you won dude');
           }
         } else {
           td.classList.add('missed-shot');

@@ -656,7 +656,7 @@ var game = function () {
           td.textContent = computerGameboard[coordY][coordX];
 
           if (_player.default.checkIfAllComputerShipAreSunk()) {
-            alert('you won mother fucker');
+            alert('you won dude');
           }
         } else {
           td.classList.add('missed-shot');
