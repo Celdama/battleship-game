@@ -42,17 +42,46 @@ const game = (() => {
     AIPlayer.renderGameBoard();
   };
 
+  const makeRandomChoice = () => {
+    const coordY = Math.floor(Math.random() * 10);
+    const coordX = Math.floor(Math.random() * 10);
+
+    return `${coordY}-${coordX}`;
+  };
+
+  const computerTurn = (human) => {
+    // missed shot for computer is listed in missedShot of human and vice versa
+    const missedShot = human.renderListOfMissedShot();
+    const hittedShot = human.renderListOfHittedShot();
+
+    console.log(`hitted ${hittedShot}`);
+    console.log(`missed ${missedShot}`);
+
+    let shot = makeRandomChoice();
+
+    while (missedShot.includes(shot) && hittedShot.includes(shot)) {
+      shot = makeRandomChoice();
+    }
+
+    const coord = shot.split('-');
+    const [coordY, coordX] = coord;
+
+    human.receiveAttack({ coordY, coordX });
+  };
+
   const initGame = () => {
     createAndPlaceShipPlayer(humanPlayer);
     createAndPlaceShipComputer(AIPlayer);
     renderGameboardFilled();
 
     console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 0 }));
+    console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 5 }));
     console.log(AIPlayer.receiveAttack({ coordY: 0, coordX: 1 }));
-
-    // const ship1 = humanPlayer.createShip({ shipId: 1, length: 5 });
-    // // console.log(ship1);
-    // humanPlayer.placeShipInGameBoard({ coordY: 3, coordX: 1, ship: ship1 });
+    console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 6 }));
+    console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 7 }));
+    computerTurn(humanPlayer);
+    computerTurn(humanPlayer);
+    computerTurn(humanPlayer);
   };
 
   return {

@@ -17,7 +17,10 @@ const gameboardFactory = () => {
   const coordOfEachShipInGameboard = {};
   const listOfShipInGameboard = [];
   const listOfCoordAlreadyFill = [];
+  // missed shot of opponent
   const listOfMissedShot = [];
+
+  const listOfHittedShot = [];
 
   // first [] = y
   // second [] = x
@@ -25,6 +28,10 @@ const gameboardFactory = () => {
     console.table(board);
     return board;
   };
+
+  const renderListOfMissedShot = () => listOfMissedShot;
+
+  const renderListOfHittedShot = () => listOfHittedShot;
 
   const renderListOfShipInGameBoard = () => listOfShipInGameboard;
 
@@ -109,6 +116,9 @@ const gameboardFactory = () => {
       // add one because ship start to 1
       shipHitted.hit({ position: positionHit + 1 });
 
+      const coordOfHittedShot = `${[coordY]}-${[coordX]}`;
+      listOfHittedShot.push(coordOfHittedShot);
+
       console.log(allShipAreSunk());
 
       return `ship ${shipHitted.shipId} was hit at position ${positionHit + 1} of ${shipHitted.getLength()}`;
@@ -127,6 +137,8 @@ const gameboardFactory = () => {
     placeShipInGameBoard,
     receiveAttack,
     renderListOfShipInGameBoard,
+    renderListOfMissedShot,
+    renderListOfHittedShot,
   };
 };
 

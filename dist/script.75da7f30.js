@@ -193,13 +193,23 @@ var gameboardFactory = function gameboardFactory() {
   var board = [[null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null]];
   var coordOfEachShipInGameboard = {};
   var listOfShipInGameboard = [];
-  var listOfCoordAlreadyFill = [];
-  var listOfMissedShot = []; // first [] = y
+  var listOfCoordAlreadyFill = []; // missed shot of opponent
+
+  var listOfMissedShot = [];
+  var listOfHittedShot = []; // first [] = y
   // second [] = x
 
   var renderGameBoard = function renderGameBoard() {
     console.table(board);
     return board;
+  };
+
+  var renderListOfMissedShot = function renderListOfMissedShot() {
+    return listOfMissedShot;
+  };
+
+  var renderListOfHittedShot = function renderListOfHittedShot() {
+    return listOfHittedShot;
   };
 
   var renderListOfShipInGameBoard = function renderListOfShipInGameBoard() {
@@ -303,6 +313,8 @@ var gameboardFactory = function gameboardFactory() {
       shipHitted.hit({
         position: positionHit + 1
       });
+      var coordOfHittedShot = "".concat([coordY], "-").concat([coordX]);
+      listOfHittedShot.push(coordOfHittedShot);
       console.log(allShipAreSunk());
       return "ship ".concat(shipHitted.shipId, " was hit at position ").concat(positionHit + 1, " of ").concat(shipHitted.getLength());
     } // or record the coord of the missed shot
@@ -319,7 +331,9 @@ var gameboardFactory = function gameboardFactory() {
     renderShipInGame: renderShipInGame,
     placeShipInGameBoard: placeShipInGameBoard,
     receiveAttack: receiveAttack,
-    renderListOfShipInGameBoard: renderListOfShipInGameBoard
+    renderListOfShipInGameBoard: renderListOfShipInGameBoard,
+    renderListOfMissedShot: renderListOfMissedShot,
+    renderListOfHittedShot: renderListOfHittedShot
   };
 };
 
@@ -336,6 +350,18 @@ exports.default = void 0;
 var _gameboard = _interopRequireDefault(require("./gameboard"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 var game = function () {
   var humanPlayer = (0, _gameboard.default)();
@@ -444,6 +470,36 @@ var game = function () {
     AIPlayer.renderGameBoard();
   };
 
+  var makeRandomChoice = function makeRandomChoice() {
+    var coordY = Math.floor(Math.random() * 10);
+    var coordX = Math.floor(Math.random() * 10);
+    return "".concat(coordY, "-").concat(coordX);
+  };
+
+  var computerTurn = function computerTurn(human) {
+    // missed shot for computer is listed in missedShot of human and vice versa
+    var missedShot = human.renderListOfMissedShot();
+    var hittedShot = human.renderListOfHittedShot();
+    console.log("hitted ".concat(hittedShot));
+    console.log("missed ".concat(missedShot));
+    var shot = makeRandomChoice();
+
+    while (missedShot.includes(shot) && hittedShot.includes(shot)) {
+      shot = makeRandomChoice();
+    }
+
+    var coord = shot.split('-');
+
+    var _coord = _slicedToArray(coord, 2),
+        coordY = _coord[0],
+        coordX = _coord[1];
+
+    human.receiveAttack({
+      coordY: coordY,
+      coordX: coordX
+    });
+  };
+
   var initGame = function initGame() {
     createAndPlaceShipPlayer(humanPlayer);
     createAndPlaceShipComputer(AIPlayer);
@@ -452,12 +508,25 @@ var game = function () {
       coordY: 0,
       coordX: 0
     }));
+    console.log(humanPlayer.receiveAttack({
+      coordY: 0,
+      coordX: 5
+    }));
     console.log(AIPlayer.receiveAttack({
       coordY: 0,
       coordX: 1
-    })); // const ship1 = humanPlayer.createShip({ shipId: 1, length: 5 });
-    // // console.log(ship1);
-    // humanPlayer.placeShipInGameBoard({ coordY: 3, coordX: 1, ship: ship1 });
+    }));
+    console.log(humanPlayer.receiveAttack({
+      coordY: 0,
+      coordX: 6
+    }));
+    console.log(humanPlayer.receiveAttack({
+      coordY: 0,
+      coordX: 7
+    }));
+    computerTurn(humanPlayer);
+    computerTurn(humanPlayer);
+    computerTurn(humanPlayer);
   };
 
   return {
@@ -639,7 +708,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54103" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52279" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
