@@ -200,9 +200,9 @@ var gameboardFactory = function gameboardFactory() {
   // second [] = x
 
   var renderGameBoard = function renderGameBoard() {
-    console.table(board);
     return board;
-  };
+  }; // console.table(board);
+
 
   var renderListOfMissedShot = function renderListOfMissedShot() {
     return listOfMissedShot;
@@ -314,8 +314,8 @@ var gameboardFactory = function gameboardFactory() {
         position: positionHit + 1
       });
       var coordOfHittedShot = "".concat([coordY], "-").concat([coordX]);
-      listOfHittedShot.push(coordOfHittedShot);
-      console.log(allShipAreSunk());
+      listOfHittedShot.push(coordOfHittedShot); // console.log(allShipAreSunk());
+
       return "ship ".concat(shipHitted.shipId, " was hit at position ").concat(positionHit + 1, " of ").concat(shipHitted.getLength());
     } // or record the coord of the missed shot
 
@@ -333,13 +333,14 @@ var gameboardFactory = function gameboardFactory() {
     receiveAttack: receiveAttack,
     renderListOfShipInGameBoard: renderListOfShipInGameBoard,
     renderListOfMissedShot: renderListOfMissedShot,
-    renderListOfHittedShot: renderListOfHittedShot
+    renderListOfHittedShot: renderListOfHittedShot,
+    allShipAreSunk: allShipAreSunk
   };
 };
 
 var _default = gameboardFactory;
 exports.default = _default;
-},{"./ship":"modules/ship.js"}],"modules/game.js":[function(require,module,exports) {
+},{"./ship":"modules/ship.js"}],"modules/player.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -363,7 +364,7 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-var game = function () {
+var player = function () {
   var humanPlayer = (0, _gameboard.default)();
   var AIPlayer = (0, _gameboard.default)(); // const humanGameboard = humanPlayer.renderGameBoard();
 
@@ -465,9 +466,12 @@ var game = function () {
     });
   };
 
-  var renderGameboardFilled = function renderGameboardFilled() {
-    humanPlayer.renderGameBoard();
-    AIPlayer.renderGameBoard();
+  var renderHumanGameboardFilled = function renderHumanGameboardFilled() {
+    return humanPlayer.renderGameBoard();
+  };
+
+  var renderComputerGameboardFilled = function renderComputerGameboardFilled() {
+    return AIPlayer.renderGameBoard();
   };
 
   var makeRandomChoice = function makeRandomChoice() {
@@ -500,10 +504,29 @@ var game = function () {
     });
   };
 
-  var initGame = function initGame() {
+  var checkIfAllComputerShipAreSunk = function checkIfAllComputerShipAreSunk() {
+    return AIPlayer.allShipAreSunk();
+  };
+
+  var playerTurn = function playerTurn(_ref) {
+    var coordY = _ref.coordY,
+        coordX = _ref.coordX;
+    var resultOfShot = AIPlayer.receiveAttack({
+      coordY: coordY,
+      coordX: coordX
+    });
+
+    if (resultOfShot.includes('missed')) {
+      return false;
+    }
+
+    return true;
+  };
+
+  var initPlayers = function initPlayers() {
     createAndPlaceShipPlayer(humanPlayer);
-    createAndPlaceShipComputer(AIPlayer);
-    renderGameboardFilled();
+    createAndPlaceShipComputer(AIPlayer); // renderGameboardFilled();
+
     console.log(humanPlayer.receiveAttack({
       coordY: 0,
       coordX: 0
@@ -530,22 +553,146 @@ var game = function () {
   };
 
   return {
-    initGame: initGame
+    initPlayers: initPlayers,
+    renderHumanGameboardFilled: renderHumanGameboardFilled,
+    renderComputerGameboardFilled: renderComputerGameboardFilled,
+    playerTurn: playerTurn,
+    checkIfAllComputerShipAreSunk: checkIfAllComputerShipAreSunk
+  };
+}();
+
+var _default = player;
+exports.default = _default;
+},{"./gameboard":"modules/gameboard.js"}],"modules/game.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _player = _interopRequireDefault(require("./player"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var game = function () {
+  var makePlayerGrid = function makePlayerGrid() {
+    _player.default.initPlayers();
+
+    var gameboardForMakeGrid = _player.default.renderHumanGameboardFilled();
+
+    var parentGrid = document.querySelector('.grody-human');
+    console.table(gameboardForMakeGrid);
+    var dimensions = 10;
+    var grid = new Array(dimensions);
+    var i;
+    var j;
+    var row;
+    var box;
+
+    for (i = 0; i < grid.length; i++) {
+      grid[i] = new Array(dimensions); // grid[i].fill('~');
+
+      row = document.createElement('tr');
+
+      for (j = 0; j < grid[i].length; j++) {
+        box = document.createElement('td');
+        box.innerText = gameboardForMakeGrid[i][j];
+        box.setAttribute('id', "".concat(i).concat(j));
+        box.dataset.coordY = i;
+        box.dataset.coordX = j;
+        row.appendChild(box);
+      }
+
+      parentGrid.appendChild(row);
+    }
+  };
+
+  var makeComputerGrid = function makeComputerGrid() {
+    _player.default.initPlayers();
+
+    var gameboardForMakeGrid = _player.default.renderComputerGameboardFilled();
+
+    var parentGrid = document.querySelector('.grody-computer');
+    console.table(gameboardForMakeGrid);
+    var dimensions = 10;
+    var grid = new Array(dimensions);
+    var i;
+    var j;
+    var row;
+    var box;
+
+    for (i = 0; i < grid.length; i++) {
+      grid[i] = new Array(dimensions); // grid[i].fill('~');
+
+      row = document.createElement('tr');
+
+      for (j = 0; j < grid[i].length; j++) {
+        box = document.createElement('td');
+        box.textContent = '';
+        box.setAttribute('id', "".concat(i).concat(j));
+        box.dataset.coordY = i;
+        box.dataset.coordX = j;
+        row.appendChild(box);
+      }
+
+      parentGrid.appendChild(row);
+    }
+  };
+
+  var allowPlayerToShotComputerShip = function allowPlayerToShotComputerShip() {
+    var computerGameboard = _player.default.renderComputerGameboardFilled();
+
+    var tds = document.querySelectorAll('.grody-computer td');
+    tds.forEach(function (td) {
+      td.addEventListener('click', function (e) {
+        var coordY = e.target.dataset.coordY;
+        var coordX = e.target.dataset.coordX;
+
+        if (_player.default.playerTurn({
+          coordY: coordY,
+          coordX: coordX
+        })) {
+          td.textContent = computerGameboard[coordY][coordX];
+
+          if (_player.default.checkIfAllComputerShipAreSunk()) {
+            alert('you won mother fucker');
+          }
+        } else {
+          td.classList.add('missed-shot');
+        }
+      });
+    });
+  };
+
+  return {
+    makePlayerGrid: makePlayerGrid,
+    makeComputerGrid: makeComputerGrid,
+    allowPlayerToShotComputerShip: allowPlayerToShotComputerShip
   };
 }();
 
 var _default = game;
 exports.default = _default;
-},{"./gameboard":"modules/gameboard.js"}],"script.js":[function(require,module,exports) {
+},{"./player":"modules/player.js"}],"script.js":[function(require,module,exports) {
 "use strict";
 
 var _gameboard = _interopRequireDefault(require("./modules/gameboard"));
+
+var _player = _interopRequireDefault(require("./modules/player"));
 
 var _game = _interopRequireDefault(require("./modules/game"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_game.default.initGame(); // const game = gameboardFactory();
+_game.default.makePlayerGrid();
+
+_game.default.makeComputerGrid();
+
+_game.default.allowPlayerToShotComputerShip(); // game.makeGrid('computer');
+// game.makeGrid();
+// player.initPlayers();
+// const game = gameboardFactory();
 
 
 var gameboard = (0, _gameboard.default)();
@@ -680,7 +827,7 @@ placeShipInGameBoard({
 // ship1.hit({ position: 5 });
 // console.log(ship1.shipId);
 // console.log(ship1.isSunk());
-},{"./modules/gameboard":"modules/gameboard.js","./modules/game":"modules/game.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./modules/gameboard":"modules/gameboard.js","./modules/player":"modules/player.js","./modules/game":"modules/game.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;

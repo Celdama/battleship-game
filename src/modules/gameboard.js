@@ -24,11 +24,8 @@ const gameboardFactory = () => {
 
   // first [] = y
   // second [] = x
-  const renderGameBoard = () => {
-    console.table(board);
-    return board;
-  };
-
+  const renderGameBoard = () => board;
+  // console.table(board);
   const renderListOfMissedShot = () => listOfMissedShot;
 
   const renderListOfHittedShot = () => listOfHittedShot;
@@ -119,7 +116,7 @@ const gameboardFactory = () => {
       const coordOfHittedShot = `${[coordY]}-${[coordX]}`;
       listOfHittedShot.push(coordOfHittedShot);
 
-      console.log(allShipAreSunk());
+      // console.log(allShipAreSunk());
 
       return `ship ${shipHitted.shipId} was hit at position ${positionHit + 1} of ${shipHitted.getLength()}`;
     }
@@ -139,6 +136,7 @@ const gameboardFactory = () => {
     renderListOfShipInGameBoard,
     renderListOfMissedShot,
     renderListOfHittedShot,
+    allShipAreSunk,
   };
 };
 

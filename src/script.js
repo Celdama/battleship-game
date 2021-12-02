@@ -1,7 +1,14 @@
 import gameboardFactory from './modules/gameboard';
+import player from './modules/player';
 import game from './modules/game';
 
-game.initGame();
+game.makePlayerGrid();
+game.makeComputerGrid();
+game.allowPlayerToShotComputerShip();
+// game.makeGrid('computer');
+// game.makeGrid();
+
+// player.initPlayers();
 
 // const game = gameboardFactory();
 const gameboard = gameboardFactory();

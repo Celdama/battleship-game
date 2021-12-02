@@ -1,91 +1,89 @@
-import gameboardFactory from './gameboard';
+import player from './player';
 
 const game = (() => {
-  const humanPlayer = gameboardFactory();
-  const AIPlayer = gameboardFactory();
+  const makePlayerGrid = () => {
+    player.initPlayers();
 
-  // const humanGameboard = humanPlayer.renderGameBoard();
-  const createAndPlaceShipPlayer = (human) => {
-    const ship1 = human.createShip({ shipId: 1, length: 5 });
-    const ship2 = human.createShip({ shipId: 2, length: 4 });
-    const ship3 = human.createShip({ shipId: 3, length: 3 });
-    const ship4 = human.createShip({ shipId: 4, length: 3 });
-    const ship5 = human.createShip({ shipId: 5, length: 1 });
+    const gameboardForMakeGrid = player.renderHumanGameboardFilled();
+    const parentGrid = document.querySelector('.grody-human');
 
-    human.placeShipInGameBoard({ coordY: 3, coordX: 1, ship: ship1 });
-    human.placeShipInGameBoard({
-      coordY: 0, coordX: 9, ship: ship2, vertical: true,
-    });
-    human.placeShipInGameBoard({ coordY: 0, coordX: 0, ship: ship3 });
-    human.placeShipInGameBoard({ coordY: 9, coordX: 3, ship: ship4 });
-    human.placeShipInGameBoard({ coordY: 6, coordX: 7, ship: ship5 });
-  };
+    console.table(gameboardForMakeGrid);
 
-  const createAndPlaceShipComputer = (computer) => {
-    const ship1 = computer.createShip({ shipId: 1, length: 5 });
-    const ship2 = computer.createShip({ shipId: 2, length: 4 });
-    const ship3 = computer.createShip({ shipId: 3, length: 3 });
-    const ship4 = computer.createShip({ shipId: 4, length: 3 });
-    const ship5 = computer.createShip({ shipId: 5, length: 1 });
+    const dimensions = 10;
+    const grid = new Array(dimensions);
 
-    computer.placeShipInGameBoard({ coordY: 6, coordX: 0, ship: ship1 });
-    computer.placeShipInGameBoard({
-      coordY: 0, coordX: 0, ship: ship2, vertical: true,
-    });
-    computer.placeShipInGameBoard({ coordY: 2, coordX: 4, ship: ship3 });
-    computer.placeShipInGameBoard({ coordY: 4, coordX: 6, ship: ship4 });
-    computer.placeShipInGameBoard({ coordY: 0, coordX: 5, ship: ship5 });
-  };
+    let i; let j; let row; let box;
 
-  const renderGameboardFilled = () => {
-    humanPlayer.renderGameBoard();
-    AIPlayer.renderGameBoard();
-  };
-
-  const makeRandomChoice = () => {
-    const coordY = Math.floor(Math.random() * 10);
-    const coordX = Math.floor(Math.random() * 10);
-
-    return `${coordY}-${coordX}`;
-  };
-
-  const computerTurn = (human) => {
-    // missed shot for computer is listed in missedShot of human and vice versa
-    const missedShot = human.renderListOfMissedShot();
-    const hittedShot = human.renderListOfHittedShot();
-
-    console.log(`hitted ${hittedShot}`);
-    console.log(`missed ${missedShot}`);
-
-    let shot = makeRandomChoice();
-
-    while (missedShot.includes(shot) && hittedShot.includes(shot)) {
-      shot = makeRandomChoice();
+    for (i = 0; i < grid.length; i++) {
+      grid[i] = new Array(dimensions);
+      // grid[i].fill('~');
+      row = document.createElement('tr');
+      for (j = 0; j < grid[i].length; j++) {
+        box = document.createElement('td');
+        box.innerText = gameboardForMakeGrid[i][j];
+        box.setAttribute('id', `${i}${j}`);
+        box.dataset.coordY = i;
+        box.dataset.coordX = j;
+        row.appendChild(box);
+      }
+      parentGrid.appendChild(row);
     }
-
-    const coord = shot.split('-');
-    const [coordY, coordX] = coord;
-
-    human.receiveAttack({ coordY, coordX });
   };
 
-  const initGame = () => {
-    createAndPlaceShipPlayer(humanPlayer);
-    createAndPlaceShipComputer(AIPlayer);
-    renderGameboardFilled();
+  const makeComputerGrid = () => {
+    player.initPlayers();
 
-    console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 0 }));
-    console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 5 }));
-    console.log(AIPlayer.receiveAttack({ coordY: 0, coordX: 1 }));
-    console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 6 }));
-    console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 7 }));
-    computerTurn(humanPlayer);
-    computerTurn(humanPlayer);
-    computerTurn(humanPlayer);
+    const gameboardForMakeGrid = player.renderComputerGameboardFilled();
+    const parentGrid = document.querySelector('.grody-computer');
+
+    console.table(gameboardForMakeGrid);
+
+    const dimensions = 10;
+    const grid = new Array(dimensions);
+
+    let i; let j; let row; let box;
+
+    for (i = 0; i < grid.length; i++) {
+      grid[i] = new Array(dimensions);
+      // grid[i].fill('~');
+      row = document.createElement('tr');
+      for (j = 0; j < grid[i].length; j++) {
+        box = document.createElement('td');
+        box.textContent = '';
+        box.setAttribute('id', `${i}${j}`);
+        box.dataset.coordY = i;
+        box.dataset.coordX = j;
+        row.appendChild(box);
+      }
+      parentGrid.appendChild(row);
+    }
+  };
+
+  const allowPlayerToShotComputerShip = () => {
+    const computerGameboard = player.renderComputerGameboardFilled();
+
+    const tds = document.querySelectorAll('.grody-computer td');
+    tds.forEach((td) => {
+      td.addEventListener('click', (e) => {
+        const { coordY } = e.target.dataset;
+        const { coordX } = e.target.dataset;
+
+        if (player.playerTurn({ coordY, coordX })) {
+          td.textContent = computerGameboard[coordY][coordX];
+          if (player.checkIfAllComputerShipAreSunk()) {
+            alert('you won mother fucker');
+          }
+        } else {
+          td.classList.add('missed-shot');
+        }
+      });
+    });
   };
 
   return {
-    initGame,
+    makePlayerGrid,
+    makeComputerGrid,
+    allowPlayerToShotComputerShip,
   };
 })();
 
