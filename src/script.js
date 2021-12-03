@@ -4,7 +4,8 @@ import game from './modules/game';
 
 game.makePlayersGrid({ playerType: 'human' });
 game.makePlayersGrid({ playerType: 'computer' });
-game.allowHumanToShotComputerShip();
+// game.allowHumanToShotComputerShip();
+game.gameLoop();
 
 // player.initPlayers();
 

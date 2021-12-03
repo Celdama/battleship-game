@@ -493,14 +493,15 @@ var player = function () {
       coordY: coordY,
       coordX: coordX
     })) {
-      td.textContent = computerGameboard[coordY][coordX];
+      td.textContent = computerGameboard[coordY][coordX]; // if (checkIfAllComputerShipAreSunk()) {
+      //   alert('you won dude');
+      // }
 
-      if (checkIfAllComputerShipAreSunk()) {
-        alert('you won dude');
-      }
-    } else {
-      boxReceiveShot.classList.add('missed-shot');
+      return 'shot ok';
     }
+
+    boxReceiveShot.classList.add('missed-shot');
+    return 'shot missed';
   };
 
   var computerTurn = function computerTurn(human) {
@@ -579,6 +580,9 @@ var _player = _interopRequireDefault(require("./player"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var game = function () {
+  var gameOver = false;
+  var isHumanTurn = true;
+
   var makePlayersGrid = function makePlayersGrid(_ref) {
     var playerType = _ref.playerType;
 
@@ -620,21 +624,64 @@ var game = function () {
   };
 
   var allowHumanToShotComputerShip = function allowHumanToShotComputerShip() {
-    var humanTurn = _player.default.humanTurn;
     var tds = document.querySelectorAll('.grody-computer td');
     tds.forEach(function (td) {
       td.addEventListener('click', function (e) {
-        humanTurn({
+        var result = _player.default.humanTurn({
           event: e,
           boxReceiveShot: td
         });
+
+        console.log(result);
+      });
+    });
+  };
+
+  var toggleClickableComputerBox = function toggleClickableComputerBox() {
+    var tds = document.querySelectorAll('.grody-computer td');
+    tds.forEach(function (td) {
+      td.classList.toggle('disable');
+    });
+  };
+
+  var checkIfGameIsOver = function checkIfGameIsOver() {
+    var allShipAreSunk = _player.default.checkIfAllComputerShipAreSunk();
+
+    if (allShipAreSunk) {
+      alert('game finished');
+      gameOver = true;
+    }
+  };
+
+  var gameLoop = function gameLoop() {
+    var tds = document.querySelectorAll('.grody-computer td');
+    var humanTurn = _player.default.humanTurn;
+    tds.forEach(function (td) {
+      td.addEventListener('click', function (e) {
+        var result = humanTurn({
+          event: e,
+          boxReceiveShot: td
+        });
+        console.log(result);
+        toggleClickableComputerBox(); // send to checkIfGameIsOver the computer board
+
+        checkIfGameIsOver();
+        setTimeout(function () {
+          if (!gameOver) {
+            console.log('computer turn');
+            toggleClickableComputerBox(); // and send here the player board
+
+            checkIfGameIsOver();
+          }
+        }, 200);
       });
     });
   };
 
   return {
     makePlayersGrid: makePlayersGrid,
-    allowHumanToShotComputerShip: allowHumanToShotComputerShip
+    allowHumanToShotComputerShip: allowHumanToShotComputerShip,
+    gameLoop: gameLoop
   };
 }();
 
@@ -657,9 +704,10 @@ _game.default.makePlayersGrid({
 
 _game.default.makePlayersGrid({
   playerType: 'computer'
-});
+}); // game.allowHumanToShotComputerShip();
 
-_game.default.allowHumanToShotComputerShip(); // player.initPlayers();
+
+_game.default.gameLoop(); // player.initPlayers();
 // const game = gameboardFactory();
 
 
@@ -823,7 +871,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58229" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51590" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

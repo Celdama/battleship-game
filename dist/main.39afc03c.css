@@ -48,4 +48,8 @@ table {
   margin: 10px;
 }
 
+.disable {
+  pointer-events: none;
+}
+
 /*# sourceMappingURL=/main.39afc03c.css.map */

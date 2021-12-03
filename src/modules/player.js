@@ -55,12 +55,14 @@ const player = (() => {
 
     if (playerAttack({ coordY, coordX })) {
       td.textContent = computerGameboard[coordY][coordX];
-      if (checkIfAllComputerShipAreSunk()) {
-        alert('you won dude');
-      }
-    } else {
-      boxReceiveShot.classList.add('missed-shot');
+
+      // if (checkIfAllComputerShipAreSunk()) {
+      //   alert('you won dude');
+      // }
+      return 'shot ok';
     }
+    boxReceiveShot.classList.add('missed-shot');
+    return 'shot missed';
   };
 
   const computerTurn = (human) => {
