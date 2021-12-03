@@ -480,6 +480,29 @@ var player = function () {
     return "".concat(coordY, "-").concat(coordX);
   };
 
+  var humanTurn = function humanTurn(_ref) {
+    var event = _ref.event,
+        boxReceiveShot = _ref.boxReceiveShot;
+    var computerGameboard = renderComputerGameboardFilled();
+    var _event$target$dataset = event.target.dataset,
+        coordY = _event$target$dataset.coordY,
+        coordX = _event$target$dataset.coordX;
+    var td = boxReceiveShot;
+
+    if (playerAttack({
+      coordY: coordY,
+      coordX: coordX
+    })) {
+      td.textContent = computerGameboard[coordY][coordX];
+
+      if (checkIfAllComputerShipAreSunk()) {
+        alert('you won dude');
+      }
+    } else {
+      boxReceiveShot.classList.add('missed-shot');
+    }
+  };
+
   var computerTurn = function computerTurn(human) {
     // missed shot for computer is listed in missedShot of human and vice versa
     var missedShot = human.renderListOfMissedShot();
@@ -508,9 +531,9 @@ var player = function () {
     return AIPlayer.allShipAreSunk();
   };
 
-  var playerTurn = function playerTurn(_ref) {
-    var coordY = _ref.coordY,
-        coordX = _ref.coordX;
+  var playerAttack = function playerAttack(_ref2) {
+    var coordY = _ref2.coordY,
+        coordX = _ref2.coordX;
     var resultOfShot = AIPlayer.receiveAttack({
       coordY: coordY,
       coordX: coordX
@@ -521,37 +544,22 @@ var player = function () {
   var initPlayers = function initPlayers() {
     createAndPlaceShipPlayer(humanPlayer);
     createAndPlaceShipComputer(AIPlayer); // renderGameboardFilled();
-
-    console.log(humanPlayer.receiveAttack({
-      coordY: 0,
-      coordX: 0
-    }));
-    console.log(humanPlayer.receiveAttack({
-      coordY: 0,
-      coordX: 5
-    }));
-    console.log(AIPlayer.receiveAttack({
-      coordY: 0,
-      coordX: 1
-    }));
-    console.log(humanPlayer.receiveAttack({
-      coordY: 0,
-      coordX: 6
-    }));
-    console.log(humanPlayer.receiveAttack({
-      coordY: 0,
-      coordX: 7
-    }));
-    computerTurn(humanPlayer);
-    computerTurn(humanPlayer);
-    computerTurn(humanPlayer);
+    // console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 0 }));
+    // console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 5 }));
+    // console.log(AIPlayer.receiveAttack({ coordY: 0, coordX: 1 }));
+    // console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 6 }));
+    // console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 7 }));
+    // computerTurn(humanPlayer);
+    // computerTurn(humanPlayer);
+    // computerTurn(humanPlayer);
   };
 
   return {
     initPlayers: initPlayers,
     renderHumanGameboardFilled: renderHumanGameboardFilled,
     renderComputerGameboardFilled: renderComputerGameboardFilled,
-    playerTurn: playerTurn,
+    playerAttack: playerAttack,
+    humanTurn: humanTurn,
     checkIfAllComputerShipAreSunk: checkIfAllComputerShipAreSunk
   };
 }();
@@ -574,7 +582,9 @@ var game = function () {
   var makePlayersGrid = function makePlayersGrid(_ref) {
     var playerType = _ref.playerType;
 
-    _player.default.initPlayers();
+    // eslint-disable-next-line max-len
+    _player.default.initPlayers(); // initialize players, create 5 ships by players, and place it on gameboard
+
 
     var renderHumanGameboardFilled = _player.default.renderHumanGameboardFilled,
         renderComputerGameboardFilled = _player.default.renderComputerGameboardFilled;
@@ -610,26 +620,14 @@ var game = function () {
   };
 
   var allowHumanToShotComputerShip = function allowHumanToShotComputerShip() {
-    var computerGameboard = _player.default.renderComputerGameboardFilled();
-
+    var humanTurn = _player.default.humanTurn;
     var tds = document.querySelectorAll('.grody-computer td');
     tds.forEach(function (td) {
       td.addEventListener('click', function (e) {
-        var coordY = e.target.dataset.coordY;
-        var coordX = e.target.dataset.coordX;
-
-        if (_player.default.playerTurn({
-          coordY: coordY,
-          coordX: coordX
-        })) {
-          td.textContent = computerGameboard[coordY][coordX];
-
-          if (_player.default.checkIfAllComputerShipAreSunk()) {
-            alert('you won dude');
-          }
-        } else {
-          td.classList.add('missed-shot');
-        }
+        humanTurn({
+          event: e,
+          boxReceiveShot: td
+        });
       });
     });
   };

@@ -48,6 +48,21 @@ const player = (() => {
     return `${coordY}-${coordX}`;
   };
 
+  const humanTurn = ({ event, boxReceiveShot }) => {
+    const computerGameboard = renderComputerGameboardFilled();
+    const { coordY, coordX } = event.target.dataset;
+    const td = boxReceiveShot;
+
+    if (playerAttack({ coordY, coordX })) {
+      td.textContent = computerGameboard[coordY][coordX];
+      if (checkIfAllComputerShipAreSunk()) {
+        alert('you won dude');
+      }
+    } else {
+      boxReceiveShot.classList.add('missed-shot');
+    }
+  };
+
   const computerTurn = (human) => {
     // missed shot for computer is listed in missedShot of human and vice versa
     const missedShot = human.renderListOfMissedShot();
@@ -70,7 +85,7 @@ const player = (() => {
 
   const checkIfAllComputerShipAreSunk = () => AIPlayer.allShipAreSunk();
 
-  const playerTurn = ({ coordY, coordX }) => {
+  const playerAttack = ({ coordY, coordX }) => {
     const resultOfShot = AIPlayer.receiveAttack({ coordY, coordX });
 
     return !resultOfShot.includes('missed');
@@ -81,21 +96,22 @@ const player = (() => {
     createAndPlaceShipComputer(AIPlayer);
     // renderGameboardFilled();
 
-    console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 0 }));
-    console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 5 }));
-    console.log(AIPlayer.receiveAttack({ coordY: 0, coordX: 1 }));
-    console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 6 }));
-    console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 7 }));
-    computerTurn(humanPlayer);
-    computerTurn(humanPlayer);
-    computerTurn(humanPlayer);
+    // console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 0 }));
+    // console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 5 }));
+    // console.log(AIPlayer.receiveAttack({ coordY: 0, coordX: 1 }));
+    // console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 6 }));
+    // console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 7 }));
+    // computerTurn(humanPlayer);
+    // computerTurn(humanPlayer);
+    // computerTurn(humanPlayer);
   };
 
   return {
     initPlayers,
     renderHumanGameboardFilled,
     renderComputerGameboardFilled,
-    playerTurn,
+    playerAttack,
+    humanTurn,
     checkIfAllComputerShipAreSunk,
   };
 })();

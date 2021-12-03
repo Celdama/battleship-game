@@ -2,7 +2,8 @@ import player from './player';
 
 const game = (() => {
   const makePlayersGrid = ({ playerType }) => {
-    player.initPlayers();
+    // eslint-disable-next-line max-len
+    player.initPlayers(); // initialize players, create 5 ships by players, and place it on gameboard
     const { renderHumanGameboardFilled, renderComputerGameboardFilled } = player;
 
     let gameboardForMakeGrid = null;
@@ -36,22 +37,11 @@ const game = (() => {
   };
 
   const allowHumanToShotComputerShip = () => {
-    const computerGameboard = player.renderComputerGameboardFilled();
-
+    const { humanTurn } = player;
     const tds = document.querySelectorAll('.grody-computer td');
     tds.forEach((td) => {
       td.addEventListener('click', (e) => {
-        const { coordY } = e.target.dataset;
-        const { coordX } = e.target.dataset;
-
-        if (player.playerTurn({ coordY, coordX })) {
-          td.textContent = computerGameboard[coordY][coordX];
-          if (player.checkIfAllComputerShipAreSunk()) {
-            alert('you won dude');
-          }
-        } else {
-          td.classList.add('missed-shot');
-        }
+        humanTurn({ event: e, boxReceiveShot: td });
       });
     });
   };
