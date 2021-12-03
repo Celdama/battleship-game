@@ -515,12 +515,7 @@ var player = function () {
       coordY: coordY,
       coordX: coordX
     });
-
-    if (resultOfShot.includes('missed')) {
-      return false;
-    }
-
-    return true;
+    return !resultOfShot.includes('missed');
   };
 
   var initPlayers = function initPlayers() {
@@ -576,28 +571,34 @@ var _player = _interopRequireDefault(require("./player"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var game = function () {
-  var makePlayerGrid = function makePlayerGrid() {
+  var makePlayersGrid = function makePlayersGrid(_ref) {
+    var playerType = _ref.playerType;
+
     _player.default.initPlayers();
 
-    var gameboardForMakeGrid = _player.default.renderHumanGameboardFilled();
+    var renderHumanGameboardFilled = _player.default.renderHumanGameboardFilled,
+        renderComputerGameboardFilled = _player.default.renderComputerGameboardFilled;
+    var gameboardForMakeGrid = null;
+    var parentGrid = null;
 
-    var parentGrid = document.querySelector('.grody-human');
-    console.table(gameboardForMakeGrid);
+    if (playerType === 'human') {
+      gameboardForMakeGrid = renderHumanGameboardFilled();
+      parentGrid = document.querySelector('.grody-human');
+    } else {
+      gameboardForMakeGrid = renderComputerGameboardFilled();
+      parentGrid = document.querySelector('.grody-computer');
+    }
+
     var dimensions = 10;
     var grid = new Array(dimensions);
-    var i;
-    var j;
-    var row;
-    var box;
 
-    for (i = 0; i < grid.length; i++) {
-      grid[i] = new Array(dimensions); // grid[i].fill('~');
+    for (var i = 0; i < grid.length; i += 1) {
+      grid[i] = new Array(dimensions);
+      var row = document.createElement('tr');
 
-      row = document.createElement('tr');
-
-      for (j = 0; j < grid[i].length; j++) {
-        box = document.createElement('td');
-        box.innerText = gameboardForMakeGrid[i][j];
+      for (var j = 0; j < grid[i].length; j += 1) {
+        var box = document.createElement('td');
+        box.textContent = playerType === 'human' ? gameboardForMakeGrid[i][j] : '';
         box.setAttribute('id', "".concat(i).concat(j));
         box.dataset.coordY = i;
         box.dataset.coordX = j;
@@ -608,39 +609,7 @@ var game = function () {
     }
   };
 
-  var makeComputerGrid = function makeComputerGrid() {
-    _player.default.initPlayers();
-
-    var gameboardForMakeGrid = _player.default.renderComputerGameboardFilled();
-
-    var parentGrid = document.querySelector('.grody-computer');
-    console.table(gameboardForMakeGrid);
-    var dimensions = 10;
-    var grid = new Array(dimensions);
-    var i;
-    var j;
-    var row;
-    var box;
-
-    for (i = 0; i < grid.length; i++) {
-      grid[i] = new Array(dimensions); // grid[i].fill('~');
-
-      row = document.createElement('tr');
-
-      for (j = 0; j < grid[i].length; j++) {
-        box = document.createElement('td');
-        box.textContent = '';
-        box.setAttribute('id', "".concat(i).concat(j));
-        box.dataset.coordY = i;
-        box.dataset.coordX = j;
-        row.appendChild(box);
-      }
-
-      parentGrid.appendChild(row);
-    }
-  };
-
-  var allowPlayerToShotComputerShip = function allowPlayerToShotComputerShip() {
+  var allowHumanToShotComputerShip = function allowHumanToShotComputerShip() {
     var computerGameboard = _player.default.renderComputerGameboardFilled();
 
     var tds = document.querySelectorAll('.grody-computer td');
@@ -666,9 +635,8 @@ var game = function () {
   };
 
   return {
-    makePlayerGrid: makePlayerGrid,
-    makeComputerGrid: makeComputerGrid,
-    allowPlayerToShotComputerShip: allowPlayerToShotComputerShip
+    makePlayersGrid: makePlayersGrid,
+    allowHumanToShotComputerShip: allowHumanToShotComputerShip
   };
 }();
 
@@ -685,13 +653,15 @@ var _game = _interopRequireDefault(require("./modules/game"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_game.default.makePlayerGrid();
+_game.default.makePlayersGrid({
+  playerType: 'human'
+});
 
-_game.default.makeComputerGrid();
+_game.default.makePlayersGrid({
+  playerType: 'computer'
+});
 
-_game.default.allowPlayerToShotComputerShip(); // game.makeGrid('computer');
-// game.makeGrid();
-// player.initPlayers();
+_game.default.allowHumanToShotComputerShip(); // player.initPlayers();
 // const game = gameboardFactory();
 
 
@@ -855,7 +825,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52279" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58229" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

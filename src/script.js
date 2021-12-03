@@ -2,11 +2,9 @@ import gameboardFactory from './modules/gameboard';
 import player from './modules/player';
 import game from './modules/game';
 
-game.makePlayerGrid();
-game.makeComputerGrid();
-game.allowPlayerToShotComputerShip();
-// game.makeGrid('computer');
-// game.makeGrid();
+game.makePlayersGrid({ playerType: 'human' });
+game.makePlayersGrid({ playerType: 'computer' });
+game.allowHumanToShotComputerShip();
 
 // player.initPlayers();
 

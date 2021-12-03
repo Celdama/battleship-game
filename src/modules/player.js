@@ -72,10 +72,8 @@ const player = (() => {
 
   const playerTurn = ({ coordY, coordX }) => {
     const resultOfShot = AIPlayer.receiveAttack({ coordY, coordX });
-    if (resultOfShot.includes('missed')) {
-      return false;
-    }
-    return true;
+
+    return !resultOfShot.includes('missed');
   };
 
   const initPlayers = () => {

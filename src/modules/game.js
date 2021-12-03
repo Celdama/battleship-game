@@ -1,65 +1,41 @@
 import player from './player';
 
 const game = (() => {
-  const makePlayerGrid = () => {
+  const makePlayersGrid = ({ playerType }) => {
     player.initPlayers();
+    const { renderHumanGameboardFilled, renderComputerGameboardFilled } = player;
 
-    const gameboardForMakeGrid = player.renderHumanGameboardFilled();
-    const parentGrid = document.querySelector('.grody-human');
+    let gameboardForMakeGrid = null;
+    let parentGrid = null;
 
-    console.table(gameboardForMakeGrid);
+    if (playerType === 'human') {
+      gameboardForMakeGrid = renderHumanGameboardFilled();
+      parentGrid = document.querySelector('.grody-human');
+    } else {
+      gameboardForMakeGrid = renderComputerGameboardFilled();
+      parentGrid = document.querySelector('.grody-computer');
+    }
 
     const dimensions = 10;
     const grid = new Array(dimensions);
 
-    let i; let j; let row; let box;
-
-    for (i = 0; i < grid.length; i++) {
+    for (let i = 0; i < grid.length; i += 1) {
       grid[i] = new Array(dimensions);
-      // grid[i].fill('~');
-      row = document.createElement('tr');
-      for (j = 0; j < grid[i].length; j++) {
-        box = document.createElement('td');
-        box.innerText = gameboardForMakeGrid[i][j];
+      const row = document.createElement('tr');
+      for (let j = 0; j < grid[i].length; j += 1) {
+        const box = document.createElement('td');
+        box.textContent = playerType === 'human' ? gameboardForMakeGrid[i][j] : '';
         box.setAttribute('id', `${i}${j}`);
         box.dataset.coordY = i;
         box.dataset.coordX = j;
         row.appendChild(box);
       }
+
       parentGrid.appendChild(row);
     }
   };
 
-  const makeComputerGrid = () => {
-    player.initPlayers();
-
-    const gameboardForMakeGrid = player.renderComputerGameboardFilled();
-    const parentGrid = document.querySelector('.grody-computer');
-
-    console.table(gameboardForMakeGrid);
-
-    const dimensions = 10;
-    const grid = new Array(dimensions);
-
-    let i; let j; let row; let box;
-
-    for (i = 0; i < grid.length; i++) {
-      grid[i] = new Array(dimensions);
-      // grid[i].fill('~');
-      row = document.createElement('tr');
-      for (j = 0; j < grid[i].length; j++) {
-        box = document.createElement('td');
-        box.textContent = '';
-        box.setAttribute('id', `${i}${j}`);
-        box.dataset.coordY = i;
-        box.dataset.coordX = j;
-        row.appendChild(box);
-      }
-      parentGrid.appendChild(row);
-    }
-  };
-
-  const allowPlayerToShotComputerShip = () => {
+  const allowHumanToShotComputerShip = () => {
     const computerGameboard = player.renderComputerGameboardFilled();
 
     const tds = document.querySelectorAll('.grody-computer td');
@@ -81,9 +57,9 @@ const game = (() => {
   };
 
   return {
-    makePlayerGrid,
-    makeComputerGrid,
-    allowPlayerToShotComputerShip,
+    makePlayersGrid,
+    allowHumanToShotComputerShip,
+
   };
 })();
 
