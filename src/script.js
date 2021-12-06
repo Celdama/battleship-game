@@ -7,6 +7,13 @@ game.makePlayersGrid({ playerType: 'computer' });
 // game.allowHumanToShotComputerShip();
 game.gameLoop();
 
+if (module.hot) {
+  module.hot.accept(() => {
+    window.location.reload();
+  });
+}
+
+console.log('e');
 // player.initPlayers();
 
 // const game = gameboardFactory();

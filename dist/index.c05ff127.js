@@ -459,35 +459,39 @@ function hmrAcceptRun(bundle, id) {
 }
 
 },{}],"i8ewE":[function(require,module,exports) {
-"use strict";
-var _gameboard = _interopRequireDefault(require("./modules/gameboard"));
-var _player = _interopRequireDefault(require("./modules/player"));
-var _game = _interopRequireDefault(require("./modules/game"));
-function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-        "default": obj
-    };
-}
-_game["default"].makePlayersGrid({
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+var _gameboard = require("./modules/gameboard");
+var _gameboardDefault = parcelHelpers.interopDefault(_gameboard);
+var _player = require("./modules/player");
+var _playerDefault = parcelHelpers.interopDefault(_player);
+var _game = require("./modules/game");
+var _gameDefault = parcelHelpers.interopDefault(_game);
+_gameDefault.default.makePlayersGrid({
     playerType: 'human'
 });
-_game["default"].makePlayersGrid({
+_gameDefault.default.makePlayersGrid({
     playerType: 'computer'
-}); // game.allowHumanToShotComputerShip();
-_game["default"].gameLoop(); // player.initPlayers();
+});
+// game.allowHumanToShotComputerShip();
+_gameDefault.default.gameLoop();
+if (module.hot) module.hot.accept(()=>{
+    window.location.reload();
+});
+console.log('e');
+// player.initPlayers();
 // const game = gameboardFactory();
-var gameboard = (0, _gameboard["default"])();
-var createShip = gameboard.createShip, placeShipInGameBoard = gameboard.placeShipInGameBoard;
-var ship1 = createShip({
+const gameboard = _gameboardDefault.default();
+const { createShip , placeShipInGameBoard  } = gameboard;
+const ship1 = createShip({
     shipId: 1,
     length: 5
 });
-var ship2 = createShip({
+const ship2 = createShip({
     shipId: 2,
     length: 5
 });
-var player1 = (0, _gameboard["default"])();
-var playerAI = (0, _gameboard["default"])();
+const player1 = _gameboardDefault.default();
+const playerAI = _gameboardDefault.default();
 player1.placeShipInGameBoard({
     coordY: 4,
     coordX: 1,
@@ -498,39 +502,40 @@ playerAI.placeShipInGameBoard({
     coordX: 5,
     ship: ship2,
     vertical: true
-}); // player1.renderGameBoard();
+});
+// player1.renderGameBoard();
 // playerAI.renderGameBoard();
 // console.log(player1.receiveAttack({ coordY: 4, coordX: 3 }));
 // console.log(playerAI.receiveAttack({ coordY: 1, coordX: 5 }));
-var ship3 = createShip({
+const ship3 = createShip({
     shipId: 3,
     length: 1
 });
-var ship4 = createShip({
+const ship4 = createShip({
     shipId: 4,
     length: 4
 });
-var ship5 = createShip({
+const ship5 = createShip({
     shipId: 5,
     length: 5
 });
-var ship6 = createShip({
+const ship6 = createShip({
     shipId: 6,
     length: 2
 });
-var ship7 = createShip({
+const ship7 = createShip({
     shipId: 7,
     length: 4
 });
-var ship8 = createShip({
+const ship8 = createShip({
     shipId: 8,
     length: 5
 });
-var ship9 = createShip({
+const ship9 = createShip({
     shipId: 9,
     length: 4
 });
-var ship10 = createShip({
+const ship10 = createShip({
     shipId: 10,
     length: 1
 });
@@ -607,20 +612,13 @@ placeShipInGameBoard({
  // console.log(ship1.shipId);
  // console.log(ship1.isSunk());
 
-},{"./modules/gameboard":"9zGfS","./modules/player":"35AWQ","./modules/game":"aTo76"}],"9zGfS":[function(require,module,exports) {
-"use strict";
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports["default"] = void 0;
-var _ship = _interopRequireDefault(require("./ship"));
-function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-        "default": obj
-    };
-}
-var gameboardFactory = function gameboardFactory() {
-    var board = [
+},{"./modules/gameboard":"9zGfS","./modules/player":"35AWQ","./modules/game":"aTo76","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"9zGfS":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _ship = require("./ship");
+var _shipDefault = parcelHelpers.interopDefault(_ship);
+const gameboardFactory = ()=>{
+    const board = [
         [
             null,
             null,
@@ -740,248 +738,214 @@ var gameboardFactory = function gameboardFactory() {
             null,
             null,
             null
-        ]
+        ], 
     ];
-    var coordOfEachShipInGameboard = {
+    const coordOfEachShipInGameboard = {
     };
-    var listOfShipInGameboard = [];
-    var listOfCoordAlreadyFill = []; // missed shot of opponent
-    var listOfMissedShot = [];
-    var listOfHittedShot = []; // first [] = y
+    const listOfShipInGameboard = [];
+    const listOfCoordAlreadyFill = [];
+    // missed shot of opponent
+    const listOfMissedShot = [];
+    const listOfHittedShot = [];
+    // first [] = y
     // second [] = x
-    var renderGameBoard = function renderGameBoard() {
-        return board;
-    }; // console.table(board);
-    var renderListOfMissedShot = function renderListOfMissedShot() {
-        return listOfMissedShot;
-    };
-    var renderListOfHittedShot = function renderListOfHittedShot() {
-        return listOfHittedShot;
-    };
-    var renderListOfShipInGameBoard = function renderListOfShipInGameBoard() {
-        return listOfShipInGameboard;
-    };
-    var renderShipInGame = function renderShipInGame() {
-        return console.log(coordOfEachShipInGameboard);
-    };
-    var coordIsEmpty = function coordIsEmpty(coordY, coordX, shipLength, isVertical) {
-        if (isVertical) for(var i = 0; i < shipLength; i += 1){
-            if (listOfCoordAlreadyFill.includes("".concat(coordY + i, "-").concat(coordX))) return false;
+    const renderGameBoard = ()=>board
+    ;
+    // console.table(board);
+    const renderListOfMissedShot = ()=>listOfMissedShot
+    ;
+    const renderListOfHittedShot = ()=>listOfHittedShot
+    ;
+    const renderListOfShipInGameBoard = ()=>listOfShipInGameboard
+    ;
+    const renderShipInGame = ()=>console.log(coordOfEachShipInGameboard)
+    ;
+    const coordIsEmpty = (coordY, coordX, shipLength, isVertical)=>{
+        if (isVertical) for(let i = 0; i < shipLength; i += 1){
+            if (listOfCoordAlreadyFill.includes(`${coordY + i}-${coordX}`)) return false;
         }
-        else for(var _i = 0; _i < shipLength; _i += 1){
-            if (listOfCoordAlreadyFill.includes("".concat(coordY, "-").concat(coordX + _i))) return false;
+        else for(let i1 = 0; i1 < shipLength; i1 += 1){
+            if (listOfCoordAlreadyFill.includes(`${coordY}-${coordX + i1}`)) return false;
         }
         return true;
     };
-    var placeShipInGameBoard = function placeShipInGameBoard(_ref) {
-        var coordY = _ref.coordY, coordX = _ref.coordX, ship = _ref.ship, _ref$vertical = _ref.vertical, vertical = _ref$vertical === void 0 ? false : _ref$vertical;
+    const placeShipInGameBoard = ({ coordY , coordX , ship , vertical =false ,  })=>{
         if (ship === undefined) return 'ship not provided';
-        if (coordY === undefined || coordX === undefined) return "one or more option to set ship ".concat(ship.shipId, " position not provided");
-        var shipId = ship.shipId, getLength = ship.getLength;
-        var shipCoordInGameboard = [];
-        var shipLength = getLength();
+        if (coordY === undefined || coordX === undefined) return `one or more option to set ship ${ship.shipId} position not provided`;
+        const { shipId , getLength  } = ship;
+        const shipCoordInGameboard = [];
+        const shipLength = getLength();
         if (coordIsEmpty(coordY, coordX, shipLength, vertical)) {
-            for(var i = 0; i < shipLength; i += 1)if (!vertical) {
-                board[coordY][coordX + i] = "".concat(shipId);
-                shipCoordInGameboard.push("".concat(coordY, "-").concat(coordX + i));
-                listOfCoordAlreadyFill.push("".concat(coordY, "-").concat(coordX + i));
+            for(let i = 0; i < shipLength; i += 1)if (!vertical) {
+                board[coordY][coordX + i] = `${shipId}`;
+                shipCoordInGameboard.push(`${coordY}-${coordX + i}`);
+                listOfCoordAlreadyFill.push(`${coordY}-${coordX + i}`);
             } else {
-                board[coordY + i][coordX] = "".concat(shipId);
-                shipCoordInGameboard.push("".concat(coordY + i, "-").concat(coordX));
-                listOfCoordAlreadyFill.push("".concat(coordY + i, "-").concat(coordX));
+                board[coordY + i][coordX] = `${shipId}`;
+                shipCoordInGameboard.push(`${coordY + i}-${coordX}`);
+                listOfCoordAlreadyFill.push(`${coordY + i}-${coordX}`);
             }
             coordOfEachShipInGameboard[shipId] = shipCoordInGameboard;
-            listOfShipInGameboard.push(ship); // for now, this return is only usefull for my test.
+            listOfShipInGameboard.push(ship);
+            // for now, this return is only usefull for my test.
             return board;
         }
-        return "impossible to place ship ".concat(shipId, " here, the place is already fill.");
+        return `impossible to place ship ${shipId} here, the place is already fill.`;
     };
-    var createShip = function createShip(_ref2) {
-        var shipId = _ref2.shipId, length = _ref2.length;
-        var newShip = (0, _ship["default"])({
-            shipId: shipId,
-            length: length
+    const createShip = ({ shipId , length  })=>{
+        const newShip = _shipDefault.default({
+            shipId,
+            length
         });
         return newShip;
     };
-    var allShipAreSunk = function allShipAreSunk() {
-        return listOfShipInGameboard.every(function(ship) {
-            return ship.isSunk();
-        });
-    };
-    var receiveAttack = function receiveAttack(_ref3) {
-        var coordY = _ref3.coordY, coordX = _ref3.coordX;
+    const allShipAreSunk = ()=>listOfShipInGameboard.every((ship)=>ship.isSunk()
+        )
+    ;
+    const receiveAttack = ({ coordY , coordX  })=>{
         // determines whether or not the attach hit a ship
         if (board[coordY][coordX]) {
             // and then sends the hits function to the correct ship
-            var coordId = Number(board[coordY][coordX]);
-            var shipHitted = listOfShipInGameboard.find(function(ship) {
-                return ship.shipId === coordId;
-            }); // determine where the ship was hit
-            var positionHit = coordOfEachShipInGameboard[coordId].indexOf("".concat(coordY, "-").concat(coordX)); // add one because ship start to 1
+            const coordId = Number(board[coordY][coordX]);
+            const shipHitted = listOfShipInGameboard.find((ship)=>ship.shipId === coordId
+            );
+            // determine where the ship was hit
+            const positionHit = coordOfEachShipInGameboard[coordId].indexOf(`${coordY}-${coordX}`);
+            // add one because ship start to 1
             shipHitted.hit({
                 position: positionHit + 1
             });
-            var coordOfHittedShot = "".concat([
+            const coordOfHittedShot = `${[
                 coordY
-            ], "-").concat([
+            ]}-${[
                 coordX
-            ]);
-            listOfHittedShot.push(coordOfHittedShot); // console.log(allShipAreSunk());
-            return "ship ".concat(shipHitted.shipId, " was hit at position ").concat(positionHit + 1, " of ").concat(shipHitted.getLength());
-        } // or record the coord of the missed shot
-        var coordMissedShot = "".concat([
+            ]}`;
+            listOfHittedShot.push(coordOfHittedShot);
+            // console.log(allShipAreSunk());
+            return `ship ${shipHitted.shipId} was hit at position ${positionHit + 1} of ${shipHitted.getLength()}`;
+        }
+        // or record the coord of the missed shot
+        const coordMissedShot = `${[
             coordY
-        ], "-").concat([
+        ]}-${[
             coordX
-        ]);
+        ]}`;
         listOfMissedShot.push(coordMissedShot);
-        return "shot missed at coord ".concat([
+        return `shot missed at coord ${[
             coordY
-        ], "-").concat([
+        ]}-${[
             coordX
-        ]);
+        ]}`;
     };
     return {
-        createShip: createShip,
-        renderGameBoard: renderGameBoard,
-        renderShipInGame: renderShipInGame,
-        placeShipInGameBoard: placeShipInGameBoard,
-        receiveAttack: receiveAttack,
-        renderListOfShipInGameBoard: renderListOfShipInGameBoard,
-        renderListOfMissedShot: renderListOfMissedShot,
-        renderListOfHittedShot: renderListOfHittedShot,
-        allShipAreSunk: allShipAreSunk
+        createShip,
+        renderGameBoard,
+        renderShipInGame,
+        placeShipInGameBoard,
+        receiveAttack,
+        renderListOfShipInGameBoard,
+        renderListOfMissedShot,
+        renderListOfHittedShot,
+        allShipAreSunk
     };
 };
-var _default = gameboardFactory;
-exports["default"] = _default;
+exports.default = gameboardFactory;
 
-},{"./ship":"jXCsi"}],"jXCsi":[function(require,module,exports) {
-"use strict";
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports["default"] = void 0;
-var SHIP_MAX_LENGTH = 5;
-var SHIP_MIN_LENGTH = 1;
-var setShipLength = function setShipLength(length) {
+},{"./ship":"jXCsi","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"jXCsi":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+const SHIP_MAX_LENGTH = 5;
+const SHIP_MIN_LENGTH = 1;
+const setShipLength = (length)=>{
     if (length > SHIP_MAX_LENGTH) return SHIP_MAX_LENGTH;
     if (length < SHIP_MIN_LENGTH) return SHIP_MIN_LENGTH;
     return length;
 };
-var isBetweenRange = function isBetweenRange(position) {
-    return SHIP_MIN_LENGTH <= position && position <= SHIP_MAX_LENGTH;
-};
-var shipFactory = function shipFactory(_ref) {
-    var shipId = _ref.shipId, length = _ref.length;
-    var lives = [];
-    var shipLength = setShipLength(length);
-    var getLength = function getLength() {
-        return shipLength;
-    };
-    var getLives = function getLives() {
-        return [].concat(lives);
-    };
-    var isSunk = function isSunk() {
-        return lives.join('').length === shipLength;
-    };
-    function hit(_ref2) {
-        var position = _ref2.position;
-        var self = this;
+const isBetweenRange = (position)=>SHIP_MIN_LENGTH <= position && position <= SHIP_MAX_LENGTH
+;
+const shipFactory = ({ shipId , length  })=>{
+    const lives = [];
+    const shipLength = setShipLength(length);
+    const getLength = ()=>shipLength
+    ;
+    const getLives = ()=>[
+            ...lives
+        ]
+    ;
+    const isSunk = ()=>lives.join('').length === shipLength
+    ;
+    function hit({ position  }) {
+        const self = this;
         if (isBetweenRange(position) && position <= shipLength) lives[position - 1] = 'x';
         return self;
     }
     return {
-        shipId: shipId,
-        getLength: getLength,
-        getLives: getLives,
-        isSunk: isSunk,
-        hit: hit
+        shipId,
+        getLength,
+        getLives,
+        isSunk,
+        hit
     };
 };
-var _default = shipFactory;
-exports["default"] = _default;
+exports.default = shipFactory;
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"ciiiV":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, '__esModule', {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === 'default' || key === '__esModule' || dest.hasOwnProperty(key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
 
 },{}],"35AWQ":[function(require,module,exports) {
-"use strict";
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports["default"] = void 0;
-var _gameboard = _interopRequireDefault(require("./gameboard"));
-function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-        "default": obj
-    };
-}
-function _slicedToArray(arr, i) {
-    return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
-}
-function _nonIterableRest() {
-    throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-function _unsupportedIterableToArray(o, minLen) {
-    if (!o) return;
-    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-    var n = Object.prototype.toString.call(o).slice(8, -1);
-    if (n === "Object" && o.constructor) n = o.constructor.name;
-    if (n === "Map" || n === "Set") return Array.from(o);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-}
-function _arrayLikeToArray(arr, len) {
-    if (len == null || len > arr.length) len = arr.length;
-    for(var i = 0, arr2 = new Array(len); i < len; i++)arr2[i] = arr[i];
-    return arr2;
-}
-function _iterableToArrayLimit(arr, i) {
-    var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"];
-    if (_i == null) return;
-    var _arr = [];
-    var _n = true;
-    var _d = false;
-    var _s, _e;
-    try {
-        for(_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true){
-            _arr.push(_s.value);
-            if (i && _arr.length === i) break;
-        }
-    } catch (err) {
-        _d = true;
-        _e = err;
-    } finally{
-        try {
-            if (!_n && _i["return"] != null) _i["return"]();
-        } finally{
-            if (_d) throw _e;
-        }
-    }
-    return _arr;
-}
-function _arrayWithHoles(arr) {
-    if (Array.isArray(arr)) return arr;
-}
-var player = function() {
-    var humanPlayer = (0, _gameboard["default"])();
-    var AIPlayer = (0, _gameboard["default"])(); // const humanGameboard = humanPlayer.renderGameBoard();
-    var createAndPlaceShipPlayer = function createAndPlaceShipPlayer(human) {
-        var ship1 = human.createShip({
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _gameboard = require("./gameboard");
+var _gameboardDefault = parcelHelpers.interopDefault(_gameboard);
+const player = (()=>{
+    const humanPlayer = _gameboardDefault.default();
+    const AIPlayer = _gameboardDefault.default();
+    // const humanGameboard = humanPlayer.renderGameBoard();
+    const createAndPlaceShipPlayer = (human)=>{
+        const ship1 = human.createShip({
             shipId: 1,
             length: 5
         });
-        var ship2 = human.createShip({
+        const ship2 = human.createShip({
             shipId: 2,
             length: 4
         });
-        var ship3 = human.createShip({
+        const ship3 = human.createShip({
             shipId: 3,
             length: 3
         });
-        var ship4 = human.createShip({
+        const ship4 = human.createShip({
             shipId: 4,
             length: 3
         });
-        var ship5 = human.createShip({
+        const ship5 = human.createShip({
             shipId: 5,
             length: 1
         });
@@ -1012,24 +976,24 @@ var player = function() {
             ship: ship5
         });
     };
-    var createAndPlaceShipComputer = function createAndPlaceShipComputer(computer) {
-        var ship1 = computer.createShip({
+    const createAndPlaceShipComputer = (computer)=>{
+        const ship1 = computer.createShip({
             shipId: 1,
             length: 5
         });
-        var ship2 = computer.createShip({
+        const ship2 = computer.createShip({
             shipId: 2,
             length: 4
         });
-        var ship3 = computer.createShip({
+        const ship3 = computer.createShip({
             shipId: 3,
             length: 3
         });
-        var ship4 = computer.createShip({
+        const ship4 = computer.createShip({
             shipId: 4,
             length: 3
         });
-        var ship5 = computer.createShip({
+        const ship5 = computer.createShip({
             shipId: 5,
             length: 1
         });
@@ -1060,27 +1024,25 @@ var player = function() {
             ship: ship5
         });
     };
-    var renderHumanGameboardFilled = function renderHumanGameboardFilled() {
-        return humanPlayer.renderGameBoard();
+    const renderHumanGameboardFilled = ()=>humanPlayer.renderGameBoard()
+    ;
+    const renderComputerGameboardFilled = ()=>AIPlayer.renderGameBoard()
+    ;
+    const makeRandomChoice = ()=>{
+        const coordY = Math.floor(Math.random() * 10);
+        const coordX = Math.floor(Math.random() * 10);
+        return `${coordY}-${coordX}`;
     };
-    var renderComputerGameboardFilled = function renderComputerGameboardFilled() {
-        return AIPlayer.renderGameBoard();
-    };
-    var makeRandomChoice = function makeRandomChoice() {
-        var coordY = Math.floor(Math.random() * 10);
-        var coordX = Math.floor(Math.random() * 10);
-        return "".concat(coordY, "-").concat(coordX);
-    };
-    var humanTurn = function humanTurn(_ref) {
-        var event = _ref.event, boxReceiveShot = _ref.boxReceiveShot;
-        var computerGameboard = renderComputerGameboardFilled();
-        var _event$target$dataset = event.target.dataset, coordY = _event$target$dataset.coordY, coordX = _event$target$dataset.coordX;
-        var td = boxReceiveShot;
+    const humanTurn = ({ event , boxReceiveShot  })=>{
+        const computerGameboard = renderComputerGameboardFilled();
+        const { coordY , coordX  } = event.target.dataset;
+        const td = boxReceiveShot;
         if (playerAttack({
-            coordY: coordY,
-            coordX: coordX
+            coordY,
+            coordX
         })) {
-            td.textContent = computerGameboard[coordY][coordX]; // if (checkIfAllComputerShipAreSunk()) {
+            td.textContent = computerGameboard[coordY][coordX];
+            // if (checkIfAllComputerShipAreSunk()) {
             //   alert('you won dude');
             // }
             return 'shot ok';
@@ -1088,35 +1050,34 @@ var player = function() {
         boxReceiveShot.classList.add('missed-shot');
         return 'shot missed';
     };
-    var computerTurn = function computerTurn(human) {
+    const computerTurn = (human)=>{
         // missed shot for computer is listed in missedShot of human and vice versa
-        var missedShot = human.renderListOfMissedShot();
-        var hittedShot = human.renderListOfHittedShot();
-        console.log("hitted ".concat(hittedShot));
-        console.log("missed ".concat(missedShot));
-        var shot = makeRandomChoice();
+        const missedShot = human.renderListOfMissedShot();
+        const hittedShot = human.renderListOfHittedShot();
+        console.log(`hitted ${hittedShot}`);
+        console.log(`missed ${missedShot}`);
+        let shot = makeRandomChoice();
         while(missedShot.includes(shot) && hittedShot.includes(shot))shot = makeRandomChoice();
-        var coord = shot.split('-');
-        var _coord = _slicedToArray(coord, 2), coordY = _coord[0], coordX = _coord[1];
+        const coord = shot.split('-');
+        const [coordY, coordX] = coord;
         human.receiveAttack({
-            coordY: coordY,
-            coordX: coordX
+            coordY,
+            coordX
         });
     };
-    var checkIfAllComputerShipAreSunk = function checkIfAllComputerShipAreSunk() {
-        return AIPlayer.allShipAreSunk();
-    };
-    var playerAttack = function playerAttack(_ref2) {
-        var coordY = _ref2.coordY, coordX = _ref2.coordX;
-        var resultOfShot = AIPlayer.receiveAttack({
-            coordY: coordY,
-            coordX: coordX
+    const checkIfAllComputerShipAreSunk = ()=>AIPlayer.allShipAreSunk()
+    ;
+    const playerAttack = ({ coordY , coordX  })=>{
+        const resultOfShot = AIPlayer.receiveAttack({
+            coordY,
+            coordX
         });
         return !resultOfShot.includes('missed');
     };
-    var initPlayers = function initPlayers() {
+    const initPlayers = ()=>{
         createAndPlaceShipPlayer(humanPlayer);
-        createAndPlaceShipComputer(AIPlayer); // renderGameboardFilled();
+        createAndPlaceShipComputer(AIPlayer);
+    // renderGameboardFilled();
     // console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 0 }));
     // console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 5 }));
     // console.log(AIPlayer.receiveAttack({ coordY: 0, coordX: 1 }));
@@ -1127,39 +1088,30 @@ var player = function() {
     // computerTurn(humanPlayer);
     };
     return {
-        initPlayers: initPlayers,
-        renderHumanGameboardFilled: renderHumanGameboardFilled,
-        renderComputerGameboardFilled: renderComputerGameboardFilled,
-        playerAttack: playerAttack,
-        humanTurn: humanTurn,
-        checkIfAllComputerShipAreSunk: checkIfAllComputerShipAreSunk
+        initPlayers,
+        renderHumanGameboardFilled,
+        renderComputerGameboardFilled,
+        playerAttack,
+        humanTurn,
+        checkIfAllComputerShipAreSunk
     };
-}();
-var _default = player;
-exports["default"] = _default;
+})();
+exports.default = player;
 
-},{"./gameboard":"9zGfS"}],"aTo76":[function(require,module,exports) {
-"use strict";
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports["default"] = void 0;
-var _player = _interopRequireDefault(require("./player"));
-function _interopRequireDefault(obj) {
-    return obj && obj.__esModule ? obj : {
-        "default": obj
-    };
-}
-var game = function() {
-    var gameOver = false;
-    var isHumanTurn = true;
-    var makePlayersGrid = function makePlayersGrid(_ref) {
-        var playerType = _ref.playerType;
+},{"./gameboard":"9zGfS","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"aTo76":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _player = require("./player");
+var _playerDefault = parcelHelpers.interopDefault(_player);
+const game = (()=>{
+    let gameOver = false;
+    const isHumanTurn = true;
+    const makePlayersGrid = ({ playerType  })=>{
         // eslint-disable-next-line max-len
-        _player["default"].initPlayers(); // initialize players, create 5 ships by players, and place it on gameboard
-        var renderHumanGameboardFilled = _player["default"].renderHumanGameboardFilled, renderComputerGameboardFilled = _player["default"].renderComputerGameboardFilled;
-        var gameboardForMakeGrid = null;
-        var parentGrid = null;
+        _playerDefault.default.initPlayers(); // initialize players, create 5 ships by players, and place it on gameboard
+        const { renderHumanGameboardFilled , renderComputerGameboardFilled  } = _playerDefault.default;
+        let gameboardForMakeGrid = null;
+        let parentGrid = null;
         if (playerType === 'human') {
             gameboardForMakeGrid = renderHumanGameboardFilled();
             parentGrid = document.querySelector('.grody-human');
@@ -1167,15 +1119,15 @@ var game = function() {
             gameboardForMakeGrid = renderComputerGameboardFilled();
             parentGrid = document.querySelector('.grody-computer');
         }
-        var dimensions = 10;
-        var grid = new Array(dimensions);
-        for(var i = 0; i < grid.length; i += 1){
+        const dimensions = 10;
+        const grid = new Array(dimensions);
+        for(let i = 0; i < grid.length; i += 1){
             grid[i] = new Array(dimensions);
-            var row = document.createElement('tr');
-            for(var j = 0; j < grid[i].length; j += 1){
-                var box = document.createElement('td');
+            const row = document.createElement('tr');
+            for(let j = 0; j < grid[i].length; j += 1){
+                const box = document.createElement('td');
                 box.textContent = playerType === 'human' ? gameboardForMakeGrid[i][j] : '';
-                box.setAttribute('id', "".concat(i).concat(j));
+                box.setAttribute('id', `${i}${j}`);
                 box.dataset.coordY = i;
                 box.dataset.coordX = j;
                 row.appendChild(box);
@@ -1183,11 +1135,11 @@ var game = function() {
             parentGrid.appendChild(row);
         }
     };
-    var allowHumanToShotComputerShip = function allowHumanToShotComputerShip() {
-        var tds = document.querySelectorAll('.grody-computer td');
-        tds.forEach(function(td) {
-            td.addEventListener('click', function(e) {
-                var result = _player["default"].humanTurn({
+    const allowHumanToShotComputerShip = ()=>{
+        const tds = document.querySelectorAll('.grody-computer td');
+        tds.forEach((td)=>{
+            td.addEventListener('click', (e)=>{
+                const result = _playerDefault.default.humanTurn({
                     event: e,
                     boxReceiveShot: td
                 });
@@ -1195,35 +1147,37 @@ var game = function() {
             });
         });
     };
-    var toggleClickableComputerBox = function toggleClickableComputerBox() {
-        var tds = document.querySelectorAll('.grody-computer td');
-        tds.forEach(function(td) {
+    const toggleClickableComputerBox = ()=>{
+        const tds = document.querySelectorAll('.grody-computer td');
+        tds.forEach((td)=>{
             td.classList.toggle('disable');
         });
     };
-    var checkIfGameIsOver = function checkIfGameIsOver() {
-        var allShipAreSunk = _player["default"].checkIfAllComputerShipAreSunk();
+    const checkIfGameIsOver = ()=>{
+        const allShipAreSunk = _playerDefault.default.checkIfAllComputerShipAreSunk();
         if (allShipAreSunk) {
             alert('game finished');
             gameOver = true;
         }
     };
-    var gameLoop = function gameLoop() {
-        var tds = document.querySelectorAll('.grody-computer td');
-        var humanTurn = _player["default"].humanTurn;
-        tds.forEach(function(td) {
-            td.addEventListener('click', function(e) {
-                var result = humanTurn({
+    const gameLoop = ()=>{
+        const tds = document.querySelectorAll('.grody-computer td');
+        const { humanTurn  } = _playerDefault.default;
+        tds.forEach((td)=>{
+            td.addEventListener('click', (e)=>{
+                const result = humanTurn({
                     event: e,
                     boxReceiveShot: td
                 });
                 console.log(result);
-                toggleClickableComputerBox(); // send to checkIfGameIsOver the computer board
+                toggleClickableComputerBox();
+                // send to checkIfGameIsOver the computer board
                 checkIfGameIsOver();
-                setTimeout(function() {
+                setTimeout(()=>{
                     if (!gameOver) {
                         console.log('computer turn');
-                        toggleClickableComputerBox(); // and send here the player board
+                        toggleClickableComputerBox();
+                        // and send here the player board
                         checkIfGameIsOver();
                     }
                 }, 200);
@@ -1231,14 +1185,13 @@ var game = function() {
         });
     };
     return {
-        makePlayersGrid: makePlayersGrid,
-        allowHumanToShotComputerShip: allowHumanToShotComputerShip,
-        gameLoop: gameLoop
+        makePlayersGrid,
+        allowHumanToShotComputerShip,
+        gameLoop
     };
-}();
-var _default = game;
-exports["default"] = _default;
+})();
+exports.default = game;
 
-},{"./player":"35AWQ"}]},["79gfX","i8ewE"], "i8ewE", "parcelRequiree49a")
+},{"./player":"35AWQ","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}]},["79gfX","i8ewE"], "i8ewE", "parcelRequiree49a")
 
 //# sourceMappingURL=index.c05ff127.js.map
