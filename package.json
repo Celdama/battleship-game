@@ -20,7 +20,6 @@
   "homepage": "https://github.com/Celdama/battleship-game#readme",
   "devDependencies": {
     "@babel/core": "^7.16.0",
-    "@babel/preset-env": "^7.16.4",
     "@parcel/transformer-sass": "^2.0.1",
     "babel-jest": "^27.3.1",
     "eslint": "^8.3.0",
