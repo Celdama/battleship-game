@@ -61,10 +61,13 @@ const player = (() => {
 
     if (playerAttack({ coordY, coordX })) {
       td.textContent = computerGameboard[coordY][coordX];
+      td.classList.add('disable-click');
 
       return 'shot ok';
     }
-    boxReceiveShot.classList.add('missed-shot');
+    td.classList.add('missed-shot');
+    td.classList.add('disable-click');
+
     return 'shot missed';
   };
 
@@ -88,7 +91,7 @@ const player = (() => {
     const coord = shot.split('-');
     const [coordY, coordX] = coord;
 
-    console.log(computerAttack({ coordY, coordX }));
+    computerAttack({ coordY, coordX });
     return `${coordY}${coordX}`;
   };
 

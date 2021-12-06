@@ -66,16 +66,19 @@ const game = (() => {
 
   const gameLoop = () => {
     const tds = document.querySelectorAll('.grody-computer td');
-    const { humanTurn } = player;
+    const {
+      humanTurn, computerTurn,
+      checkIfAllComputerShipAreSunk, checkIfAllHumanShipAreSunk,
+    } = player;
 
     tds.forEach((td) => {
       td.addEventListener('click', (e) => {
-        const result = humanTurn({ event: e, boxReceiveShot: td });
+        humanTurn({ event: e, boxReceiveShot: td });
         toggleClickableComputerBox();
-        checkIfGameIsOver(player.checkIfAllComputerShipAreSunk());
+        checkIfGameIsOver(checkIfAllComputerShipAreSunk());
         setTimeout(() => {
           if (!gameOver) {
-            const resultComputerShot = player.computerTurn();
+            const resultComputerShot = computerTurn();
 
             const boxShottedByComputer = document.getElementById(`${resultComputerShot}`);
 
@@ -87,7 +90,7 @@ const game = (() => {
             toggleClickableComputerBox();
             // and send here the player board
 
-            checkIfGameIsOver(player.checkIfAllHumanShipAreSunk());
+            checkIfGameIsOver(checkIfAllHumanShipAreSunk());
           }
         }, 400);
       });

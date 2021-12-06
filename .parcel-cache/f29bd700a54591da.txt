@@ -58,7 +58,7 @@
 141C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\lmdb-store\dependencies\lmdb-data-v1\libraries\liblmdb\midl.c132832624536271048 0
 106C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\v8-compile-cache\README.md132832624522302905 0
 111C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\caniuse-lite\data\regions\AX.js132832624535329145 0
-71C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\dist132832643209347162 1
+71C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\dist132832692298883293 1
 126C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\jsdom\lib\jsdom\living\helpers\http-request.js132832624545524738 0
 100C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\loader-utils\LICENSE132832624988249342 0
 88C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\asynckit132832624526216464 1
@@ -212,7 +212,7 @@
 96C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\html-escaper\esm132832624517388451 1
 134C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\@parcel\runtime-browser-hmr\src\loaders\.eslintrc.json132832624995956336 0
 101C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\lodash\flattenDeep.js132832624548227194 0
-80C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\src\script.js132832642063326655 0
+80C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\src\script.js132832666705853625 0
 77C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\src\styles132832614869848981 1
 152C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\uncss\node_modules\jsdom\lib\jsdom\living\generated\HTMLObjectElement.js132832625004227938 0
 127C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\@jest\core\node_modules\color-name\package.json132832624514305653 0
@@ -262,7 +262,7 @@
 111C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\@parcel\transformer-css\LICENSE132832624988559624 0
 129C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\eslint-utils\node_modules\eslint-visitor-keys\lib132832624520761506 1
 84C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\asn1132832624996396735 1
-87C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\src\styles\base.scss132832614869838971 0
+87C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\src\styles\base.scss132832692657275523 0
 93C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\alphanum-sort132832624990701570 1
 120C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\eslint\lib\rules\max-nested-callbacks.js132832624542862322 0
 102C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\xmlchars\xmlchars.d.ts132832624530740559 0
@@ -339,7 +339,7 @@
 94C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\string_decoder132832624520831570 1
 123C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\request\node_modules\form-data\package.json132832624988619681 0
 104C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\object-inspect\.eslintrc132832624518329300 0
-86C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\src\modules\game.js132832643208506404 0
+86C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\src\modules\game.js132832690505674607 0
 159C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\stream-browserify\node_modules\readable-stream\lib\internal\streams\pipeline.js132832624998228400 0
 97C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\yaml\dist\util.js132832625001896772 0
 96C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\deep-is\index.js132832624520841580 0
@@ -355,7 +355,7 @@
 112C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\strip-final-newline\package.json132832624512373899 0
 85C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\p-try132832624521111823 1
 111C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\caniuse-lite\data\regions\LU.js132832624548977870 0
-91C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\src\modules\gameboard.js132832614869828963 0
+91C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\src\modules\gameboard.js132832684973587572 0
 150C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\postcss-modules\node_modules\postcss-modules-extract-imports\README.md132832624990351250 0
 96C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\lodash\fp\get.js132832624548967861 0
 108C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\highlight.js\styles\arta.css132832624525605902 0
@@ -391,7 +391,7 @@
 124C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\icss-utils\node_modules\postcss\package.json132832625000575566 0
 111C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\core-js\features\weak-map\of.js132832625011928797 0
 88C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\entities132832624999079168 1
-88C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\src\modules\player.js132832614869828963 0
+88C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\src\modules\player.js132832692297992484 0
 121C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\jest-validate\build\validateCLIOptions.js132832624527617730 0
 94C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\yaml\scalar.js132832625000635625 0
 129C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\core-js\modules\esnext.reflect.define-metadata.js132832625007428686 0
@@ -20783,7 +20783,7 @@
 150C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\@parcel\packager-js\node_modules\type-fest\source\set-return-type.d.ts132832625000925887 0
 127C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\@parcel\node-resolver-core\test\fixture\env-dep132832625002477291 1
 148C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\@parcel\packager-js\node_modules\type-fest\source\tsconfig-json.d.ts132832625001206141 0
-82C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\dist\index.html132832642986081207 0
+82C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\dist\index.html132832688735990281 0
 156C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\@parcel\packager-js\node_modules\type-fest\source\union-to-intersection.d.ts132832625001286212 0
 119C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\@babel\types\lib\comments\addComment.js132832624531921635 0
 143C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\@parcel\packager-js\node_modules\type-fest\source\value-of.d.ts132832625001436348 0
@@ -21638,7 +21638,7 @@
 142C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\@eslint\eslintrc\node_modules\type-fest\source\promisable.d.ts132832624532602250 0
 145C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\@eslint\eslintrc\node_modules\type-fest\source\readonly-deep.d.ts132832624532987636 0
 152C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\@eslint\eslintrc\node_modules\type-fest\source\require-at-least-one.d.ts132832624533117752 0
-89C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\dist\index.c05ff127.js132832643209317137 0
+89C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\dist\index.c05ff127.js132832692298863274 0
 151C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\@eslint\eslintrc\node_modules\type-fest\source\require-exactly-one.d.ts132832624533307928 0
 147C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\@eslint\eslintrc\node_modules\type-fest\source\set-return-type.d.ts132832624533648234 0
 143C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\@eslint\eslintrc\node_modules\type-fest\source\stringified.d.ts132832624533908471 0
@@ -22063,6 +22063,6 @@
 94C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\.bin\uncss.ps1132832625015001583 0
 93C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\.bin\uuid.ps1132832625015001583 0
 90C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\node_modules\.bin\which132832624554067954 0
-90C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\dist\index.81b039f6.css132832642986071196 0
-94C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\dist\index.81b039f6.css.map132832642986111236 0
-93C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\dist\index.c05ff127.js.map132832643209337161 0
+90C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\dist\index.81b039f6.css132832688735950236 0
+94C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\dist\index.81b039f6.css.map132832688735960259 0
+93C:\Users\Quentin\Documents\Developer\ProjetEnLigne\battleship-game\dist\index.c05ff127.js.map132832692298873292 0

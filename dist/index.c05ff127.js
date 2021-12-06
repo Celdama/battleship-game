@@ -976,9 +976,11 @@ const player = (()=>{
             coordX
         })) {
             td.textContent = computerGameboard[coordY][coordX];
+            td.classList.add('disable-click');
             return 'shot ok';
         }
-        boxReceiveShot.classList.add('missed-shot');
+        td.classList.add('missed-shot');
+        td.classList.add('disable-click');
         return 'shot missed';
     };
     const computerAttack = ({ coordY , coordX  })=>{
@@ -996,10 +998,10 @@ const player = (()=>{
         while(missedShot.includes(shot) || hittedShot.includes(shot))shot = makeRandomChoice();
         const coord = shot.split('-');
         const [coordY, coordX] = coord;
-        console.log(computerAttack({
+        computerAttack({
             coordY,
             coordX
-        }));
+        });
         return `${coordY}${coordX}`;
     };
     const checkIfAllComputerShipAreSunk = ()=>AIPlayer.allShipAreSunk()
@@ -1087,24 +1089,24 @@ const game = (()=>{
     };
     const gameLoop = ()=>{
         const tds = document.querySelectorAll('.grody-computer td');
-        const { humanTurn  } = _playerDefault.default;
+        const { humanTurn , computerTurn , checkIfAllComputerShipAreSunk , checkIfAllHumanShipAreSunk ,  } = _playerDefault.default;
         tds.forEach((td)=>{
             td.addEventListener('click', (e)=>{
-                const result = humanTurn({
+                humanTurn({
                     event: e,
                     boxReceiveShot: td
                 });
                 toggleClickableComputerBox();
-                checkIfGameIsOver(_playerDefault.default.checkIfAllComputerShipAreSunk());
+                checkIfGameIsOver(checkIfAllComputerShipAreSunk());
                 setTimeout(()=>{
                     if (!gameOver) {
-                        const resultComputerShot = _playerDefault.default.computerTurn();
+                        const resultComputerShot = computerTurn();
                         const boxShottedByComputer = document.getElementById(`${resultComputerShot}`);
                         if (boxShottedByComputer.textContent) boxShottedByComputer.style.color = 'red';
                         else boxShottedByComputer.classList.add('missed-shot');
                         toggleClickableComputerBox();
                         // and send here the player board
-                        checkIfGameIsOver(_playerDefault.default.checkIfAllHumanShipAreSunk());
+                        checkIfGameIsOver(checkIfAllHumanShipAreSunk());
                     }
                 }, 400);
             });
