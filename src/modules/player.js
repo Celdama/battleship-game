@@ -48,6 +48,12 @@ const player = (() => {
     return `${coordY}-${coordX}`;
   };
 
+  const playerAttack = ({ coordY, coordX }) => {
+    const resultOfShot = AIPlayer.receiveAttack({ coordY, coordX });
+
+    return !resultOfShot.includes('missed');
+  };
+
   const humanTurn = ({ event, boxReceiveShot }) => {
     const computerGameboard = renderComputerGameboardFilled();
     const { coordY, coordX } = event.target.dataset;
@@ -56,56 +62,42 @@ const player = (() => {
     if (playerAttack({ coordY, coordX })) {
       td.textContent = computerGameboard[coordY][coordX];
 
-      // if (checkIfAllComputerShipAreSunk()) {
-      //   alert('you won dude');
-      // }
       return 'shot ok';
     }
     boxReceiveShot.classList.add('missed-shot');
     return 'shot missed';
   };
 
-  const computerTurn = (human) => {
-    // missed shot for computer is listed in missedShot of human and vice versa
-    const missedShot = human.renderListOfMissedShot();
-    const hittedShot = human.renderListOfHittedShot();
+  const computerAttack = ({ coordY, coordX }) => {
+    const resultOfShot = humanPlayer.receiveAttack({ coordY, coordX });
 
-    console.log(`hitted ${hittedShot}`);
-    console.log(`missed ${missedShot}`);
+    return !resultOfShot.includes('missed');
+  };
+
+  const computerTurn = () => {
+    // missed shot for computer is listed in missedShot of human and vice versa
+    const missedShot = humanPlayer.renderListOfMissedShot();
+    const hittedShot = humanPlayer.renderListOfHittedShot();
 
     let shot = makeRandomChoice();
 
-    while (missedShot.includes(shot) && hittedShot.includes(shot)) {
+    while (missedShot.includes(shot) || hittedShot.includes(shot)) {
       shot = makeRandomChoice();
     }
 
     const coord = shot.split('-');
     const [coordY, coordX] = coord;
 
-    human.receiveAttack({ coordY, coordX });
+    console.log(computerAttack({ coordY, coordX }));
+    return `${coordY}${coordX}`;
   };
 
   const checkIfAllComputerShipAreSunk = () => AIPlayer.allShipAreSunk();
-
-  const playerAttack = ({ coordY, coordX }) => {
-    const resultOfShot = AIPlayer.receiveAttack({ coordY, coordX });
-
-    return !resultOfShot.includes('missed');
-  };
+  const checkIfAllHumanShipAreSunk = () => humanPlayer.allShipAreSunk();
 
   const initPlayers = () => {
     createAndPlaceShipPlayer(humanPlayer);
     createAndPlaceShipComputer(AIPlayer);
-    // renderGameboardFilled();
-
-    // console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 0 }));
-    // console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 5 }));
-    // console.log(AIPlayer.receiveAttack({ coordY: 0, coordX: 1 }));
-    // console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 6 }));
-    // console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 7 }));
-    // computerTurn(humanPlayer);
-    // computerTurn(humanPlayer);
-    // computerTurn(humanPlayer);
   };
 
   return {
@@ -113,8 +105,10 @@ const player = (() => {
     renderHumanGameboardFilled,
     renderComputerGameboardFilled,
     playerAttack,
+    computerTurn,
     humanTurn,
     checkIfAllComputerShipAreSunk,
+    checkIfAllHumanShipAreSunk,
   };
 })();
 

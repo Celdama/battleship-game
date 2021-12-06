@@ -56,9 +56,9 @@ const game = (() => {
     });
   };
 
-  const checkIfGameIsOver = () => {
-    const allShipAreSunk = player.checkIfAllComputerShipAreSunk();
-    if (allShipAreSunk) {
+  const checkIfGameIsOver = (isAllShipsSunk) => {
+    // const allShipAreSunk = player.checkIfAllComputerShipAreSunk();
+    if (isAllShipsSunk) {
       alert('game finished');
       gameOver = true;
     }
@@ -71,19 +71,25 @@ const game = (() => {
     tds.forEach((td) => {
       td.addEventListener('click', (e) => {
         const result = humanTurn({ event: e, boxReceiveShot: td });
-        console.log(result);
         toggleClickableComputerBox();
-        // send to checkIfGameIsOver the computer board
-        checkIfGameIsOver();
+        checkIfGameIsOver(player.checkIfAllComputerShipAreSunk());
         setTimeout(() => {
           if (!gameOver) {
-            console.log('computer turn');
+            const resultComputerShot = player.computerTurn();
+
+            const boxShottedByComputer = document.getElementById(`${resultComputerShot}`);
+
+            if (boxShottedByComputer.textContent) {
+              boxShottedByComputer.style.color = 'red';
+            } else {
+              boxShottedByComputer.classList.add('missed-shot');
+            }
             toggleClickableComputerBox();
             // and send here the player board
 
-            checkIfGameIsOver();
+            checkIfGameIsOver(player.checkIfAllHumanShipAreSunk());
           }
-        }, 200);
+        }, 400);
       });
     });
   };

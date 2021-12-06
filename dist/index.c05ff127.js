@@ -466,6 +466,9 @@ var _player = require("./modules/player");
 var _playerDefault = parcelHelpers.interopDefault(_player);
 var _game = require("./modules/game");
 var _gameDefault = parcelHelpers.interopDefault(_game);
+if (module.hot) module.hot.accept(()=>{
+    window.location.reload();
+});
 _gameDefault.default.makePlayersGrid({
     playerType: 'human'
 });
@@ -473,127 +476,51 @@ _gameDefault.default.makePlayersGrid({
     playerType: 'computer'
 });
 // game.allowHumanToShotComputerShip();
-_gameDefault.default.gameLoop();
-if (module.hot) module.hot.accept(()=>{
-    window.location.reload();
-});
-console.log('e');
-// player.initPlayers();
-// const game = gameboardFactory();
-const gameboard = _gameboardDefault.default();
-const { createShip , placeShipInGameBoard  } = gameboard;
-const ship1 = createShip({
-    shipId: 1,
-    length: 5
-});
-const ship2 = createShip({
-    shipId: 2,
-    length: 5
-});
-const player1 = _gameboardDefault.default();
-const playerAI = _gameboardDefault.default();
-player1.placeShipInGameBoard({
-    coordY: 4,
-    coordX: 1,
-    ship: ship1
-});
-playerAI.placeShipInGameBoard({
-    coordY: 0,
-    coordX: 5,
-    ship: ship2,
-    vertical: true
-});
-// player1.renderGameBoard();
-// playerAI.renderGameBoard();
-// console.log(player1.receiveAttack({ coordY: 4, coordX: 3 }));
-// console.log(playerAI.receiveAttack({ coordY: 1, coordX: 5 }));
-const ship3 = createShip({
-    shipId: 3,
-    length: 1
-});
-const ship4 = createShip({
-    shipId: 4,
-    length: 4
-});
-const ship5 = createShip({
-    shipId: 5,
-    length: 5
-});
-const ship6 = createShip({
-    shipId: 6,
-    length: 2
-});
-const ship7 = createShip({
-    shipId: 7,
-    length: 4
-});
-const ship8 = createShip({
-    shipId: 8,
-    length: 5
-});
-const ship9 = createShip({
-    shipId: 9,
-    length: 4
-});
-const ship10 = createShip({
-    shipId: 10,
-    length: 1
-});
-placeShipInGameBoard({
-    coordY: 4,
-    coordX: 1,
-    ship: ship1
-});
-placeShipInGameBoard({
-    coordY: 0,
-    coordX: 5,
-    ship: ship2,
-    vertical: true
-});
-placeShipInGameBoard({
-    coordY: 9,
-    coordX: 0,
-    ship: ship3
-});
-placeShipInGameBoard({
-    coordY: 0,
-    coordX: 0,
-    ship: ship4,
-    vertical: true
-});
-placeShipInGameBoard({
-    coordY: 5,
-    coordX: 9,
-    ship: ship5,
-    vertical: true
-});
-placeShipInGameBoard({
-    coordY: 6,
-    coordX: 0,
-    ship: ship6
-});
-placeShipInGameBoard({
-    coordY: 9,
-    coordX: 2,
-    ship: ship7
-});
-placeShipInGameBoard({
-    coordY: 3,
-    coordX: 7,
-    ship: ship8,
-    vertical: true
-});
-placeShipInGameBoard({
-    coordY: 2,
-    coordX: 6,
-    ship: ship9,
-    vertical: true
-});
-placeShipInGameBoard({
-    coordY: 0,
-    coordX: 8,
-    ship: ship10
-}); // game.renderGameBoard();
+_gameDefault.default.gameLoop(); // player.initPlayers();
+ // const game = gameboardFactory();
+ // const gameboard = gameboardFactory();
+ // const { createShip, placeShipInGameBoard } = gameboard;
+ // const ship1 = createShip({ shipId: 1, length: 5 });
+ // const ship2 = createShip({ shipId: 2, length: 5 });
+ // const player1 = gameboardFactory();
+ // const playerAI = gameboardFactory();
+ // player1.placeShipInGameBoard({ coordY: 4, coordX: 1, ship: ship1 });
+ // playerAI.placeShipInGameBoard({
+ //   coordY: 0, coordX: 5, ship: ship2, vertical: true,
+ // });
+ // player1.renderGameBoard();
+ // playerAI.renderGameBoard();
+ // console.log(player1.receiveAttack({ coordY: 4, coordX: 3 }));
+ // console.log(playerAI.receiveAttack({ coordY: 1, coordX: 5 }));
+ // const ship3 = createShip({ shipId: 3, length: 1 });
+ // const ship4 = createShip({ shipId: 4, length: 4 });
+ // const ship5 = createShip({ shipId: 5, length: 5 });
+ // const ship6 = createShip({ shipId: 6, length: 2 });
+ // const ship7 = createShip({ shipId: 7, length: 4 });
+ // const ship8 = createShip({ shipId: 8, length: 5 });
+ // const ship9 = createShip({ shipId: 9, length: 4 });
+ // const ship10 = createShip({ shipId: 10, length: 1 });
+ // placeShipInGameBoard({ coordY: 4, coordX: 1, ship: ship1 });
+ // placeShipInGameBoard({
+ //   coordY: 0, coordX: 5, ship: ship2, vertical: true,
+ // });
+ // placeShipInGameBoard({ coordY: 9, coordX: 0, ship: ship3 });
+ // placeShipInGameBoard({
+ //   coordY: 0, coordX: 0, ship: ship4, vertical: true,
+ // });
+ // placeShipInGameBoard({
+ //   coordY: 5, coordX: 9, ship: ship5, vertical: true,
+ // });
+ // placeShipInGameBoard({ coordY: 6, coordX: 0, ship: ship6 });
+ // placeShipInGameBoard({ coordY: 9, coordX: 2, ship: ship7 });
+ // placeShipInGameBoard({
+ //   coordY: 3, coordX: 7, ship: ship8, vertical: true,
+ // });
+ // placeShipInGameBoard({
+ //   coordY: 2, coordX: 6, ship: ship9, vertical: true,
+ // });
+ // placeShipInGameBoard({ coordY: 0, coordX: 8, ship: ship10 });
+ // game.renderGameBoard();
  // game.receiveAttack({ coordY: 0, coordX: 0 });
  // game.receiveAttack({ coordY: 1, coordX: 0 });
  // game.receiveAttack({ coordY: 2, coordX: 0 });
@@ -1033,6 +960,13 @@ const player = (()=>{
         const coordX = Math.floor(Math.random() * 10);
         return `${coordY}-${coordX}`;
     };
+    const playerAttack = ({ coordY , coordX  })=>{
+        const resultOfShot = AIPlayer.receiveAttack({
+            coordY,
+            coordX
+        });
+        return !resultOfShot.includes('missed');
+    };
     const humanTurn = ({ event , boxReceiveShot  })=>{
         const computerGameboard = renderComputerGameboardFilled();
         const { coordY , coordX  } = event.target.dataset;
@@ -1042,58 +976,49 @@ const player = (()=>{
             coordX
         })) {
             td.textContent = computerGameboard[coordY][coordX];
-            // if (checkIfAllComputerShipAreSunk()) {
-            //   alert('you won dude');
-            // }
             return 'shot ok';
         }
         boxReceiveShot.classList.add('missed-shot');
         return 'shot missed';
     };
-    const computerTurn = (human)=>{
-        // missed shot for computer is listed in missedShot of human and vice versa
-        const missedShot = human.renderListOfMissedShot();
-        const hittedShot = human.renderListOfHittedShot();
-        console.log(`hitted ${hittedShot}`);
-        console.log(`missed ${missedShot}`);
-        let shot = makeRandomChoice();
-        while(missedShot.includes(shot) && hittedShot.includes(shot))shot = makeRandomChoice();
-        const coord = shot.split('-');
-        const [coordY, coordX] = coord;
-        human.receiveAttack({
-            coordY,
-            coordX
-        });
-    };
-    const checkIfAllComputerShipAreSunk = ()=>AIPlayer.allShipAreSunk()
-    ;
-    const playerAttack = ({ coordY , coordX  })=>{
-        const resultOfShot = AIPlayer.receiveAttack({
+    const computerAttack = ({ coordY , coordX  })=>{
+        const resultOfShot = humanPlayer.receiveAttack({
             coordY,
             coordX
         });
         return !resultOfShot.includes('missed');
     };
+    const computerTurn = ()=>{
+        // missed shot for computer is listed in missedShot of human and vice versa
+        const missedShot = humanPlayer.renderListOfMissedShot();
+        const hittedShot = humanPlayer.renderListOfHittedShot();
+        let shot = makeRandomChoice();
+        while(missedShot.includes(shot) || hittedShot.includes(shot))shot = makeRandomChoice();
+        const coord = shot.split('-');
+        const [coordY, coordX] = coord;
+        console.log(computerAttack({
+            coordY,
+            coordX
+        }));
+        return `${coordY}${coordX}`;
+    };
+    const checkIfAllComputerShipAreSunk = ()=>AIPlayer.allShipAreSunk()
+    ;
+    const checkIfAllHumanShipAreSunk = ()=>humanPlayer.allShipAreSunk()
+    ;
     const initPlayers = ()=>{
         createAndPlaceShipPlayer(humanPlayer);
         createAndPlaceShipComputer(AIPlayer);
-    // renderGameboardFilled();
-    // console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 0 }));
-    // console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 5 }));
-    // console.log(AIPlayer.receiveAttack({ coordY: 0, coordX: 1 }));
-    // console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 6 }));
-    // console.log(humanPlayer.receiveAttack({ coordY: 0, coordX: 7 }));
-    // computerTurn(humanPlayer);
-    // computerTurn(humanPlayer);
-    // computerTurn(humanPlayer);
     };
     return {
         initPlayers,
         renderHumanGameboardFilled,
         renderComputerGameboardFilled,
         playerAttack,
+        computerTurn,
         humanTurn,
-        checkIfAllComputerShipAreSunk
+        checkIfAllComputerShipAreSunk,
+        checkIfAllHumanShipAreSunk
     };
 })();
 exports.default = player;
@@ -1153,9 +1078,9 @@ const game = (()=>{
             td.classList.toggle('disable');
         });
     };
-    const checkIfGameIsOver = ()=>{
-        const allShipAreSunk = _playerDefault.default.checkIfAllComputerShipAreSunk();
-        if (allShipAreSunk) {
+    const checkIfGameIsOver = (isAllShipsSunk)=>{
+        // const allShipAreSunk = player.checkIfAllComputerShipAreSunk();
+        if (isAllShipsSunk) {
             alert('game finished');
             gameOver = true;
         }
@@ -1169,18 +1094,19 @@ const game = (()=>{
                     event: e,
                     boxReceiveShot: td
                 });
-                console.log(result);
                 toggleClickableComputerBox();
-                // send to checkIfGameIsOver the computer board
-                checkIfGameIsOver();
+                checkIfGameIsOver(_playerDefault.default.checkIfAllComputerShipAreSunk());
                 setTimeout(()=>{
                     if (!gameOver) {
-                        console.log('computer turn');
+                        const resultComputerShot = _playerDefault.default.computerTurn();
+                        const boxShottedByComputer = document.getElementById(`${resultComputerShot}`);
+                        if (boxShottedByComputer.textContent) boxShottedByComputer.style.color = 'red';
+                        else boxShottedByComputer.classList.add('missed-shot');
                         toggleClickableComputerBox();
                         // and send here the player board
-                        checkIfGameIsOver();
+                        checkIfGameIsOver(_playerDefault.default.checkIfAllHumanShipAreSunk());
                     }
-                }, 200);
+                }, 400);
             });
         });
     };
