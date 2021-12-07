@@ -72,12 +72,12 @@ const player = (() => {
       box.textContent = computerGameboard[coordY][coordX];
       box.classList.add('disable-click');
 
-      return 'shot ok';
+      return box.textContent;
     }
     box.classList.add('missed-shot');
     box.classList.add('disable-click');
 
-    return 'shot missed';
+    // return 'shot missed';
   };
 
   const computerTurn = () => {
@@ -101,6 +101,15 @@ const player = (() => {
   const checkIfAllComputerShipAreSunk = () => computerPlayer.allShipAreSunk();
   const checkIfAllHumanShipAreSunk = () => humanPlayer.allShipAreSunk();
 
+  const checkIfComputerShipArrSunk = (shipId) => {
+    const { renderListOfShipInGameboard } = computerPlayer;
+    const allComputerShip = renderListOfShipInGameboard();
+    const id = Number(shipId);
+    const shipShoted = allComputerShip.find((ship) => ship.shipId === id);
+
+    return shipShoted.isSunk();
+  };
+
   const initPlayers = () => {
     createAndPlaceShipPlayer();
     createAndPlaceShipComputer();
@@ -110,6 +119,7 @@ const player = (() => {
     initPlayers,
     renderHumanGameboardFilled,
     renderComputerGameboardFilled,
+    checkIfComputerShipArrSunk,
     computerTurn,
     humanTurn,
     checkIfAllComputerShipAreSunk,

@@ -111,7 +111,10 @@ const gameboardFactory = () => {
       const coordOfHittedShot = `${[coordY]}-${[coordX]}`;
       listOfOpponentHittedShot.push(coordOfHittedShot);
 
+      // console.log(shipHitted);
+
       return `ship ${shipHitted.shipId} was hit at position ${positionHit + 1} of ${shipHitted.getLength()}`;
+      // return shipHitted;
     }
 
     const coordMissedShot = `${[coordY]}-${[coordX]}`;
@@ -122,6 +125,7 @@ const gameboardFactory = () => {
 
   return {
     createShip,
+    renderListOfShipInGameboard,
     renderGameboard,
     renderShipInGame,
     placeShipInGameboard,

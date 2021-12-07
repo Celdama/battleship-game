@@ -532,6 +532,12 @@ const game = (()=>{
             toggleClickableComputerBox();
         }
     };
+    const changeBgColorIfShipWasSunk = ({ shipIsSunk , allBox , shipId  })=>{
+        const searchText = shipId;
+        if (shipIsSunk) allBox.forEach((box)=>{
+            if (box.textContent.includes(searchText)) box.style.backgroundColor = 'red';
+        });
+    };
     const gameLoop = ()=>{
         makePlayersGrid({
             playerType: 'human'
@@ -540,13 +546,21 @@ const game = (()=>{
             playerType: 'computer'
         });
         const computerBox = document.querySelectorAll('.grody-computer td');
-        const { humanTurn , checkIfAllComputerShipAreSunk  } = _playerDefault.default;
+        const { humanTurn , checkIfAllComputerShipAreSunk , checkIfComputerShipArrSunk  } = _playerDefault.default;
         computerBox.forEach((box)=>{
             box.addEventListener('click', (event)=>{
-                humanTurn({
+                const shipShotedId = humanTurn({
                     event,
                     boxReceiveShot: box
                 });
+                if (shipShotedId) {
+                    const shipShotedWasSunk = checkIfComputerShipArrSunk(shipShotedId);
+                    changeBgColorIfShipWasSunk({
+                        shipIsSunk: shipShotedWasSunk,
+                        allBox: computerBox,
+                        shipId: shipShotedId
+                    });
+                }
                 toggleClickableComputerBox();
                 checkIfGameIsOver(checkIfAllComputerShipAreSunk());
                 asyncComputerTurn();
@@ -700,11 +714,11 @@ const player = (()=>{
         })) {
             box.textContent = computerGameboard[coordY][coordX];
             box.classList.add('disable-click');
-            return 'shot ok';
+            return box.textContent;
         }
         box.classList.add('missed-shot');
         box.classList.add('disable-click');
-        return 'shot missed';
+    // return 'shot missed';
     };
     const computerTurn = ()=>{
         const { renderListOfOpponentMissedShot , renderListOfOpponentHittedShot  } = humanPlayer;
@@ -724,6 +738,14 @@ const player = (()=>{
     ;
     const checkIfAllHumanShipAreSunk = ()=>humanPlayer.allShipAreSunk()
     ;
+    const checkIfComputerShipArrSunk = (shipId)=>{
+        const { renderListOfShipInGameboard  } = computerPlayer;
+        const allComputerShip = renderListOfShipInGameboard();
+        const id = Number(shipId);
+        const shipShoted = allComputerShip.find((ship)=>ship.shipId === id
+        );
+        return shipShoted.isSunk();
+    };
     const initPlayers = ()=>{
         createAndPlaceShipPlayer();
         createAndPlaceShipComputer();
@@ -732,6 +754,7 @@ const player = (()=>{
         initPlayers,
         renderHumanGameboardFilled,
         renderComputerGameboardFilled,
+        checkIfComputerShipArrSunk,
         computerTurn,
         humanTurn,
         checkIfAllComputerShipAreSunk,
@@ -976,7 +999,9 @@ const gameboardFactory = ()=>{
                 coordX
             ]}`;
             listOfOpponentHittedShot.push(coordOfHittedShot);
+            // console.log(shipHitted);
             return `ship ${shipHitted.shipId} was hit at position ${positionHit + 1} of ${shipHitted.getLength()}`;
+        // return shipHitted;
         }
         const coordMissedShot = `${[
             coordY
@@ -992,6 +1017,7 @@ const gameboardFactory = ()=>{
     };
     return {
         createShip,
+        renderListOfShipInGameboard,
         renderGameboard,
         renderShipInGame,
         placeShipInGameboard,
