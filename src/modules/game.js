@@ -5,7 +5,6 @@ const game = (() => {
 
   const makePlayersGrid = ({ playerType }) => {
     const { initPlayers, renderHumanGameboardFilled, renderComputerGameboardFilled } = player;
-    // eslint-disable-next-line max-len
     initPlayers(); // initialize players, create 5 ships by players, and place it on gameboard
 
     let gameboardForMakeGrid = null;
@@ -70,9 +69,9 @@ const game = (() => {
       } else {
         boxShottedByComputer.classList.add('missed-shot');
       }
-      toggleClickableComputerBox();
 
       checkIfGameIsOver(checkIfAllHumanShipAreSunk());
+      toggleClickableComputerBox();
     }
   };
 
@@ -83,9 +82,9 @@ const game = (() => {
     const computerBox = document.querySelectorAll('.grody-computer td');
     const { humanTurn, checkIfAllComputerShipAreSunk } = player;
 
-    computerBox.forEach((boxReceiveShot) => {
-      boxReceiveShot.addEventListener('click', (event) => {
-        humanTurn({ event, boxReceiveShot });
+    computerBox.forEach((box) => {
+      box.addEventListener('click', (event) => {
+        humanTurn({ event, boxReceiveShot: box });
         toggleClickableComputerBox();
         checkIfGameIsOver(checkIfAllComputerShipAreSunk());
         asyncComputerTurn();

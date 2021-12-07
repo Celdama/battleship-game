@@ -1,45 +1,46 @@
-import gameboardFactory from './gameboard';
+import gameboardFactory from '../factory/gameboard';
 
 const player = (() => {
   const humanPlayer = gameboardFactory();
-  const AIPlayer = gameboardFactory();
+  const computerPlayer = gameboardFactory();
 
-  // const humanGameboard = humanPlayer.renderGameBoard();
-  const createAndPlaceShipPlayer = (human) => {
-    const ship1 = human.createShip({ shipId: 1, length: 5 });
-    const ship2 = human.createShip({ shipId: 2, length: 4 });
-    const ship3 = human.createShip({ shipId: 3, length: 3 });
-    const ship4 = human.createShip({ shipId: 4, length: 3 });
-    const ship5 = human.createShip({ shipId: 5, length: 1 });
+  const createAndPlaceShipPlayer = () => {
+    const { createShip, placeShipInGameBoard } = humanPlayer;
+    const ship1 = createShip({ shipId: 1, length: 5 });
+    const ship2 = createShip({ shipId: 2, length: 4 });
+    const ship3 = createShip({ shipId: 3, length: 3 });
+    const ship4 = createShip({ shipId: 4, length: 3 });
+    const ship5 = createShip({ shipId: 5, length: 1 });
 
-    human.placeShipInGameBoard({ coordY: 3, coordX: 1, ship: ship1 });
-    human.placeShipInGameBoard({
+    placeShipInGameBoard({ coordY: 3, coordX: 1, ship: ship1 });
+    placeShipInGameBoard({
       coordY: 0, coordX: 9, ship: ship2, vertical: true,
     });
-    human.placeShipInGameBoard({ coordY: 0, coordX: 0, ship: ship3 });
-    human.placeShipInGameBoard({ coordY: 9, coordX: 3, ship: ship4 });
-    human.placeShipInGameBoard({ coordY: 6, coordX: 7, ship: ship5 });
+    placeShipInGameBoard({ coordY: 0, coordX: 0, ship: ship3 });
+    placeShipInGameBoard({ coordY: 9, coordX: 3, ship: ship4 });
+    placeShipInGameBoard({ coordY: 6, coordX: 7, ship: ship5 });
   };
 
-  const createAndPlaceShipComputer = (computer) => {
-    const ship1 = computer.createShip({ shipId: 1, length: 5 });
-    const ship2 = computer.createShip({ shipId: 2, length: 4 });
-    const ship3 = computer.createShip({ shipId: 3, length: 3 });
-    const ship4 = computer.createShip({ shipId: 4, length: 3 });
-    const ship5 = computer.createShip({ shipId: 5, length: 1 });
+  const createAndPlaceShipComputer = () => {
+    const { createShip, placeShipInGameBoard } = computerPlayer;
+    const ship1 = createShip({ shipId: 1, length: 5 });
+    const ship2 = createShip({ shipId: 2, length: 4 });
+    const ship3 = createShip({ shipId: 3, length: 3 });
+    const ship4 = createShip({ shipId: 4, length: 3 });
+    const ship5 = createShip({ shipId: 5, length: 1 });
 
-    computer.placeShipInGameBoard({ coordY: 6, coordX: 0, ship: ship1 });
-    computer.placeShipInGameBoard({
+    placeShipInGameBoard({ coordY: 6, coordX: 0, ship: ship1 });
+    placeShipInGameBoard({
       coordY: 0, coordX: 0, ship: ship2, vertical: true,
     });
-    computer.placeShipInGameBoard({ coordY: 2, coordX: 4, ship: ship3 });
-    computer.placeShipInGameBoard({ coordY: 4, coordX: 6, ship: ship4 });
-    computer.placeShipInGameBoard({ coordY: 0, coordX: 5, ship: ship5 });
+    placeShipInGameBoard({ coordY: 2, coordX: 4, ship: ship3 });
+    placeShipInGameBoard({ coordY: 4, coordX: 6, ship: ship4 });
+    placeShipInGameBoard({ coordY: 0, coordX: 5, ship: ship5 });
   };
 
   const renderHumanGameboardFilled = () => humanPlayer.renderGameBoard();
 
-  const renderComputerGameboardFilled = () => AIPlayer.renderGameBoard();
+  const renderComputerGameboardFilled = () => computerPlayer.renderGameBoard();
 
   const makeRandomChoice = () => {
     const coordY = Math.floor(Math.random() * 10);
@@ -48,8 +49,16 @@ const player = (() => {
     return `${coordY}-${coordX}`;
   };
 
-  const playerAttack = ({ coordY, coordX }) => {
-    const resultOfShot = AIPlayer.receiveAttack({ coordY, coordX });
+  const humanAttack = ({ coordY, coordX }) => {
+    const { receiveAttack } = computerPlayer;
+    const resultOfShot = receiveAttack({ coordY, coordX });
+
+    return !resultOfShot.includes('missed');
+  };
+
+  const computerAttack = ({ coordY, coordX }) => {
+    const { receiveAttack } = humanPlayer;
+    const resultOfShot = receiveAttack({ coordY, coordX });
 
     return !resultOfShot.includes('missed');
   };
@@ -57,30 +66,25 @@ const player = (() => {
   const humanTurn = ({ event, boxReceiveShot }) => {
     const computerGameboard = renderComputerGameboardFilled();
     const { coordY, coordX } = event.target.dataset;
-    const td = boxReceiveShot;
+    const box = boxReceiveShot;
 
-    if (playerAttack({ coordY, coordX })) {
-      td.textContent = computerGameboard[coordY][coordX];
-      td.classList.add('disable-click');
+    if (humanAttack({ coordY, coordX })) {
+      box.textContent = computerGameboard[coordY][coordX];
+      box.classList.add('disable-click');
 
       return 'shot ok';
     }
-    td.classList.add('missed-shot');
-    td.classList.add('disable-click');
+    box.classList.add('missed-shot');
+    box.classList.add('disable-click');
 
     return 'shot missed';
   };
 
-  const computerAttack = ({ coordY, coordX }) => {
-    const resultOfShot = humanPlayer.receiveAttack({ coordY, coordX });
-
-    return !resultOfShot.includes('missed');
-  };
-
   const computerTurn = () => {
     // missed shot for computer is listed in missedShot of human and vice versa
-    const missedShot = humanPlayer.renderListOfMissedShot();
-    const hittedShot = humanPlayer.renderListOfHittedShot();
+    const { renderListOfHittedShot, renderListOfMissedShot } = humanPlayer;
+    const missedShot = renderListOfMissedShot();
+    const hittedShot = renderListOfHittedShot();
 
     let shot = makeRandomChoice();
 
@@ -95,19 +99,18 @@ const player = (() => {
     return `${coordY}${coordX}`;
   };
 
-  const checkIfAllComputerShipAreSunk = () => AIPlayer.allShipAreSunk();
+  const checkIfAllComputerShipAreSunk = () => computerPlayer.allShipAreSunk();
   const checkIfAllHumanShipAreSunk = () => humanPlayer.allShipAreSunk();
 
   const initPlayers = () => {
-    createAndPlaceShipPlayer(humanPlayer);
-    createAndPlaceShipComputer(AIPlayer);
+    createAndPlaceShipPlayer();
+    createAndPlaceShipComputer();
   };
 
   return {
     initPlayers,
     renderHumanGameboardFilled,
     renderComputerGameboardFilled,
-    playerAttack,
     computerTurn,
     humanTurn,
     checkIfAllComputerShipAreSunk,
