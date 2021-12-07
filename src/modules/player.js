@@ -21,6 +21,14 @@ const player = (() => {
     placeShipInGameboard({ coordY: 6, coordX: 7, ship: ship5 });
   };
 
+  const setPlaceForShipInGameboard = (ship) => {
+    console.log(ship.getLength());
+  };
+
+  const renderComputerGameBoard = () => {
+    console.table(computerPlayer.renderGameboard());
+  };
+
   const createAndPlaceShipComputer = () => {
     const { createShip, placeShipInGameboard } = computerPlayer;
     const ship1 = createShip({ shipId: 1, length: 5 });
@@ -28,14 +36,19 @@ const player = (() => {
     const ship3 = createShip({ shipId: 3, length: 3 });
     const ship4 = createShip({ shipId: 4, length: 3 });
     const ship5 = createShip({ shipId: 5, length: 1 });
+    const listOfShip = [ship1, ship2, ship3, ship4, ship5];
 
-    placeShipInGameboard({ coordY: 6, coordX: 0, ship: ship1 });
-    placeShipInGameboard({
-      coordY: 0, coordX: 0, ship: ship2, vertical: true,
+    listOfShip.forEach((ship) => {
+      setPlaceForShipInGameboard(ship);
     });
-    placeShipInGameboard({ coordY: 2, coordX: 4, ship: ship3 });
-    placeShipInGameboard({ coordY: 4, coordX: 6, ship: ship4 });
-    placeShipInGameboard({ coordY: 0, coordX: 5, ship: ship5 });
+
+    // placeShipInGameboard({ coordY: 6, coordX: 0, ship: ship1 });
+    // placeShipInGameboard({
+    //   coordY: 0, coordX: 0, ship: ship2, vertical: true,
+    // });
+    // placeShipInGameboard({ coordY: 2, coordX: 4, ship: ship3 });
+    // placeShipInGameboard({ coordY: 4, coordX: 6, ship: ship4 });
+    // placeShipInGameboard({ coordY: 0, coordX: 5, ship: ship5 });
   };
 
   const renderHumanGameboardFilled = () => humanPlayer.renderGameboard();
@@ -117,6 +130,7 @@ const player = (() => {
 
   return {
     initPlayers,
+    renderComputerGameBoard,
     renderHumanGameboardFilled,
     renderComputerGameboardFilled,
     checkIfComputerShipArrSunk,

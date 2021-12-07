@@ -7,6 +7,8 @@ const game = (() => {
     const { initPlayers, renderHumanGameboardFilled, renderComputerGameboardFilled } = player;
     initPlayers(); // initialize players, create 5 ships by players, and place it on gameboard
 
+    player.renderComputerGameBoard();
+
     let gameboardForMakeGrid = null;
     let parentGrid = null;
 
