@@ -1,4 +1,4 @@
-import shipFactory from './ship';
+import shipFactory from '../factory/ship';
 
 const gameboardFactory = () => {
   const board = [

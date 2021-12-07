@@ -2,12 +2,11 @@ import player from './player';
 
 const game = (() => {
   let gameOver = false;
-  const isHumanTurn = true;
 
   const makePlayersGrid = ({ playerType }) => {
+    const { initPlayers, renderHumanGameboardFilled, renderComputerGameboardFilled } = player;
     // eslint-disable-next-line max-len
-    player.initPlayers(); // initialize players, create 5 ships by players, and place it on gameboard
-    const { renderHumanGameboardFilled, renderComputerGameboardFilled } = player;
+    initPlayers(); // initialize players, create 5 ships by players, and place it on gameboard
 
     let gameboardForMakeGrid = null;
     let parentGrid = null;
@@ -39,67 +38,62 @@ const game = (() => {
     }
   };
 
-  const allowHumanToShotComputerShip = () => {
-    const tds = document.querySelectorAll('.grody-computer td');
-    tds.forEach((td) => {
-      td.addEventListener('click', (e) => {
-        const result = player.humanTurn({ event: e, boxReceiveShot: td });
-        console.log(result);
-      });
-    });
-  };
-
   const toggleClickableComputerBox = () => {
-    const tds = document.querySelectorAll('.grody-computer td');
-    tds.forEach((td) => {
-      td.classList.toggle('disable');
+    const computerBox = document.querySelectorAll('.grody-computer td');
+    computerBox.forEach((box) => {
+      box.classList.toggle('disable');
     });
   };
 
   const checkIfGameIsOver = (isAllShipsSunk) => {
-    // const allShipAreSunk = player.checkIfAllComputerShipAreSunk();
     if (isAllShipsSunk) {
       alert('game finished');
       gameOver = true;
     }
   };
 
-  const gameLoop = () => {
-    const tds = document.querySelectorAll('.grody-computer td');
-    const {
-      humanTurn, computerTurn,
-      checkIfAllComputerShipAreSunk, checkIfAllHumanShipAreSunk,
-    } = player;
+  const sleep = (ms) => new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
 
-    tds.forEach((td) => {
-      td.addEventListener('click', (e) => {
-        humanTurn({ event: e, boxReceiveShot: td });
+  const asyncComputerTurn = async () => {
+    const { computerTurn, checkIfAllHumanShipAreSunk } = player;
+
+    await sleep(800);
+    if (!gameOver) {
+      const coordComputerShot = computerTurn();
+      console.log(`look at this, this is a computer shot at coord ${coordComputerShot}`);
+
+      const boxShottedByComputer = document.getElementById(`${coordComputerShot}`);
+      if (boxShottedByComputer.textContent) {
+        boxShottedByComputer.style.color = 'red';
+      } else {
+        boxShottedByComputer.classList.add('missed-shot');
+      }
+      toggleClickableComputerBox();
+
+      checkIfGameIsOver(checkIfAllHumanShipAreSunk());
+    }
+  };
+
+  const gameLoop = () => {
+    makePlayersGrid({ playerType: 'human' });
+    makePlayersGrid({ playerType: 'computer' });
+
+    const computerBox = document.querySelectorAll('.grody-computer td');
+    const { humanTurn, checkIfAllComputerShipAreSunk } = player;
+
+    computerBox.forEach((boxReceiveShot) => {
+      boxReceiveShot.addEventListener('click', (event) => {
+        humanTurn({ event, boxReceiveShot });
         toggleClickableComputerBox();
         checkIfGameIsOver(checkIfAllComputerShipAreSunk());
-        setTimeout(() => {
-          if (!gameOver) {
-            const resultComputerShot = computerTurn();
-
-            const boxShottedByComputer = document.getElementById(`${resultComputerShot}`);
-
-            if (boxShottedByComputer.textContent) {
-              boxShottedByComputer.style.color = 'red';
-            } else {
-              boxShottedByComputer.classList.add('missed-shot');
-            }
-            toggleClickableComputerBox();
-            // and send here the player board
-
-            checkIfGameIsOver(checkIfAllHumanShipAreSunk());
-          }
-        }, 400);
+        asyncComputerTurn();
       });
     });
   };
 
   return {
-    makePlayersGrid,
-    allowHumanToShotComputerShip,
     gameLoop,
   };
 })();
