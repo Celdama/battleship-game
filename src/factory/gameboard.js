@@ -1,7 +1,7 @@
 import shipFactory from './ship';
 
 const gameboardFactory = () => {
-  const board = [
+  const gameboard = [
     [null, null, null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null, null, null],
     [null, null, null, null, null, null, null, null, null, null],
@@ -17,24 +17,22 @@ const gameboardFactory = () => {
   const coordOfEachShipInGameboard = {};
   const listOfShipInGameboard = [];
   const listOfCoordAlreadyFill = [];
-  // missed shot of opponent
-  const listOfMissedShot = [];
+  const listOfOpponentMissedShot = [];
+  const listOfOpponentHittedShot = [];
 
-  const listOfHittedShot = [];
+  const renderGameboard = () => gameboard;
 
-  // first [] = y
-  // second [] = x
-  const renderGameBoard = () => board;
-  // console.table(board);
-  const renderListOfMissedShot = () => listOfMissedShot;
+  const renderListOfOpponentMissedShot = () => listOfOpponentMissedShot;
 
-  const renderListOfHittedShot = () => listOfHittedShot;
+  const renderListOfOpponentHittedShot = () => listOfOpponentHittedShot;
 
-  const renderListOfShipInGameBoard = () => listOfShipInGameboard;
+  const renderListOfShipInGameboard = () => listOfShipInGameboard;
 
   const renderShipInGame = () => console.log(coordOfEachShipInGameboard);
 
-  const coordIsEmpty = (coordY, coordX, shipLength, isVertical) => {
+  const isCoordEmpty = ({
+    coordY, coordX, shipLength, isVertical,
+  }) => {
     if (isVertical) {
       for (let i = 0; i < shipLength; i += 1) {
         if (listOfCoordAlreadyFill.includes(`${coordY + i}-${coordX}`)) {
@@ -52,7 +50,7 @@ const gameboardFactory = () => {
     return true;
   };
 
-  const placeShipInGameBoard = ({
+  const placeShipInGameboard = ({
     coordY, coordX, ship, vertical = false,
   }) => {
     if (ship === undefined) {
@@ -68,14 +66,16 @@ const gameboardFactory = () => {
     const shipCoordInGameboard = [];
     const shipLength = getLength();
 
-    if (coordIsEmpty(coordY, coordX, shipLength, vertical)) {
+    if (isCoordEmpty({
+      coordY, coordX, shipLength, vertical,
+    })) {
       for (let i = 0; i < shipLength; i += 1) {
         if (!vertical) {
-          board[coordY][coordX + i] = `${shipId}`;
+          gameboard[coordY][coordX + i] = `${shipId}`;
           shipCoordInGameboard.push(`${coordY}-${coordX + i}`);
           listOfCoordAlreadyFill.push(`${coordY}-${coordX + i}`);
         } else {
-          board[coordY + i][coordX] = `${shipId}`;
+          gameboard[coordY + i][coordX] = `${shipId}`;
           shipCoordInGameboard.push(`${coordY + i}-${coordX}`);
           listOfCoordAlreadyFill.push(`${coordY + i}-${coordX}`);
         }
@@ -85,7 +85,7 @@ const gameboardFactory = () => {
       listOfShipInGameboard.push(ship);
 
       // for now, this return is only usefull for my test.
-      return board;
+      return gameboard;
     }
     return `impossible to place ship ${shipId} here, the place is already fill.`;
   };
@@ -99,43 +99,35 @@ const gameboardFactory = () => {
   const allShipAreSunk = () => listOfShipInGameboard.every((ship) => ship.isSunk());
 
   const receiveAttack = ({ coordY, coordX }) => {
-    // determines whether or not the attach hit a ship
-
-    if (board[coordY][coordX]) {
-      // and then sends the hits function to the correct ship
-      const coordId = Number(board[coordY][coordX]);
+    if (gameboard[coordY][coordX]) {
+      const coordId = Number(gameboard[coordY][coordX]);
 
       const shipHitted = listOfShipInGameboard.find((ship) => ship.shipId === coordId);
 
-      // determine where the ship was hit
       const positionHit = coordOfEachShipInGameboard[coordId].indexOf(`${coordY}-${coordX}`);
 
-      // add one because ship start to 1
       shipHitted.hit({ position: positionHit + 1 });
 
       const coordOfHittedShot = `${[coordY]}-${[coordX]}`;
-      listOfHittedShot.push(coordOfHittedShot);
-
-      // console.log(allShipAreSunk());
+      listOfOpponentHittedShot.push(coordOfHittedShot);
 
       return `ship ${shipHitted.shipId} was hit at position ${positionHit + 1} of ${shipHitted.getLength()}`;
     }
-    // or record the coord of the missed shot
+
     const coordMissedShot = `${[coordY]}-${[coordX]}`;
-    listOfMissedShot.push(coordMissedShot);
+    listOfOpponentMissedShot.push(coordMissedShot);
 
     return `shot missed at coord ${[coordY]}-${[coordX]}`;
   };
 
   return {
     createShip,
-    renderGameBoard,
+    renderGameboard,
     renderShipInGame,
-    placeShipInGameBoard,
+    placeShipInGameboard,
     receiveAttack,
-    renderListOfShipInGameBoard,
-    renderListOfMissedShot,
-    renderListOfHittedShot,
+    renderListOfOpponentMissedShot,
+    renderListOfOpponentHittedShot,
     allShipAreSunk,
   };
 };

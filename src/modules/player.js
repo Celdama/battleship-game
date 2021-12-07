@@ -5,42 +5,42 @@ const player = (() => {
   const computerPlayer = gameboardFactory();
 
   const createAndPlaceShipPlayer = () => {
-    const { createShip, placeShipInGameBoard } = humanPlayer;
+    const { createShip, placeShipInGameboard } = humanPlayer;
     const ship1 = createShip({ shipId: 1, length: 5 });
     const ship2 = createShip({ shipId: 2, length: 4 });
     const ship3 = createShip({ shipId: 3, length: 3 });
     const ship4 = createShip({ shipId: 4, length: 3 });
     const ship5 = createShip({ shipId: 5, length: 1 });
 
-    placeShipInGameBoard({ coordY: 3, coordX: 1, ship: ship1 });
-    placeShipInGameBoard({
+    placeShipInGameboard({ coordY: 3, coordX: 1, ship: ship1 });
+    placeShipInGameboard({
       coordY: 0, coordX: 9, ship: ship2, vertical: true,
     });
-    placeShipInGameBoard({ coordY: 0, coordX: 0, ship: ship3 });
-    placeShipInGameBoard({ coordY: 9, coordX: 3, ship: ship4 });
-    placeShipInGameBoard({ coordY: 6, coordX: 7, ship: ship5 });
+    placeShipInGameboard({ coordY: 0, coordX: 0, ship: ship3 });
+    placeShipInGameboard({ coordY: 9, coordX: 3, ship: ship4 });
+    placeShipInGameboard({ coordY: 6, coordX: 7, ship: ship5 });
   };
 
   const createAndPlaceShipComputer = () => {
-    const { createShip, placeShipInGameBoard } = computerPlayer;
+    const { createShip, placeShipInGameboard } = computerPlayer;
     const ship1 = createShip({ shipId: 1, length: 5 });
     const ship2 = createShip({ shipId: 2, length: 4 });
     const ship3 = createShip({ shipId: 3, length: 3 });
     const ship4 = createShip({ shipId: 4, length: 3 });
     const ship5 = createShip({ shipId: 5, length: 1 });
 
-    placeShipInGameBoard({ coordY: 6, coordX: 0, ship: ship1 });
-    placeShipInGameBoard({
+    placeShipInGameboard({ coordY: 6, coordX: 0, ship: ship1 });
+    placeShipInGameboard({
       coordY: 0, coordX: 0, ship: ship2, vertical: true,
     });
-    placeShipInGameBoard({ coordY: 2, coordX: 4, ship: ship3 });
-    placeShipInGameBoard({ coordY: 4, coordX: 6, ship: ship4 });
-    placeShipInGameBoard({ coordY: 0, coordX: 5, ship: ship5 });
+    placeShipInGameboard({ coordY: 2, coordX: 4, ship: ship3 });
+    placeShipInGameboard({ coordY: 4, coordX: 6, ship: ship4 });
+    placeShipInGameboard({ coordY: 0, coordX: 5, ship: ship5 });
   };
 
-  const renderHumanGameboardFilled = () => humanPlayer.renderGameBoard();
+  const renderHumanGameboardFilled = () => humanPlayer.renderGameboard();
 
-  const renderComputerGameboardFilled = () => computerPlayer.renderGameBoard();
+  const renderComputerGameboardFilled = () => computerPlayer.renderGameboard();
 
   const makeRandomChoice = () => {
     const coordY = Math.floor(Math.random() * 10);
@@ -81,10 +81,9 @@ const player = (() => {
   };
 
   const computerTurn = () => {
-    // missed shot for computer is listed in missedShot of human and vice versa
-    const { renderListOfHittedShot, renderListOfMissedShot } = humanPlayer;
-    const missedShot = renderListOfMissedShot();
-    const hittedShot = renderListOfHittedShot();
+    const { renderListOfOpponentMissedShot, renderListOfOpponentHittedShot } = humanPlayer;
+    const missedShot = renderListOfOpponentMissedShot();
+    const hittedShot = renderListOfOpponentHittedShot();
 
     let shot = makeRandomChoice();
 

@@ -61,7 +61,6 @@ const game = (() => {
     await sleep(800);
     if (!gameOver) {
       const coordComputerShot = computerTurn();
-      console.log(`look at this, this is a computer shot at coord ${coordComputerShot}`);
 
       const boxShottedByComputer = document.getElementById(`${coordComputerShot}`);
       if (boxShottedByComputer.textContent) {
@@ -69,6 +68,7 @@ const game = (() => {
       } else {
         boxShottedByComputer.classList.add('missed-shot');
       }
+      console.log(`look at this, this is a computer shot at coord ${coordComputerShot}`);
 
       checkIfGameIsOver(checkIfAllHumanShipAreSunk());
       toggleClickableComputerBox();
