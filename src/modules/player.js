@@ -21,22 +21,22 @@ const player = (() => {
     placeShipInGameboard({ coordY: 6, coordX: 7, ship: ship5 });
   };
 
-  const randomPlace = (shipLength, vertical) => {
+  const randomPlaceForComputerShip = (shipLength, vertical) => {
     let coordY = Math.floor(Math.random() * 10);
     let coordX = Math.floor(Math.random() * 10);
 
-    const suppHorizontal = coordX + shipLength;
-    const suppVertical = coordY + shipLength;
+    const excesHorizontal = coordX + shipLength;
+    const excesVertical = coordY + shipLength;
 
     if (vertical) {
       if (coordY + shipLength > 10) {
-        coordY -= (suppVertical - 10);
+        coordY -= (excesVertical - 10);
       }
     }
 
     if (!vertical) {
       if (coordX + shipLength > 10) {
-        coordX -= (suppHorizontal - 10);
+        coordX -= (excesHorizontal - 10);
       }
     }
 
@@ -47,13 +47,14 @@ const player = (() => {
     const shipLength = ship.getLength();
     const randomVertical = Math.round(Math.random());
 
-    const randomCoord = randomPlace(shipLength, !!randomVertical);
+    const randomCoord = randomPlaceForComputerShip(shipLength, !!randomVertical);
 
     const coord = randomCoord.split('-');
-    const [coordY, coordX] = coord;
+    const coordY = Number(coord[0]);
+    const coordX = Number(coord[1]);
 
     const resultPlacement = computerPlayer.placeShipInGameboard({
-      coordY: Number(coordY), coordX: Number(coordX), ship, vertical: !!randomVertical,
+      coordY, coordX, ship, vertical: !!randomVertical,
     });
 
     return resultPlacement;
@@ -87,7 +88,7 @@ const player = (() => {
 
   const renderComputerGameboardFilled = () => computerPlayer.renderGameboard();
 
-  const makeRandomChoice = () => {
+  const makeRandomChoiceForComputerShot = () => {
     const coordY = Math.floor(Math.random() * 10);
     const coordX = Math.floor(Math.random() * 10);
 
@@ -130,10 +131,10 @@ const player = (() => {
     const missedShot = renderListOfOpponentMissedShot();
     const hittedShot = renderListOfOpponentHittedShot();
 
-    let shot = makeRandomChoice();
+    let shot = makeRandomChoiceForComputerShot();
 
     while (missedShot.includes(shot) || hittedShot.includes(shot)) {
-      shot = makeRandomChoice();
+      shot = makeRandomChoiceForComputerShot();
     }
 
     const coord = shot.split('-');
