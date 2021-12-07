@@ -22,14 +22,22 @@ const player = (() => {
   };
 
   const randomPlace = (shipLength, vertical) => {
-    // console.log(shipLength);
-    const coordY = Math.floor(Math.random() * 10);
+    let coordY = Math.floor(Math.random() * 10);
     let coordX = Math.floor(Math.random() * 10);
 
-    const supp = coordX + shipLength;
+    const suppHorizontal = coordX + shipLength;
+    const suppVertical = coordY + shipLength;
 
-    if (coordX + shipLength > 10) {
-      coordX -= (supp - 10);
+    if (vertical) {
+      if (coordY + shipLength > 10) {
+        coordY -= (suppVertical - 10);
+      }
+    }
+
+    if (!vertical) {
+      if (coordX + shipLength > 10) {
+        coordX -= (suppHorizontal - 10);
+      }
     }
 
     return `${coordY}-${coordX}`;
@@ -37,14 +45,15 @@ const player = (() => {
 
   const setShipPlace = (ship) => {
     const shipLength = ship.getLength();
-    const randomCoord = randomPlace(shipLength, false);
-    console.log(randomCoord);
+    const randomVertical = Math.round(Math.random());
+
+    const randomCoord = randomPlace(shipLength, !!randomVertical);
 
     const coord = randomCoord.split('-');
     const [coordY, coordX] = coord;
 
     const resultPlacement = computerPlayer.placeShipInGameboard({
-      coordY: Number(coordY), coordX: Number(coordX), ship,
+      coordY: Number(coordY), coordX: Number(coordX), ship, vertical: !!randomVertical,
     });
 
     return resultPlacement;
@@ -63,26 +72,15 @@ const player = (() => {
   };
 
   const createAndPlaceShipComputer = () => {
-    const { createShip, placeShipInGameboard } = computerPlayer;
+    const { createShip } = computerPlayer;
     const ship1 = createShip({ shipId: 1, length: 5 });
     const ship2 = createShip({ shipId: 2, length: 4 });
     const ship3 = createShip({ shipId: 3, length: 3 });
     const ship4 = createShip({ shipId: 4, length: 3 });
     const ship5 = createShip({ shipId: 5, length: 1 });
     const listOfShip = [ship1, ship2, ship3, ship4, ship5];
+
     return listOfShip;
-
-    // listOfShip.forEach((ship, index) => {
-    //   setPlaceForShipInGameboard(ship, index);
-    // });
-
-    // placeShipInGameboard({ coordY: 6, coordX: 0, ship: ship1 });
-    // placeShipInGameboard({
-    //   coordY: 0, coordX: 0, ship: ship2, vertical: true,
-    // });
-    // placeShipInGameboard({ coordY: 2, coordX: 4, ship: ship3 });
-    // placeShipInGameboard({ coordY: 4, coordX: 6, ship: ship4 });
-    // placeShipInGameboard({ coordY: 0, coordX: 5, ship: ship5 });
   };
 
   const renderHumanGameboardFilled = () => humanPlayer.renderGameboard();
