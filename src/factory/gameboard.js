@@ -85,9 +85,9 @@ const gameboardFactory = () => {
       listOfShipInGameboard.push(ship);
 
       // for now, this return is only usefull for my test.
-      return gameboard;
+      return true;
     }
-    return `impossible to place ship ${shipId} here, the place is already fill.`;
+    return false;
   };
 
   const createShip = ({ shipId, length }) => {
@@ -111,10 +111,7 @@ const gameboardFactory = () => {
       const coordOfHittedShot = `${[coordY]}-${[coordX]}`;
       listOfOpponentHittedShot.push(coordOfHittedShot);
 
-      // console.log(shipHitted);
-
       return `ship ${shipHitted.shipId} was hit at position ${positionHit + 1} of ${shipHitted.getLength()}`;
-      // return shipHitted;
     }
 
     const coordMissedShot = `${[coordY]}-${[coordX]}`;

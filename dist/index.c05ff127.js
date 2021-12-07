@@ -476,15 +476,16 @@ var _playerDefault = parcelHelpers.interopDefault(_player);
 const game = (()=>{
     let gameOver = false;
     const makePlayersGrid = ({ playerType  })=>{
-        const { initPlayers , renderHumanGameboardFilled , renderComputerGameboardFilled  } = _playerDefault.default;
-        initPlayers(); // initialize players, create 5 ships by players, and place it on gameboard
-        _playerDefault.default.renderComputerGameBoard();
+        const { initPlayer , renderHumanGameboardFilled , renderComputerGameboardFilled  } = _playerDefault.default;
+        // initPlayer(); // initialize players, create 5 ships by players, and place it on gameboard
         let gameboardForMakeGrid = null;
         let parentGrid = null;
         if (playerType === 'human') {
+            initPlayer();
             gameboardForMakeGrid = renderHumanGameboardFilled();
             parentGrid = document.querySelector('.grody-human');
         } else {
+            _playerDefault.default.initComputer();
             gameboardForMakeGrid = renderComputerGameboardFilled();
             parentGrid = document.querySelector('.grody-computer');
         }
@@ -631,10 +632,32 @@ const player = (()=>{
             ship: ship5
         });
     };
-    const setPlaceForShipInGameboard = (ship)=>{
-        console.log(ship.getLength());
+    const randomPlace = (shipLength, vertical)=>{
+        // console.log(shipLength);
+        const coordY = Math.floor(Math.random() * 10);
+        let coordX = Math.floor(Math.random() * 10);
+        const supp = coordX + shipLength;
+        if (coordX + shipLength > 10) coordX -= supp - 10;
+        return `${coordY}-${coordX}`;
     };
-    const renderComputerGameBoard = ()=>{
+    const setShipPlace = (ship)=>{
+        const shipLength = ship.getLength();
+        const randomCoord = randomPlace(shipLength, false);
+        console.log(randomCoord);
+        const coord = randomCoord.split('-');
+        const [coordY, coordX] = coord;
+        const resultPlacement = computerPlayer.placeShipInGameboard({
+            coordY: Number(coordY),
+            coordX: Number(coordX),
+            ship
+        });
+        return resultPlacement;
+    };
+    const placeComputerShips = (ships)=>{
+        ships.forEach((ship)=>{
+            const isShipPlaced = setShipPlace(ship);
+            if (!isShipPlaced) setShipPlace(ship);
+        });
         console.table(computerPlayer.renderGameboard());
     };
     const createAndPlaceShipComputer = ()=>{
@@ -666,9 +689,10 @@ const player = (()=>{
             ship4,
             ship5
         ];
-        listOfShip.forEach((ship)=>{
-            setPlaceForShipInGameboard(ship);
-        });
+        return listOfShip;
+    // listOfShip.forEach((ship, index) => {
+    //   setPlaceForShipInGameboard(ship, index);
+    // });
     // placeShipInGameboard({ coordY: 6, coordX: 0, ship: ship1 });
     // placeShipInGameboard({
     //   coordY: 0, coordX: 0, ship: ship2, vertical: true,
@@ -744,13 +768,18 @@ const player = (()=>{
         );
         return shipShoted.isSunk();
     };
-    const initPlayers = ()=>{
+    const initPlayer = ()=>{
         createAndPlaceShipPlayer();
-        createAndPlaceShipComputer();
+    // createAndPlaceShipComputer();
+    };
+    const initComputer = ()=>{
+        const allComputersShips = createAndPlaceShipComputer();
+        placeComputerShips(allComputersShips);
     };
     return {
-        initPlayers,
-        renderComputerGameBoard,
+        initPlayer,
+        initComputer,
+        // renderComputerGameBoard,
         renderHumanGameboardFilled,
         renderComputerGameboardFilled,
         checkIfComputerShipArrSunk,
@@ -969,9 +998,9 @@ const gameboardFactory = ()=>{
             coordOfEachShipInGameboard[shipId] = shipCoordInGameboard;
             listOfShipInGameboard.push(ship);
             // for now, this return is only usefull for my test.
-            return gameboard;
+            return true;
         }
-        return `impossible to place ship ${shipId} here, the place is already fill.`;
+        return false;
     };
     const createShip = ({ shipId , length  })=>{
         const newShip = _shipDefault.default({
@@ -998,9 +1027,7 @@ const gameboardFactory = ()=>{
                 coordX
             ]}`;
             listOfOpponentHittedShot.push(coordOfHittedShot);
-            // console.log(shipHitted);
             return `ship ${shipHitted.shipId} was hit at position ${positionHit + 1} of ${shipHitted.getLength()}`;
-        // return shipHitted;
         }
         const coordMissedShot = `${[
             coordY

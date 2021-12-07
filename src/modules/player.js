@@ -21,11 +21,44 @@ const player = (() => {
     placeShipInGameboard({ coordY: 6, coordX: 7, ship: ship5 });
   };
 
-  const setPlaceForShipInGameboard = (ship) => {
-    console.log(ship.getLength());
+  const randomPlace = (shipLength, vertical) => {
+    // console.log(shipLength);
+    const coordY = Math.floor(Math.random() * 10);
+    let coordX = Math.floor(Math.random() * 10);
+
+    const supp = coordX + shipLength;
+
+    if (coordX + shipLength > 10) {
+      coordX -= (supp - 10);
+    }
+
+    return `${coordY}-${coordX}`;
   };
 
-  const renderComputerGameBoard = () => {
+  const setShipPlace = (ship) => {
+    const shipLength = ship.getLength();
+    const randomCoord = randomPlace(shipLength, false);
+    console.log(randomCoord);
+
+    const coord = randomCoord.split('-');
+    const [coordY, coordX] = coord;
+
+    const resultPlacement = computerPlayer.placeShipInGameboard({
+      coordY: Number(coordY), coordX: Number(coordX), ship,
+    });
+
+    return resultPlacement;
+  };
+
+  const placeComputerShips = (ships) => {
+    ships.forEach((ship) => {
+      const isShipPlaced = setShipPlace(ship);
+
+      if (!isShipPlaced) {
+        setShipPlace(ship);
+      }
+    });
+
     console.table(computerPlayer.renderGameboard());
   };
 
@@ -37,10 +70,11 @@ const player = (() => {
     const ship4 = createShip({ shipId: 4, length: 3 });
     const ship5 = createShip({ shipId: 5, length: 1 });
     const listOfShip = [ship1, ship2, ship3, ship4, ship5];
+    return listOfShip;
 
-    listOfShip.forEach((ship) => {
-      setPlaceForShipInGameboard(ship);
-    });
+    // listOfShip.forEach((ship, index) => {
+    //   setPlaceForShipInGameboard(ship, index);
+    // });
 
     // placeShipInGameboard({ coordY: 6, coordX: 0, ship: ship1 });
     // placeShipInGameboard({
@@ -123,14 +157,20 @@ const player = (() => {
     return shipShoted.isSunk();
   };
 
-  const initPlayers = () => {
+  const initPlayer = () => {
     createAndPlaceShipPlayer();
-    createAndPlaceShipComputer();
+    // createAndPlaceShipComputer();
+  };
+
+  const initComputer = () => {
+    const allComputersShips = createAndPlaceShipComputer();
+    placeComputerShips(allComputersShips);
   };
 
   return {
-    initPlayers,
-    renderComputerGameBoard,
+    initPlayer,
+    initComputer,
+    // renderComputerGameBoard,
     renderHumanGameboardFilled,
     renderComputerGameboardFilled,
     checkIfComputerShipArrSunk,

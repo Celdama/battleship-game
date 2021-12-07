@@ -4,18 +4,18 @@ const game = (() => {
   let gameOver = false;
 
   const makePlayersGrid = ({ playerType }) => {
-    const { initPlayers, renderHumanGameboardFilled, renderComputerGameboardFilled } = player;
-    initPlayers(); // initialize players, create 5 ships by players, and place it on gameboard
-
-    player.renderComputerGameBoard();
+    const { initPlayer, renderHumanGameboardFilled, renderComputerGameboardFilled } = player;
+    // initPlayer(); // initialize players, create 5 ships by players, and place it on gameboard
 
     let gameboardForMakeGrid = null;
     let parentGrid = null;
 
     if (playerType === 'human') {
+      initPlayer();
       gameboardForMakeGrid = renderHumanGameboardFilled();
       parentGrid = document.querySelector('.grody-human');
     } else {
+      player.initComputer();
       gameboardForMakeGrid = renderComputerGameboardFilled();
       parentGrid = document.querySelector('.grody-computer');
     }
