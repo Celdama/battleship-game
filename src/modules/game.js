@@ -4,7 +4,9 @@ const game = (() => {
   let gameOver = false;
 
   const makePlayersGrid = ({ playerType }) => {
-    const { initPlayer, renderHumanGameboardFilled, renderComputerGameboardFilled } = player;
+    const {
+      initPlayer, initComputer, renderHumanGameboardFilled, renderComputerGameboardFilled,
+    } = player;
     // initPlayer(); // initialize players, create 5 ships by players, and place it on gameboard
 
     let gameboardForMakeGrid = null;
@@ -15,7 +17,7 @@ const game = (() => {
       gameboardForMakeGrid = renderHumanGameboardFilled();
       parentGrid = document.querySelector('.grody-human');
     } else {
-      player.initComputer();
+      initComputer();
       gameboardForMakeGrid = renderComputerGameboardFilled();
       parentGrid = document.querySelector('.grody-computer');
     }

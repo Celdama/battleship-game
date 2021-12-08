@@ -61,24 +61,39 @@ const player = (() => {
   };
 
   const placeComputerShips = (ships) => {
+    const shipNotPlaced = [];
+
     ships.forEach((ship) => {
       const isShipPlaced = setShipPlace(ship);
 
       if (!isShipPlaced) {
-        setShipPlace(ship);
+        shipNotPlaced.push(ship);
       }
     });
 
+    while (shipNotPlaced.length !== 0) {
+      shipNotPlaced.forEach((ship) => {
+        const result = setShipPlace(ship);
+        const id = ship.shipId;
+        if (result) {
+          console.log('ok');
+          const index = shipNotPlaced.map((item) => item.shipId).indexOf(id);
+
+          shipNotPlaced.splice(index, 1);
+        }
+      });
+    }
     console.table(computerPlayer.renderGameboard());
   };
 
-  const createAndPlaceShipComputer = () => {
+  const createComputerShips = () => {
     const { createShip } = computerPlayer;
     const ship1 = createShip({ shipId: 1, length: 5 });
     const ship2 = createShip({ shipId: 2, length: 4 });
     const ship3 = createShip({ shipId: 3, length: 3 });
     const ship4 = createShip({ shipId: 4, length: 3 });
     const ship5 = createShip({ shipId: 5, length: 1 });
+
     const listOfShip = [ship1, ship2, ship3, ship4, ship5];
 
     return listOfShip;
@@ -158,12 +173,10 @@ const player = (() => {
 
   const initPlayer = () => {
     createAndPlaceShipPlayer();
-    // createAndPlaceShipComputer();
   };
 
   const initComputer = () => {
-    const allComputersShips = createAndPlaceShipComputer();
-    placeComputerShips(allComputersShips);
+    placeComputerShips(createComputerShips());
   };
 
   return {

@@ -476,7 +476,7 @@ var _playerDefault = parcelHelpers.interopDefault(_player);
 const game = (()=>{
     let gameOver = false;
     const makePlayersGrid = ({ playerType  })=>{
-        const { initPlayer , renderHumanGameboardFilled , renderComputerGameboardFilled  } = _playerDefault.default;
+        const { initPlayer , initComputer , renderHumanGameboardFilled , renderComputerGameboardFilled ,  } = _playerDefault.default;
         // initPlayer(); // initialize players, create 5 ships by players, and place it on gameboard
         let gameboardForMakeGrid = null;
         let parentGrid = null;
@@ -485,7 +485,7 @@ const game = (()=>{
             gameboardForMakeGrid = renderHumanGameboardFilled();
             parentGrid = document.querySelector('.grody-human');
         } else {
-            _playerDefault.default.initComputer();
+            initComputer();
             gameboardForMakeGrid = renderComputerGameboardFilled();
             parentGrid = document.querySelector('.grody-computer');
         }
@@ -661,13 +661,24 @@ const player = (()=>{
         return resultPlacement;
     };
     const placeComputerShips = (ships)=>{
+        const shipNotPlaced = [];
         ships.forEach((ship)=>{
             const isShipPlaced = setShipPlace(ship);
-            if (!isShipPlaced) setShipPlace(ship);
+            if (!isShipPlaced) shipNotPlaced.push(ship);
+        });
+        while(shipNotPlaced.length !== 0)shipNotPlaced.forEach((ship)=>{
+            const result = setShipPlace(ship);
+            const id = ship.shipId;
+            if (result) {
+                console.log('ok');
+                const index = shipNotPlaced.map((item)=>item.shipId
+                ).indexOf(id);
+                shipNotPlaced.splice(index, 1);
+            }
         });
         console.table(computerPlayer.renderGameboard());
     };
-    const createAndPlaceShipComputer = ()=>{
+    const createComputerShips = ()=>{
         const { createShip  } = computerPlayer;
         const ship1 = createShip({
             shipId: 1,
@@ -767,11 +778,9 @@ const player = (()=>{
     };
     const initPlayer = ()=>{
         createAndPlaceShipPlayer();
-    // createAndPlaceShipComputer();
     };
     const initComputer = ()=>{
-        const allComputersShips = createAndPlaceShipComputer();
-        placeComputerShips(allComputersShips);
+        placeComputerShips(createComputerShips());
     };
     return {
         initPlayer,
@@ -977,6 +986,10 @@ const gameboardFactory = ()=>{
         const { shipId , getLength  } = ship;
         const shipCoordInGameboard = [];
         const shipLength = getLength();
+        console.log({
+            coordY,
+            coordX
+        });
         if (isCoordEmpty({
             coordY,
             coordX,

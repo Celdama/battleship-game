@@ -65,6 +65,7 @@ const gameboardFactory = () => {
 
     const shipCoordInGameboard = [];
     const shipLength = getLength();
+    console.log({ coordY, coordX });
 
     if (isCoordEmpty({
       coordY, coordX, shipLength, vertical,
