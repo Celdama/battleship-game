@@ -31,10 +31,11 @@ const gameboardFactory = () => {
   const renderShipInGame = () => console.log(coordOfEachShipInGameboard);
 
   const isCoordEmpty = ({
-    coordY, coordX, shipLength, isVertical,
+    coordY, coordX, shipLength, vertical,
   }) => {
-    if (isVertical) {
+    if (vertical) {
       for (let i = 0; i < shipLength; i += 1) {
+        // console.log(listOfCoordAlreadyFill.includes(`${coordY + i}-${coordX}`));
         if (listOfCoordAlreadyFill.includes(`${coordY + i}-${coordX}`)) {
           return false;
         }
@@ -65,7 +66,6 @@ const gameboardFactory = () => {
 
     const shipCoordInGameboard = [];
     const shipLength = getLength();
-    console.log({ coordY, coordX });
 
     if (isCoordEmpty({
       coordY, coordX, shipLength, vertical,

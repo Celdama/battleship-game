@@ -83,6 +83,7 @@ const player = (() => {
         }
       });
     }
+    console.log('ship not place', shipNotPlaced);
     console.table(computerPlayer.renderGameboard());
   };
 
