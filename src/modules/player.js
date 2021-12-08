@@ -44,6 +44,7 @@ const player = (() => {
   };
 
   const setShipPlace = (ship) => {
+    const { placeShipInGameboard } = computerPlayer;
     const shipLength = ship.getLength();
     const randomVertical = Math.round(Math.random());
 
@@ -53,7 +54,7 @@ const player = (() => {
     const coordY = Number(coord[0]);
     const coordX = Number(coord[1]);
 
-    const resultPlacement = computerPlayer.placeShipInGameboard({
+    const resultPlacement = placeShipInGameboard({
       coordY, coordX, ship, vertical: !!randomVertical,
     });
 
@@ -61,6 +62,7 @@ const player = (() => {
   };
 
   const placeComputerShips = (ships) => {
+    const { renderGameboard } = computerPlayer;
     const shipNotPlaced = [];
 
     ships.forEach((ship) => {
@@ -76,15 +78,13 @@ const player = (() => {
         const result = setShipPlace(ship);
         const id = ship.shipId;
         if (result) {
-          console.log('ok');
-          const index = shipNotPlaced.map((item) => item.shipId).indexOf(id);
+          const index = shipNotPlaced.findIndex((item) => item.shipId === id);
 
           shipNotPlaced.splice(index, 1);
         }
       });
     }
-    console.log('ship not place', shipNotPlaced);
-    console.table(computerPlayer.renderGameboard());
+    console.table(renderGameboard());
   };
 
   const createComputerShips = () => {
@@ -94,8 +94,9 @@ const player = (() => {
     const ship3 = createShip({ shipId: 3, length: 3 });
     const ship4 = createShip({ shipId: 4, length: 3 });
     const ship5 = createShip({ shipId: 5, length: 1 });
+    const ship6 = createShip({ shipId: 6, length: 2 });
 
-    const listOfShip = [ship1, ship2, ship3, ship4, ship5];
+    const listOfShip = [ship1, ship2, ship3, ship4, ship5, ship6];
 
     return listOfShip;
   };
@@ -167,9 +168,9 @@ const player = (() => {
     const { renderListOfShipInGameboard } = computerPlayer;
     const allComputerShip = renderListOfShipInGameboard();
     const id = Number(shipId);
-    const shipShoted = allComputerShip.find((ship) => ship.shipId === id);
+    const hitedShip = allComputerShip.find((ship) => ship.shipId === id);
 
-    return shipShoted.isSunk();
+    return hitedShip.isSunk();
   };
 
   const initPlayer = () => {

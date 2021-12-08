@@ -35,7 +35,6 @@ const gameboardFactory = () => {
   }) => {
     if (vertical) {
       for (let i = 0; i < shipLength; i += 1) {
-        // console.log(listOfCoordAlreadyFill.includes(`${coordY + i}-${coordX}`));
         if (listOfCoordAlreadyFill.includes(`${coordY + i}-${coordX}`)) {
           return false;
         }

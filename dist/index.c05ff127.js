@@ -477,7 +477,6 @@ const game = (()=>{
     let gameOver = false;
     const makePlayersGrid = ({ playerType  })=>{
         const { initPlayer , initComputer , renderHumanGameboardFilled , renderComputerGameboardFilled ,  } = _playerDefault.default;
-        // initPlayer(); // initialize players, create 5 ships by players, and place it on gameboard
         let gameboardForMakeGrid = null;
         let parentGrid = null;
         if (playerType === 'human') {
@@ -646,13 +645,14 @@ const player = (()=>{
         return `${coordY}-${coordX}`;
     };
     const setShipPlace = (ship)=>{
+        const { placeShipInGameboard  } = computerPlayer;
         const shipLength = ship.getLength();
         const randomVertical = Math.round(Math.random());
         const randomCoord = randomPlaceForComputerShip(shipLength, !!randomVertical);
         const coord = randomCoord.split('-');
         const coordY = Number(coord[0]);
         const coordX = Number(coord[1]);
-        const resultPlacement = computerPlayer.placeShipInGameboard({
+        const resultPlacement = placeShipInGameboard({
             coordY,
             coordX,
             ship,
@@ -661,6 +661,7 @@ const player = (()=>{
         return resultPlacement;
     };
     const placeComputerShips = (ships)=>{
+        const { renderGameboard  } = computerPlayer;
         const shipNotPlaced = [];
         ships.forEach((ship)=>{
             const isShipPlaced = setShipPlace(ship);
@@ -670,14 +671,12 @@ const player = (()=>{
             const result = setShipPlace(ship);
             const id = ship.shipId;
             if (result) {
-                console.log('ok');
-                const index = shipNotPlaced.map((item)=>item.shipId
-                ).indexOf(id);
+                const index = shipNotPlaced.findIndex((item)=>item.shipId === id
+                );
                 shipNotPlaced.splice(index, 1);
             }
         });
-        console.log('ship not place', shipNotPlaced);
-        console.table(computerPlayer.renderGameboard());
+        console.table(renderGameboard());
     };
     const createComputerShips = ()=>{
         const { createShip  } = computerPlayer;
@@ -701,12 +700,17 @@ const player = (()=>{
             shipId: 5,
             length: 1
         });
+        const ship6 = createShip({
+            shipId: 6,
+            length: 2
+        });
         const listOfShip = [
             ship1,
             ship2,
             ship3,
             ship4,
-            ship5
+            ship5,
+            ship6
         ];
         return listOfShip;
     };
@@ -773,9 +777,9 @@ const player = (()=>{
         const { renderListOfShipInGameboard  } = computerPlayer;
         const allComputerShip = renderListOfShipInGameboard();
         const id = Number(shipId);
-        const shipShoted = allComputerShip.find((ship)=>ship.shipId === id
+        const hitedShip = allComputerShip.find((ship)=>ship.shipId === id
         );
-        return shipShoted.isSunk();
+        return hitedShip.isSunk();
     };
     const initPlayer = ()=>{
         createAndPlaceShipPlayer();
@@ -974,7 +978,6 @@ const gameboardFactory = ()=>{
     ;
     const isCoordEmpty = ({ coordY , coordX , shipLength , vertical ,  })=>{
         if (vertical) for(let i = 0; i < shipLength; i += 1){
-            // console.log(listOfCoordAlreadyFill.includes(`${coordY + i}-${coordX}`));
             if (listOfCoordAlreadyFill.includes(`${coordY + i}-${coordX}`)) return false;
         }
         else for(let i1 = 0; i1 < shipLength; i1 += 1){
