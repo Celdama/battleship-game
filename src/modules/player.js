@@ -4,21 +4,19 @@ const player = (() => {
   const humanPlayer = gameboardFactory();
   const computerPlayer = gameboardFactory();
 
-  const createAndPlaceShipPlayer = () => {
-    const { createShip, placeShipInGameboard } = humanPlayer;
+  const createShips = ({ profil }) => {
+    const { createShip } = profil === 'human' ? humanPlayer : computerPlayer;
+
     const ship1 = createShip({ shipId: 1, length: 5 });
     const ship2 = createShip({ shipId: 2, length: 4 });
     const ship3 = createShip({ shipId: 3, length: 3 });
     const ship4 = createShip({ shipId: 4, length: 3 });
     const ship5 = createShip({ shipId: 5, length: 1 });
+    const ship6 = createShip({ shipId: 6, length: 2 });
 
-    placeShipInGameboard({ coordY: 3, coordX: 1, ship: ship1 });
-    placeShipInGameboard({
-      coordY: 0, coordX: 9, ship: ship2, vertical: true,
-    });
-    placeShipInGameboard({ coordY: 0, coordX: 0, ship: ship3 });
-    placeShipInGameboard({ coordY: 9, coordX: 3, ship: ship4 });
-    placeShipInGameboard({ coordY: 6, coordX: 7, ship: ship5 });
+    const listOfShip = [ship1, ship2, ship3, ship4, ship5, ship6];
+
+    return listOfShip;
   };
 
   const randomPlaceForComputerShip = (shipLength, vertical) => {
@@ -43,8 +41,9 @@ const player = (() => {
     return `${coordY}-${coordX}`;
   };
 
-  const setShipPlace = (ship) => {
-    const { placeShipInGameboard } = computerPlayer;
+  const setShipPlace = ({ profil, ship }) => {
+    const { placeShipInGameboard } = profil === 'human' ? humanPlayer : computerPlayer;
+
     const shipLength = ship.getLength();
     const randomVertical = Math.round(Math.random());
 
@@ -61,12 +60,11 @@ const player = (() => {
     return resultPlacement;
   };
 
-  const placeComputerShips = (ships) => {
-    const { renderGameboard } = computerPlayer;
+  const placeShips = ({ profil, ships }) => {
     const shipNotPlaced = [];
 
     ships.forEach((ship) => {
-      const isShipPlaced = setShipPlace(ship);
+      const isShipPlaced = setShipPlace({ profil, ship });
 
       if (!isShipPlaced) {
         shipNotPlaced.push(ship);
@@ -75,7 +73,7 @@ const player = (() => {
 
     while (shipNotPlaced.length !== 0) {
       shipNotPlaced.forEach((ship) => {
-        const result = setShipPlace(ship);
+        const result = setShipPlace({ profil, ship });
         const id = ship.shipId;
         if (result) {
           const index = shipNotPlaced.findIndex((item) => item.shipId === id);
@@ -84,21 +82,6 @@ const player = (() => {
         }
       });
     }
-    console.table(renderGameboard());
-  };
-
-  const createComputerShips = () => {
-    const { createShip } = computerPlayer;
-    const ship1 = createShip({ shipId: 1, length: 5 });
-    const ship2 = createShip({ shipId: 2, length: 4 });
-    const ship3 = createShip({ shipId: 3, length: 3 });
-    const ship4 = createShip({ shipId: 4, length: 3 });
-    const ship5 = createShip({ shipId: 5, length: 1 });
-    const ship6 = createShip({ shipId: 6, length: 2 });
-
-    const listOfShip = [ship1, ship2, ship3, ship4, ship5, ship6];
-
-    return listOfShip;
   };
 
   const renderHumanGameboardFilled = () => humanPlayer.renderGameboard();
@@ -139,8 +122,6 @@ const player = (() => {
     }
     box.classList.add('missed-shot');
     box.classList.add('disable-click');
-
-    // return 'shot missed';
   };
 
   const computerTurn = () => {
@@ -173,12 +154,14 @@ const player = (() => {
     return hitedShip.isSunk();
   };
 
-  const initPlayer = () => {
-    createAndPlaceShipPlayer();
+  const initPlayer = (profil) => {
+    placeShips({ profil, ships: createShips({ profil }) });
+    console.table(humanPlayer.renderGameboard());
   };
 
-  const initComputer = () => {
-    placeComputerShips(createComputerShips());
+  const initComputer = (profil) => {
+    placeShips({ profil, ships: createShips({ profil }) });
+    console.table(computerPlayer.renderGameboard());
   };
 
   return {

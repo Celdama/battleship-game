@@ -4,7 +4,6 @@
   padding: 0;
   box-sizing: border-box;
   font-size: large;
-  color: white;
 }
 
 html {
@@ -38,6 +37,11 @@ h3 {
   height: 20px;
   border: 1px solid silver;
   text-align: center;
+  color: white;
+}
+
+.ship-sunk {
+  background-color: red !important;
 }
 
 .missed-shot {
@@ -50,5 +54,13 @@ table {
 
 .disable, .disable-click {
   pointer-events: none;
+}
+
+p {
+  color: black;
+}
+
+.green {
+  background-color: green !important;
 }
 /*# sourceMappingURL=index.81b039f6.css.map */

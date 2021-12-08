@@ -4,7 +4,6 @@
   padding: 0;
   box-sizing: border-box;
   font-size: large;
-  color: white;
 }
 
 html {
@@ -35,11 +34,13 @@ h3 {
     background-color: #333;
     border: 1px solid gold;
 }
+
 #grable-human td, #grable-computer td {
-    width: 20px;
-    height: 20px;
-    border: 1px solid silver;
-    text-align: center;
+  width: 20px;
+  height: 20px;
+  border: 1px solid silver;
+  text-align: center;
+  color: white;
 }
 
 .ship-sunk {
@@ -56,4 +57,12 @@ table {
 
 .disable, .disable-click {
   pointer-events: none;
+}
+
+p {
+  color: black;
+}
+
+.green {
+  background-color: green !important;
 }

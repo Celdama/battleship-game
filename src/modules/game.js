@@ -12,11 +12,11 @@ const game = (() => {
     let parentGrid = null;
 
     if (playerType === 'human') {
-      initPlayer();
+      initPlayer(playerType);
       gameboardForMakeGrid = renderHumanGameboardFilled();
       parentGrid = document.querySelector('.grody-human');
     } else {
-      initComputer();
+      initComputer(playerType);
       gameboardForMakeGrid = renderComputerGameboardFilled();
       parentGrid = document.querySelector('.grody-computer');
     }
