@@ -550,16 +550,16 @@ const game = (()=>{
         const { humanTurn , checkIfAllComputerShipAreSunk , checkIfComputerShipArrSunk  } = _playerDefault.default;
         computerBox.forEach((box)=>{
             box.addEventListener('click', (event)=>{
-                const shipShotedId = humanTurn({
+                const hitedShipId = humanTurn({
                     event,
                     boxReceiveShot: box
                 });
-                if (shipShotedId) {
-                    const shipShotedWasSunk = checkIfComputerShipArrSunk(shipShotedId);
+                if (hitedShipId) {
+                    const shipShotedWasSunk = checkIfComputerShipArrSunk(hitedShipId);
                     changeBgColorIfShipWasSunk({
                         shipIsSunk: shipShotedWasSunk,
                         allBox: computerBox,
-                        shipId: shipShotedId
+                        shipId: hitedShipId
                     });
                 }
                 toggleClickableComputerBox();
@@ -608,7 +608,7 @@ const player = (()=>{
             shipId: 6,
             length: 2
         });
-        const listOfShip = [
+        return [
             ship1,
             ship2,
             ship3,
@@ -616,9 +616,8 @@ const player = (()=>{
             ship5,
             ship6
         ];
-        return listOfShip;
     };
-    const randomPlaceForComputerShip = (shipLength, vertical)=>{
+    const getRandomShipCoord = (shipLength, vertical)=>{
         let coordY = Math.floor(Math.random() * 10);
         let coordX = Math.floor(Math.random() * 10);
         const excesHorizontal = coordX + shipLength;
@@ -635,7 +634,7 @@ const player = (()=>{
         const { placeShipInGameboard  } = profil === 'human' ? humanPlayer : computerPlayer;
         const shipLength = ship.getLength();
         const randomVertical = Math.round(Math.random());
-        const randomCoord = randomPlaceForComputerShip(shipLength, !!randomVertical);
+        const randomCoord = getRandomShipCoord(shipLength, !!randomVertical);
         const coord = randomCoord.split('-');
         const coordY = Number(coord[0]);
         const coordX = Number(coord[1]);
@@ -708,6 +707,8 @@ const player = (()=>{
         }
         box.classList.add('missed-shot');
         box.classList.add('disable-click');
+        // return 'shot missed';
+        return false;
     };
     const computerTurn = ()=>{
         const { renderListOfOpponentMissedShot , renderListOfOpponentHittedShot  } = humanPlayer;
@@ -742,7 +743,6 @@ const player = (()=>{
                 profil
             })
         });
-        console.table(humanPlayer.renderGameboard());
     };
     const initComputer = (profil)=>{
         placeShips({
@@ -756,7 +756,6 @@ const player = (()=>{
     return {
         initPlayer,
         initComputer,
-        // renderComputerGameBoard,
         renderHumanGameboardFilled,
         renderComputerGameboardFilled,
         checkIfComputerShipArrSunk,

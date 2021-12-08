@@ -98,11 +98,11 @@ const game = (() => {
 
     computerBox.forEach((box) => {
       box.addEventListener('click', (event) => {
-        const shipShotedId = humanTurn({ event, boxReceiveShot: box });
-        if (shipShotedId) {
-          const shipShotedWasSunk = checkIfComputerShipArrSunk(shipShotedId);
+        const hitedShipId = humanTurn({ event, boxReceiveShot: box });
+        if (hitedShipId) {
+          const shipShotedWasSunk = checkIfComputerShipArrSunk(hitedShipId);
           changeBgColorIfShipWasSunk({
-            shipIsSunk: shipShotedWasSunk, allBox: computerBox, shipId: shipShotedId,
+            shipIsSunk: shipShotedWasSunk, allBox: computerBox, shipId: hitedShipId,
           });
         }
         toggleClickableComputerBox();

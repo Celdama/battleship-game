@@ -14,12 +14,10 @@ const player = (() => {
     const ship5 = createShip({ shipId: 5, length: 1 });
     const ship6 = createShip({ shipId: 6, length: 2 });
 
-    const listOfShip = [ship1, ship2, ship3, ship4, ship5, ship6];
-
-    return listOfShip;
+    return [ship1, ship2, ship3, ship4, ship5, ship6];
   };
 
-  const randomPlaceForComputerShip = (shipLength, vertical) => {
+  const getRandomShipCoord = (shipLength, vertical) => {
     let coordY = Math.floor(Math.random() * 10);
     let coordX = Math.floor(Math.random() * 10);
 
@@ -47,7 +45,7 @@ const player = (() => {
     const shipLength = ship.getLength();
     const randomVertical = Math.round(Math.random());
 
-    const randomCoord = randomPlaceForComputerShip(shipLength, !!randomVertical);
+    const randomCoord = getRandomShipCoord(shipLength, !!randomVertical);
 
     const coord = randomCoord.split('-');
     const coordY = Number(coord[0]);
@@ -122,6 +120,9 @@ const player = (() => {
     }
     box.classList.add('missed-shot');
     box.classList.add('disable-click');
+
+    // return 'shot missed';
+    return false;
   };
 
   const computerTurn = () => {
@@ -156,7 +157,6 @@ const player = (() => {
 
   const initPlayer = (profil) => {
     placeShips({ profil, ships: createShips({ profil }) });
-    console.table(humanPlayer.renderGameboard());
   };
 
   const initComputer = (profil) => {
@@ -167,7 +167,6 @@ const player = (() => {
   return {
     initPlayer,
     initComputer,
-    // renderComputerGameBoard,
     renderHumanGameboardFilled,
     renderComputerGameboardFilled,
     checkIfComputerShipArrSunk,
