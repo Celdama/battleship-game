@@ -84,12 +84,6 @@ const player = (() => {
     }
   };
 
-  const renderPlayerGameboardFilled = (profil) => {
-    const { renderGameboard } = profil === HUMAN_PROFIL ? humanPlayer : computerPlayer;
-
-    return renderGameboard();
-  };
-
   const makeRandomChoiceForComputerShot = () => {
     const coordY = Math.floor(Math.random() * 10);
     const coordX = Math.floor(Math.random() * 10);
@@ -111,8 +105,14 @@ const player = (() => {
     return !resultOfShot.includes('missed');
   };
 
+  const renderPlayersGameboardFilled = (profil) => {
+    const { renderGameboard } = profil === HUMAN_PROFIL ? humanPlayer : computerPlayer;
+
+    return renderGameboard();
+  };
+
   const humanTurn = ({ event, boxReceiveShot }) => {
-    const computerGameboard = renderPlayerGameboardFilled(AI_PROFIL);
+    const computerGameboard = renderPlayersGameboardFilled(AI_PROFIL);
     const { coordY, coordX } = event.target.dataset;
     const box = boxReceiveShot;
 
@@ -146,10 +146,13 @@ const player = (() => {
     return `${coordY}${coordX}`;
   };
 
-  const checkIfAllComputerShipAreSunk = () => computerPlayer.allShipAreSunk();
-  const checkIfAllHumanShipAreSunk = () => humanPlayer.allShipAreSunk();
+  const checkIfAllPlayerShipAreSunk = (profil) => {
+    const { allShipAreSunk } = profil === HUMAN_PROFIL ? humanPlayer : computerPlayer;
 
-  const checkIfComputerShipArrSunk = (shipId) => {
+    return allShipAreSunk();
+  };
+
+  const checkIfComputerShipIsSunk = (shipId) => {
     const { renderListOfShipInGameboard } = computerPlayer;
     const allComputerShip = renderListOfShipInGameboard();
     const id = Number(shipId);
@@ -170,12 +173,11 @@ const player = (() => {
   return {
     initPlayer,
     initComputer,
-    renderPlayerGameboardFilled,
-    checkIfComputerShipArrSunk,
+    renderPlayersGameboardFilled,
+    checkIfComputerShipIsSunk,
     computerTurn,
     humanTurn,
-    checkIfAllComputerShipAreSunk,
-    checkIfAllHumanShipAreSunk,
+    checkIfAllPlayerShipAreSunk,
   };
 })();
 

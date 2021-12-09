@@ -2,11 +2,12 @@ import player from './player';
 
 const game = (() => {
   const HUMAN_PROFIL = 'human';
+  const AI_PROFIL = 'computer';
   let gameOver = false;
 
   const makePlayersGrid = ({ playerType }) => {
     const {
-      initPlayer, initComputer, renderPlayerGameboardFilled,
+      initPlayer, initComputer, renderPlayersGameboardFilled,
     } = player;
 
     let gameboardForMakeGrid = null;
@@ -14,11 +15,11 @@ const game = (() => {
 
     if (playerType === HUMAN_PROFIL) {
       initPlayer(playerType);
-      gameboardForMakeGrid = renderPlayerGameboardFilled(playerType);
+      gameboardForMakeGrid = renderPlayersGameboardFilled(playerType);
       parentGrid = document.querySelector('.grody-human');
     } else {
       initComputer(playerType);
-      gameboardForMakeGrid = renderPlayerGameboardFilled(playerType);
+      gameboardForMakeGrid = renderPlayersGameboardFilled(playerType);
       parentGrid = document.querySelector('.grody-computer');
     }
 
@@ -60,7 +61,7 @@ const game = (() => {
   });
 
   const asyncComputerTurn = async () => {
-    const { computerTurn, checkIfAllHumanShipAreSunk } = player;
+    const { computerTurn, checkIfAllPlayerShipAreSunk } = player;
 
     await sleep(800);
     if (!gameOver) {
@@ -74,7 +75,7 @@ const game = (() => {
       }
       console.log(`look at this, this is a computer shot at coord ${coordComputerShot}`);
 
-      checkIfGameIsOver(checkIfAllHumanShipAreSunk());
+      checkIfGameIsOver(checkIfAllPlayerShipAreSunk(HUMAN_PROFIL));
       toggleClickableComputerBox();
     }
   };
@@ -83,8 +84,9 @@ const game = (() => {
     const searchText = shipId;
     if (shipIsSunk) {
       allBox.forEach((box) => {
+        const shipBox = box;
         if (box.textContent.includes(searchText)) {
-          box.style.backgroundColor = 'red';
+          shipBox.style.backgroundColor = 'red';
         }
       });
     }
@@ -95,19 +97,19 @@ const game = (() => {
     makePlayersGrid({ playerType: 'computer' });
 
     const computerBox = document.querySelectorAll('.grody-computer td');
-    const { humanTurn, checkIfAllComputerShipAreSunk, checkIfComputerShipArrSunk } = player;
+    const { humanTurn, checkIfAllPlayerShipAreSunk, checkIfComputerShipIsSunk } = player;
 
     computerBox.forEach((box) => {
       box.addEventListener('click', (event) => {
         const hitedShipId = humanTurn({ event, boxReceiveShot: box });
         if (hitedShipId) {
-          const shipShotedWasSunk = checkIfComputerShipArrSunk(hitedShipId);
+          const shipShotedWasSunk = checkIfComputerShipIsSunk(hitedShipId);
           changeBgColorIfShipWasSunk({
             shipIsSunk: shipShotedWasSunk, allBox: computerBox, shipId: hitedShipId,
           });
         }
         toggleClickableComputerBox();
-        checkIfGameIsOver(checkIfAllComputerShipAreSunk());
+        checkIfGameIsOver(checkIfAllPlayerShipAreSunk(AI_PROFIL));
         asyncComputerTurn();
       });
     });

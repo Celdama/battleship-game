@@ -475,18 +475,19 @@ var _player = require("./player");
 var _playerDefault = parcelHelpers.interopDefault(_player);
 const game = (()=>{
     const HUMAN_PROFIL = 'human';
+    const AI_PROFIL = 'computer';
     let gameOver = false;
     const makePlayersGrid = ({ playerType  })=>{
-        const { initPlayer , initComputer , renderPlayerGameboardFilled ,  } = _playerDefault.default;
+        const { initPlayer , initComputer , renderPlayersGameboardFilled ,  } = _playerDefault.default;
         let gameboardForMakeGrid = null;
         let parentGrid = null;
         if (playerType === HUMAN_PROFIL) {
             initPlayer(playerType);
-            gameboardForMakeGrid = renderPlayerGameboardFilled(playerType);
+            gameboardForMakeGrid = renderPlayersGameboardFilled(playerType);
             parentGrid = document.querySelector('.grody-human');
         } else {
             initComputer(playerType);
-            gameboardForMakeGrid = renderPlayerGameboardFilled(playerType);
+            gameboardForMakeGrid = renderPlayersGameboardFilled(playerType);
             parentGrid = document.querySelector('.grody-computer');
         }
         const dimensions = 10;
@@ -522,7 +523,7 @@ const game = (()=>{
         })
     ;
     const asyncComputerTurn = async ()=>{
-        const { computerTurn , checkIfAllHumanShipAreSunk  } = _playerDefault.default;
+        const { computerTurn , checkIfAllPlayerShipAreSunk  } = _playerDefault.default;
         await sleep(800);
         if (!gameOver) {
             const coordComputerShot = computerTurn();
@@ -530,14 +531,15 @@ const game = (()=>{
             if (boxShottedByComputer.textContent) boxShottedByComputer.style.color = 'red';
             else boxShottedByComputer.classList.add('missed-shot');
             console.log(`look at this, this is a computer shot at coord ${coordComputerShot}`);
-            checkIfGameIsOver(checkIfAllHumanShipAreSunk());
+            checkIfGameIsOver(checkIfAllPlayerShipAreSunk(HUMAN_PROFIL));
             toggleClickableComputerBox();
         }
     };
     const changeBgColorIfShipWasSunk = ({ shipIsSunk , allBox , shipId  })=>{
         const searchText = shipId;
         if (shipIsSunk) allBox.forEach((box)=>{
-            if (box.textContent.includes(searchText)) box.style.backgroundColor = 'red';
+            const shipBox = box;
+            if (box.textContent.includes(searchText)) shipBox.style.backgroundColor = 'red';
         });
     };
     const gameLoop = ()=>{
@@ -548,7 +550,7 @@ const game = (()=>{
             playerType: 'computer'
         });
         const computerBox = document.querySelectorAll('.grody-computer td');
-        const { humanTurn , checkIfAllComputerShipAreSunk , checkIfComputerShipArrSunk  } = _playerDefault.default;
+        const { humanTurn , checkIfAllPlayerShipAreSunk , checkIfComputerShipIsSunk  } = _playerDefault.default;
         computerBox.forEach((box)=>{
             box.addEventListener('click', (event)=>{
                 const hitedShipId = humanTurn({
@@ -556,7 +558,7 @@ const game = (()=>{
                     boxReceiveShot: box
                 });
                 if (hitedShipId) {
-                    const shipShotedWasSunk = checkIfComputerShipArrSunk(hitedShipId);
+                    const shipShotedWasSunk = checkIfComputerShipIsSunk(hitedShipId);
                     changeBgColorIfShipWasSunk({
                         shipIsSunk: shipShotedWasSunk,
                         allBox: computerBox,
@@ -564,7 +566,7 @@ const game = (()=>{
                     });
                 }
                 toggleClickableComputerBox();
-                checkIfGameIsOver(checkIfAllComputerShipAreSunk());
+                checkIfGameIsOver(checkIfAllPlayerShipAreSunk(AI_PROFIL));
                 asyncComputerTurn();
             });
         });
@@ -671,10 +673,6 @@ const player = (()=>{
             }
         });
     };
-    const renderPlayerGameboardFilled = (profil)=>{
-        const { renderGameboard  } = profil === HUMAN_PROFIL ? humanPlayer : computerPlayer;
-        return renderGameboard();
-    };
     const makeRandomChoiceForComputerShot = ()=>{
         const coordY = Math.floor(Math.random() * 10);
         const coordX = Math.floor(Math.random() * 10);
@@ -696,8 +694,12 @@ const player = (()=>{
         });
         return !resultOfShot.includes('missed');
     };
+    const renderPlayersGameboardFilled = (profil)=>{
+        const { renderGameboard  } = profil === HUMAN_PROFIL ? humanPlayer : computerPlayer;
+        return renderGameboard();
+    };
     const humanTurn = ({ event , boxReceiveShot  })=>{
-        const computerGameboard = renderPlayerGameboardFilled(AI_PROFIL);
+        const computerGameboard = renderPlayersGameboardFilled(AI_PROFIL);
         const { coordY , coordX  } = event.target.dataset;
         const box = boxReceiveShot;
         if (humanAttack({
@@ -726,11 +728,11 @@ const player = (()=>{
         });
         return `${coordY}${coordX}`;
     };
-    const checkIfAllComputerShipAreSunk = ()=>computerPlayer.allShipAreSunk()
-    ;
-    const checkIfAllHumanShipAreSunk = ()=>humanPlayer.allShipAreSunk()
-    ;
-    const checkIfComputerShipArrSunk = (shipId)=>{
+    const checkIfAllPlayerShipAreSunk = (profil)=>{
+        const { allShipAreSunk  } = profil === HUMAN_PROFIL ? humanPlayer : computerPlayer;
+        return allShipAreSunk();
+    };
+    const checkIfComputerShipIsSunk = (shipId)=>{
         const { renderListOfShipInGameboard  } = computerPlayer;
         const allComputerShip = renderListOfShipInGameboard();
         const id = Number(shipId);
@@ -758,12 +760,11 @@ const player = (()=>{
     return {
         initPlayer,
         initComputer,
-        renderPlayerGameboardFilled,
-        checkIfComputerShipArrSunk,
+        renderPlayersGameboardFilled,
+        checkIfComputerShipIsSunk,
         computerTurn,
         humanTurn,
-        checkIfAllComputerShipAreSunk,
-        checkIfAllHumanShipAreSunk
+        checkIfAllPlayerShipAreSunk
     };
 })();
 exports.default = player;
