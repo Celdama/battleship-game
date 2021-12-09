@@ -4,6 +4,7 @@ const game = (() => {
   const HUMAN_PROFIL = 'human';
   const AI_PROFIL = 'computer';
   let gameOver = false;
+  const displayHittedMessage = document.querySelector('.hitted-message');
 
   const makePlayersGrid = ({ playerType }) => {
     const {
@@ -63,7 +64,7 @@ const game = (() => {
   const asyncComputerTurn = async () => {
     const { computerTurn, checkIfAllPlayerShipAreSunk, getNameOfHittedShip } = player;
 
-    await sleep(800);
+    await sleep(2000);
     if (!gameOver) {
       const coordComputerShot = computerTurn();
 
@@ -73,10 +74,10 @@ const game = (() => {
       if (boxShottedByComputer.textContent) {
         const id = boxShottedByComputer.textContent;
         const hittedShipName = getNameOfHittedShip(id, HUMAN_PROFIL);
-        // add in dom HTML this message
-        console.log(`Computer have hit your ${hittedShipName}`);
+        displayHittedMessage.textContent = `Computer have hit your ${hittedShipName}`;
         boxShottedByComputer.style.color = 'red';
       } else {
+        displayHittedMessage.textContent = 'The enemy fires a shot into your waters .... and misses.';
         boxShottedByComputer.classList.add('missed-shot');
       }
 
@@ -85,7 +86,9 @@ const game = (() => {
     }
   };
 
-  const changeBgColorIfShipWasSunk = ({ shipIsSunk, allBox, shipId }) => {
+  const changeBgColorIfShipWasSunk = ({
+    shipIsSunk, allBox, shipId, shipName,
+  }) => {
     const searchText = shipId;
     if (shipIsSunk) {
       allBox.forEach((box) => {
@@ -94,6 +97,7 @@ const game = (() => {
           shipBox.style.backgroundColor = 'red';
         }
       });
+      displayHittedMessage.textContent = `Congrats your sunk ${shipName}`;
     }
   };
 
@@ -108,16 +112,22 @@ const game = (() => {
 
     computerBox.forEach((box) => {
       box.addEventListener('click', (event) => {
+        displayHittedMessage.textContent = '';
         const hitedShipId = humanTurn({ event, boxReceiveShot: box });
         if (hitedShipId) {
           const hittedShipName = getNameOfHittedShip(hitedShipId, AI_PROFIL);
-          // add in dom HTML this message
-          console.log(`you have hit the ${hittedShipName}`);
+          displayHittedMessage.textContent = `you have hit the ${hittedShipName}`;
           const shipShotedWasSunk = checkIfComputerShipIsSunk(hitedShipId);
           changeBgColorIfShipWasSunk({
-            shipIsSunk: shipShotedWasSunk, allBox: computerBox, shipId: hitedShipId,
+            shipIsSunk: shipShotedWasSunk,
+            allBox: computerBox,
+            shipId: hitedShipId,
+            shipName: hittedShipName,
           });
+        } else {
+          displayHittedMessage.textContent = 'You fires a shot into enemy waters .... and misses.';
         }
+
         toggleClickableComputerBox();
         checkIfGameIsOver(checkIfAllPlayerShipAreSunk(AI_PROFIL));
         asyncComputerTurn();
