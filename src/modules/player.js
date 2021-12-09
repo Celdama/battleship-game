@@ -82,9 +82,11 @@ const player = (() => {
     }
   };
 
-  const renderHumanGameboardFilled = () => humanPlayer.renderGameboard();
+  const renderPlayerGameboardFilled = (playerType) => {
+    const { renderGameboard } = playerType === 'human' ? humanPlayer : computerPlayer;
 
-  const renderComputerGameboardFilled = () => computerPlayer.renderGameboard();
+    return renderGameboard();
+  };
 
   const makeRandomChoiceForComputerShot = () => {
     const coordY = Math.floor(Math.random() * 10);
@@ -121,7 +123,6 @@ const player = (() => {
     box.classList.add('missed-shot');
     box.classList.add('disable-click');
 
-    // return 'shot missed';
     return false;
   };
 
@@ -155,20 +156,19 @@ const player = (() => {
     return hitedShip.isSunk();
   };
 
-  const initPlayer = (profil) => {
-    placeShips({ profil, ships: createShips({ profil }) });
+  const initPlayer = (playerType) => {
+    placeShips({ playerType, ships: createShips({ playerType }) });
   };
 
-  const initComputer = (profil) => {
-    placeShips({ profil, ships: createShips({ profil }) });
+  const initComputer = (playerType) => {
+    placeShips({ playerType, ships: createShips({ playerType }) });
     console.table(computerPlayer.renderGameboard());
   };
 
   return {
     initPlayer,
     initComputer,
-    renderHumanGameboardFilled,
-    renderComputerGameboardFilled,
+    renderPlayerGameboardFilled,
     checkIfComputerShipArrSunk,
     computerTurn,
     humanTurn,

@@ -5,7 +5,7 @@ const game = (() => {
 
   const makePlayersGrid = ({ playerType }) => {
     const {
-      initPlayer, initComputer, renderHumanGameboardFilled, renderComputerGameboardFilled,
+      initPlayer, initComputer, renderPlayerGameboardFilled,
     } = player;
 
     let gameboardForMakeGrid = null;
@@ -13,11 +13,11 @@ const game = (() => {
 
     if (playerType === 'human') {
       initPlayer(playerType);
-      gameboardForMakeGrid = renderHumanGameboardFilled();
+      gameboardForMakeGrid = renderPlayerGameboardFilled(playerType);
       parentGrid = document.querySelector('.grody-human');
     } else {
       initComputer(playerType);
-      gameboardForMakeGrid = renderComputerGameboardFilled();
+      gameboardForMakeGrid = renderPlayerGameboardFilled(playerType);
       parentGrid = document.querySelector('.grody-computer');
     }
 

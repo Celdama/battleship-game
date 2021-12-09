@@ -476,16 +476,16 @@ var _playerDefault = parcelHelpers.interopDefault(_player);
 const game = (()=>{
     let gameOver = false;
     const makePlayersGrid = ({ playerType  })=>{
-        const { initPlayer , initComputer , renderHumanGameboardFilled , renderComputerGameboardFilled ,  } = _playerDefault.default;
+        const { initPlayer , initComputer , renderPlayerGameboardFilled ,  } = _playerDefault.default;
         let gameboardForMakeGrid = null;
         let parentGrid = null;
         if (playerType === 'human') {
             initPlayer(playerType);
-            gameboardForMakeGrid = renderHumanGameboardFilled();
+            gameboardForMakeGrid = renderPlayerGameboardFilled(playerType);
             parentGrid = document.querySelector('.grody-human');
         } else {
             initComputer(playerType);
-            gameboardForMakeGrid = renderComputerGameboardFilled();
+            gameboardForMakeGrid = renderPlayerGameboardFilled(playerType);
             parentGrid = document.querySelector('.grody-computer');
         }
         const dimensions = 10;
@@ -668,10 +668,10 @@ const player = (()=>{
             }
         });
     };
-    const renderHumanGameboardFilled = ()=>humanPlayer.renderGameboard()
-    ;
-    const renderComputerGameboardFilled = ()=>computerPlayer.renderGameboard()
-    ;
+    const renderPlayerGameboardFilled = (playerType)=>{
+        const { renderGameboard  } = playerType === 'human' ? humanPlayer : computerPlayer;
+        return renderGameboard();
+    };
     const makeRandomChoiceForComputerShot = ()=>{
         const coordY = Math.floor(Math.random() * 10);
         const coordX = Math.floor(Math.random() * 10);
@@ -707,7 +707,6 @@ const player = (()=>{
         }
         box.classList.add('missed-shot');
         box.classList.add('disable-click');
-        // return 'shot missed';
         return false;
     };
     const computerTurn = ()=>{
@@ -736,19 +735,19 @@ const player = (()=>{
         );
         return hitedShip.isSunk();
     };
-    const initPlayer = (profil)=>{
+    const initPlayer = (playerType)=>{
         placeShips({
-            profil,
+            playerType,
             ships: createShips({
-                profil
+                playerType
             })
         });
     };
-    const initComputer = (profil)=>{
+    const initComputer = (playerType)=>{
         placeShips({
-            profil,
+            playerType,
             ships: createShips({
-                profil
+                playerType
             })
         });
         console.table(computerPlayer.renderGameboard());
@@ -756,8 +755,7 @@ const player = (()=>{
     return {
         initPlayer,
         initComputer,
-        renderHumanGameboardFilled,
-        renderComputerGameboardFilled,
+        renderPlayerGameboardFilled,
         checkIfComputerShipArrSunk,
         computerTurn,
         humanTurn,
