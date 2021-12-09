@@ -61,19 +61,24 @@ const game = (() => {
   });
 
   const asyncComputerTurn = async () => {
-    const { computerTurn, checkIfAllPlayerShipAreSunk } = player;
+    const { computerTurn, checkIfAllPlayerShipAreSunk, getNameOfHittedShip } = player;
 
     await sleep(800);
     if (!gameOver) {
       const coordComputerShot = computerTurn();
 
       const boxShottedByComputer = document.getElementById(`${coordComputerShot}`);
+      console.log(`look at this, this is a computer shot at coord ${coordComputerShot}`);
+
       if (boxShottedByComputer.textContent) {
+        const id = boxShottedByComputer.textContent;
+        const hittedShipName = getNameOfHittedShip(id, HUMAN_PROFIL);
+        // add in dom HTML this message
+        console.log(`Computer have hit your ${hittedShipName}`);
         boxShottedByComputer.style.color = 'red';
       } else {
         boxShottedByComputer.classList.add('missed-shot');
       }
-      console.log(`look at this, this is a computer shot at coord ${coordComputerShot}`);
 
       checkIfGameIsOver(checkIfAllPlayerShipAreSunk(HUMAN_PROFIL));
       toggleClickableComputerBox();
@@ -97,12 +102,17 @@ const game = (() => {
     makePlayersGrid({ playerType: 'computer' });
 
     const computerBox = document.querySelectorAll('.grody-computer td');
-    const { humanTurn, checkIfAllPlayerShipAreSunk, checkIfComputerShipIsSunk } = player;
+    const {
+      humanTurn, checkIfAllPlayerShipAreSunk, checkIfComputerShipIsSunk, getNameOfHittedShip,
+    } = player;
 
     computerBox.forEach((box) => {
       box.addEventListener('click', (event) => {
         const hitedShipId = humanTurn({ event, boxReceiveShot: box });
         if (hitedShipId) {
+          const hittedShipName = getNameOfHittedShip(hitedShipId, AI_PROFIL);
+          // add in dom HTML this message
+          console.log(`you have hit the ${hittedShipName}`);
           const shipShotedWasSunk = checkIfComputerShipIsSunk(hitedShipId);
           changeBgColorIfShipWasSunk({
             shipIsSunk: shipShotedWasSunk, allBox: computerBox, shipId: hitedShipId,

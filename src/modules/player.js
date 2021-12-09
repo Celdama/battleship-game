@@ -9,12 +9,12 @@ const player = (() => {
   const createShips = ({ profil }) => {
     const { createShip } = profil === HUMAN_PROFIL ? humanPlayer : computerPlayer;
 
-    const ship1 = createShip({ shipId: 1, length: 5 });
-    const ship2 = createShip({ shipId: 2, length: 4 });
-    const ship3 = createShip({ shipId: 3, length: 3 });
-    const ship4 = createShip({ shipId: 4, length: 3 });
-    const ship5 = createShip({ shipId: 5, length: 1 });
-    const ship6 = createShip({ shipId: 6, length: 2 });
+    const ship1 = createShip({ name: 'carrier', shipId: 1, length: 5 });
+    const ship2 = createShip({ name: 'battleship', shipId: 2, length: 4 });
+    const ship3 = createShip({ name: 'destroyer', shipId: 3, length: 3 });
+    const ship4 = createShip({ name: 'submarine', shipId: 4, length: 3 });
+    const ship5 = createShip({ name: 'rescued boat', shipId: 5, length: 1 });
+    const ship6 = createShip({ name: 'patrol boat', shipId: 6, length: 2 });
 
     return [ship1, ship2, ship3, ship4, ship5, ship6];
   };
@@ -128,6 +128,16 @@ const player = (() => {
     return false;
   };
 
+  const getNameOfHittedShip = (id, profil) => {
+    const { renderListOfShipInGameboard } = profil === HUMAN_PROFIL ? humanPlayer : computerPlayer;
+
+    const listOfShips = renderListOfShipInGameboard();
+
+    const hittedShip = listOfShips.find((ship) => ship.shipId === Number(id));
+
+    return hittedShip.name;
+  };
+
   const computerTurn = () => {
     const { renderListOfOpponentMissedShot, renderListOfOpponentHittedShot } = humanPlayer;
     const missedShot = renderListOfOpponentMissedShot();
@@ -178,6 +188,7 @@ const player = (() => {
     computerTurn,
     humanTurn,
     checkIfAllPlayerShipAreSunk,
+    getNameOfHittedShip,
   };
 })();
 

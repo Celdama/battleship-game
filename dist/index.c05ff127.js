@@ -523,14 +523,19 @@ const game = (()=>{
         })
     ;
     const asyncComputerTurn = async ()=>{
-        const { computerTurn , checkIfAllPlayerShipAreSunk  } = _playerDefault.default;
+        const { computerTurn , checkIfAllPlayerShipAreSunk , getNameOfHittedShip  } = _playerDefault.default;
         await sleep(800);
         if (!gameOver) {
             const coordComputerShot = computerTurn();
             const boxShottedByComputer = document.getElementById(`${coordComputerShot}`);
-            if (boxShottedByComputer.textContent) boxShottedByComputer.style.color = 'red';
-            else boxShottedByComputer.classList.add('missed-shot');
             console.log(`look at this, this is a computer shot at coord ${coordComputerShot}`);
+            if (boxShottedByComputer.textContent) {
+                const id = boxShottedByComputer.textContent;
+                const hittedShipName = getNameOfHittedShip(id, HUMAN_PROFIL);
+                // add in dom HTML this message
+                console.log(`Computer have hit your ${hittedShipName}`);
+                boxShottedByComputer.style.color = 'red';
+            } else boxShottedByComputer.classList.add('missed-shot');
             checkIfGameIsOver(checkIfAllPlayerShipAreSunk(HUMAN_PROFIL));
             toggleClickableComputerBox();
         }
@@ -550,7 +555,7 @@ const game = (()=>{
             playerType: 'computer'
         });
         const computerBox = document.querySelectorAll('.grody-computer td');
-        const { humanTurn , checkIfAllPlayerShipAreSunk , checkIfComputerShipIsSunk  } = _playerDefault.default;
+        const { humanTurn , checkIfAllPlayerShipAreSunk , checkIfComputerShipIsSunk , getNameOfHittedShip ,  } = _playerDefault.default;
         computerBox.forEach((box)=>{
             box.addEventListener('click', (event)=>{
                 const hitedShipId = humanTurn({
@@ -558,6 +563,9 @@ const game = (()=>{
                     boxReceiveShot: box
                 });
                 if (hitedShipId) {
+                    const hittedShipName = getNameOfHittedShip(hitedShipId, AI_PROFIL);
+                    // add in dom HTML this message
+                    console.log(`you have hit the ${hittedShipName}`);
                     const shipShotedWasSunk = checkIfComputerShipIsSunk(hitedShipId);
                     changeBgColorIfShipWasSunk({
                         shipIsSunk: shipShotedWasSunk,
@@ -590,26 +598,32 @@ const player = (()=>{
     const createShips = ({ profil  })=>{
         const { createShip  } = profil === HUMAN_PROFIL ? humanPlayer : computerPlayer;
         const ship1 = createShip({
+            name: 'carrier',
             shipId: 1,
             length: 5
         });
         const ship2 = createShip({
+            name: 'battleship',
             shipId: 2,
             length: 4
         });
         const ship3 = createShip({
+            name: 'destroyer',
             shipId: 3,
             length: 3
         });
         const ship4 = createShip({
+            name: 'submarine',
             shipId: 4,
             length: 3
         });
         const ship5 = createShip({
+            name: 'rescued boat',
             shipId: 5,
             length: 1
         });
         const ship6 = createShip({
+            name: 'patrol boat',
             shipId: 6,
             length: 2
         });
@@ -714,6 +728,13 @@ const player = (()=>{
         box.classList.add('disable-click');
         return false;
     };
+    const getNameOfHittedShip = (id, profil)=>{
+        const { renderListOfShipInGameboard  } = profil === HUMAN_PROFIL ? humanPlayer : computerPlayer;
+        const listOfShips = renderListOfShipInGameboard();
+        const hittedShip = listOfShips.find((ship)=>ship.shipId === Number(id)
+        );
+        return hittedShip.name;
+    };
     const computerTurn = ()=>{
         const { renderListOfOpponentMissedShot , renderListOfOpponentHittedShot  } = humanPlayer;
         const missedShot = renderListOfOpponentMissedShot();
@@ -764,7 +785,8 @@ const player = (()=>{
         checkIfComputerShipIsSunk,
         computerTurn,
         humanTurn,
-        checkIfAllPlayerShipAreSunk
+        checkIfAllPlayerShipAreSunk,
+        getNameOfHittedShip
     };
 })();
 exports.default = player;
@@ -980,8 +1002,9 @@ const gameboardFactory = ()=>{
         }
         return false;
     };
-    const createShip = ({ shipId , length  })=>{
+    const createShip = ({ name , shipId , length  })=>{
         const newShip = _shipDefault.default({
+            name,
             shipId,
             length
         });
@@ -1045,7 +1068,7 @@ const setShipLength = (length)=>{
 };
 const isBetweenRange = (position)=>SHIP_MIN_LENGTH <= position && position <= SHIP_MAX_LENGTH
 ;
-const shipFactory = ({ shipId , length  })=>{
+const shipFactory = ({ name , shipId , length  })=>{
     const lives = [];
     const shipLength = setShipLength(length);
     const getLength = ()=>shipLength
@@ -1062,6 +1085,7 @@ const shipFactory = ({ shipId , length  })=>{
         return self;
     }
     return {
+        name,
         shipId,
         getLength,
         getLives,

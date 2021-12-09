@@ -90,8 +90,8 @@ const gameboardFactory = () => {
     return false;
   };
 
-  const createShip = ({ shipId, length }) => {
-    const newShip = shipFactory({ shipId, length });
+  const createShip = ({ name, shipId, length }) => {
+    const newShip = shipFactory({ name, shipId, length });
 
     return newShip;
   };
