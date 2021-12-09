@@ -474,12 +474,13 @@ parcelHelpers.defineInteropFlag(exports);
 var _player = require("./player");
 var _playerDefault = parcelHelpers.interopDefault(_player);
 const game = (()=>{
+    const HUMAN_PROFIL = 'human';
     let gameOver = false;
     const makePlayersGrid = ({ playerType  })=>{
         const { initPlayer , initComputer , renderPlayerGameboardFilled ,  } = _playerDefault.default;
         let gameboardForMakeGrid = null;
         let parentGrid = null;
-        if (playerType === 'human') {
+        if (playerType === HUMAN_PROFIL) {
             initPlayer(playerType);
             gameboardForMakeGrid = renderPlayerGameboardFilled(playerType);
             parentGrid = document.querySelector('.grody-human');
@@ -580,10 +581,12 @@ parcelHelpers.defineInteropFlag(exports);
 var _gameboard = require("../factory/gameboard");
 var _gameboardDefault = parcelHelpers.interopDefault(_gameboard);
 const player = (()=>{
+    const HUMAN_PROFIL = 'human';
+    const AI_PROFIL = 'computer';
     const humanPlayer = _gameboardDefault.default();
     const computerPlayer = _gameboardDefault.default();
     const createShips = ({ profil  })=>{
-        const { createShip  } = profil === 'human' ? humanPlayer : computerPlayer;
+        const { createShip  } = profil === HUMAN_PROFIL ? humanPlayer : computerPlayer;
         const ship1 = createShip({
             shipId: 1,
             length: 5
@@ -631,7 +634,7 @@ const player = (()=>{
         return `${coordY}-${coordX}`;
     };
     const setShipPlace = ({ profil , ship  })=>{
-        const { placeShipInGameboard  } = profil === 'human' ? humanPlayer : computerPlayer;
+        const { placeShipInGameboard  } = profil === HUMAN_PROFIL ? humanPlayer : computerPlayer;
         const shipLength = ship.getLength();
         const randomVertical = Math.round(Math.random());
         const randomCoord = getRandomShipCoord(shipLength, !!randomVertical);
@@ -668,8 +671,8 @@ const player = (()=>{
             }
         });
     };
-    const renderPlayerGameboardFilled = (playerType)=>{
-        const { renderGameboard  } = playerType === 'human' ? humanPlayer : computerPlayer;
+    const renderPlayerGameboardFilled = (profil)=>{
+        const { renderGameboard  } = profil === HUMAN_PROFIL ? humanPlayer : computerPlayer;
         return renderGameboard();
     };
     const makeRandomChoiceForComputerShot = ()=>{
@@ -694,7 +697,7 @@ const player = (()=>{
         return !resultOfShot.includes('missed');
     };
     const humanTurn = ({ event , boxReceiveShot  })=>{
-        const computerGameboard = renderComputerGameboardFilled();
+        const computerGameboard = renderPlayerGameboardFilled(AI_PROFIL);
         const { coordY , coordX  } = event.target.dataset;
         const box = boxReceiveShot;
         if (humanAttack({
@@ -735,19 +738,19 @@ const player = (()=>{
         );
         return hitedShip.isSunk();
     };
-    const initPlayer = (playerType)=>{
+    const initPlayer = (profil)=>{
         placeShips({
-            playerType,
+            profil,
             ships: createShips({
-                playerType
+                profil
             })
         });
     };
-    const initComputer = (playerType)=>{
+    const initComputer = (profil)=>{
         placeShips({
-            playerType,
+            profil,
             ships: createShips({
-                playerType
+                profil
             })
         });
         console.table(computerPlayer.renderGameboard());

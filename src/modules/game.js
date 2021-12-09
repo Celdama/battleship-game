@@ -1,6 +1,7 @@
 import player from './player';
 
 const game = (() => {
+  const HUMAN_PROFIL = 'human';
   let gameOver = false;
 
   const makePlayersGrid = ({ playerType }) => {
@@ -11,7 +12,7 @@ const game = (() => {
     let gameboardForMakeGrid = null;
     let parentGrid = null;
 
-    if (playerType === 'human') {
+    if (playerType === HUMAN_PROFIL) {
       initPlayer(playerType);
       gameboardForMakeGrid = renderPlayerGameboardFilled(playerType);
       parentGrid = document.querySelector('.grody-human');

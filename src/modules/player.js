@@ -1,11 +1,13 @@
 import gameboardFactory from '../factory/gameboard';
 
 const player = (() => {
+  const HUMAN_PROFIL = 'human';
+  const AI_PROFIL = 'computer';
   const humanPlayer = gameboardFactory();
   const computerPlayer = gameboardFactory();
 
   const createShips = ({ profil }) => {
-    const { createShip } = profil === 'human' ? humanPlayer : computerPlayer;
+    const { createShip } = profil === HUMAN_PROFIL ? humanPlayer : computerPlayer;
 
     const ship1 = createShip({ shipId: 1, length: 5 });
     const ship2 = createShip({ shipId: 2, length: 4 });
@@ -40,7 +42,7 @@ const player = (() => {
   };
 
   const setShipPlace = ({ profil, ship }) => {
-    const { placeShipInGameboard } = profil === 'human' ? humanPlayer : computerPlayer;
+    const { placeShipInGameboard } = profil === HUMAN_PROFIL ? humanPlayer : computerPlayer;
 
     const shipLength = ship.getLength();
     const randomVertical = Math.round(Math.random());
@@ -82,8 +84,8 @@ const player = (() => {
     }
   };
 
-  const renderPlayerGameboardFilled = (playerType) => {
-    const { renderGameboard } = playerType === 'human' ? humanPlayer : computerPlayer;
+  const renderPlayerGameboardFilled = (profil) => {
+    const { renderGameboard } = profil === HUMAN_PROFIL ? humanPlayer : computerPlayer;
 
     return renderGameboard();
   };
@@ -110,7 +112,7 @@ const player = (() => {
   };
 
   const humanTurn = ({ event, boxReceiveShot }) => {
-    const computerGameboard = renderComputerGameboardFilled();
+    const computerGameboard = renderPlayerGameboardFilled(AI_PROFIL);
     const { coordY, coordX } = event.target.dataset;
     const box = boxReceiveShot;
 
@@ -156,12 +158,12 @@ const player = (() => {
     return hitedShip.isSunk();
   };
 
-  const initPlayer = (playerType) => {
-    placeShips({ playerType, ships: createShips({ playerType }) });
+  const initPlayer = (profil) => {
+    placeShips({ profil, ships: createShips({ profil }) });
   };
 
-  const initComputer = (playerType) => {
-    placeShips({ playerType, ships: createShips({ playerType }) });
+  const initComputer = (profil) => {
+    placeShips({ profil, ships: createShips({ profil }) });
     console.table(computerPlayer.renderGameboard());
   };
 
