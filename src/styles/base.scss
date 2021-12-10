@@ -8,7 +8,6 @@
 
 html {
   font-size: 10px;
-  // background-color: #1A1A1A;
 }
 
 a {
@@ -17,30 +16,6 @@ a {
 
 ul {
   list-style: none;
-}
-
-
-#app {
-  display: flex;
-  justify-content: space-around;
-}
-
-h3 {
-  color: #333;
-}
-
-
-#grable-human, #grable-computer {
-    background-color: #333;
-    border: 1px solid gold;
-}
-
-#grable-human td, #grable-computer td {
-  width: 20px;
-  height: 20px;
-  border: 1px solid silver;
-  text-align: center;
-  color: white;
 }
 
 .ship-sunk {
@@ -55,7 +30,8 @@ table {
   margin: 10px;
 }
 
-.disable, .disable-click {
+.disable,
+.disable-click {
   pointer-events: none;
 }
 

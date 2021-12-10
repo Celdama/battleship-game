@@ -1,0 +1,24 @@
+.gameboard {
+  outline: 1px solid red;
+
+  h3 {
+    color: #333;
+  }
+
+  #grable-human td,
+  #grable-computer td {
+    width: 25px;
+    height: 25px;
+    // border: 1px solid silver;
+    text-align: center;
+    color: black;
+  }
+
+  #grable-human td {
+    background-color: #dff4ff;
+  }
+
+  #grable-computer td {
+    background-color: #ebebeb;
+  }
+}

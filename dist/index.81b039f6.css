@@ -18,28 +18,6 @@ ul {
   list-style: none;
 }
 
-#app {
-  display: flex;
-  justify-content: space-around;
-}
-
-h3 {
-  color: #333;
-}
-
-#grable-human, #grable-computer {
-  background-color: #333;
-  border: 1px solid gold;
-}
-
-#grable-human td, #grable-computer td {
-  width: 20px;
-  height: 20px;
-  border: 1px solid silver;
-  text-align: center;
-  color: white;
-}
-
 .ship-sunk {
   background-color: red !important;
 }
@@ -52,7 +30,8 @@ table {
   margin: 10px;
 }
 
-.disable, .disable-click {
+.disable,
+.disable-click {
   pointer-events: none;
 }
 
@@ -62,5 +41,33 @@ p {
 
 .green {
   background-color: green !important;
+}
+
+#app {
+  outline: 1px solid blue;
+  height: 80vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.gameboard {
+  outline: 1px solid red;
+}
+.gameboard h3 {
+  color: #333;
+}
+.gameboard #grable-human td,
+.gameboard #grable-computer td {
+  width: 25px;
+  height: 25px;
+  text-align: center;
+  color: black;
+}
+.gameboard #grable-human td {
+  background-color: #dff4ff;
+}
+.gameboard #grable-computer td {
+  background-color: #ebebeb;
 }
 /*# sourceMappingURL=index.81b039f6.css.map */

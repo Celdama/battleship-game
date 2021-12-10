@@ -5,7 +5,7 @@
   "main": "script.js",
   "scripts": {
     "start": "parcel src/index.html",
-    "build": "parcel build src/index.html",
+    "build": "parcel build --no-minify src/index.html",
     "test": "jest --watch"
   },
   "repository": {
@@ -26,7 +26,8 @@
     "eslint": "^8.3.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.25.3",
-    "jest": "^27.3.1"
+    "jest": "^27.3.1",
+    "sass": "^1.44.0"
   },
   "dependencies": {
     "parcel": "^2.0.1"
