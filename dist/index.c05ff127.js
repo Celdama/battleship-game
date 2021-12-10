@@ -798,37 +798,7 @@ const player = (()=>{
 })();
 exports.default = player;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV","../factory/gameboard":"5KOy8"}],"ciiiV":[function(require,module,exports) {
-exports.interopDefault = function(a) {
-    return a && a.__esModule ? a : {
-        default: a
-    };
-};
-exports.defineInteropFlag = function(a) {
-    Object.defineProperty(a, '__esModule', {
-        value: true
-    });
-};
-exports.exportAll = function(source, dest) {
-    Object.keys(source).forEach(function(key) {
-        if (key === 'default' || key === '__esModule' || dest.hasOwnProperty(key)) return;
-        Object.defineProperty(dest, key, {
-            enumerable: true,
-            get: function() {
-                return source[key];
-            }
-        });
-    });
-    return dest;
-};
-exports.export = function(dest, destName, get) {
-    Object.defineProperty(dest, destName, {
-        enumerable: true,
-        get: get
-    });
-};
-
-},{}],"5KOy8":[function(require,module,exports) {
+},{"../factory/gameboard":"5KOy8","@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"5KOy8":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _ship = require("./ship");
@@ -1102,6 +1072,36 @@ const shipFactory = ({ name , shipId , length  })=>{
 };
 exports.default = shipFactory;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}]},["79gfX","i8ewE"], "i8ewE", "parcelRequiree49a")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"ciiiV"}],"ciiiV":[function(require,module,exports) {
+exports.interopDefault = function(a) {
+    return a && a.__esModule ? a : {
+        default: a
+    };
+};
+exports.defineInteropFlag = function(a) {
+    Object.defineProperty(a, '__esModule', {
+        value: true
+    });
+};
+exports.exportAll = function(source, dest) {
+    Object.keys(source).forEach(function(key) {
+        if (key === 'default' || key === '__esModule' || dest.hasOwnProperty(key)) return;
+        Object.defineProperty(dest, key, {
+            enumerable: true,
+            get: function() {
+                return source[key];
+            }
+        });
+    });
+    return dest;
+};
+exports.export = function(dest, destName, get) {
+    Object.defineProperty(dest, destName, {
+        enumerable: true,
+        get: get
+    });
+};
+
+},{}]},["79gfX","i8ewE"], "i8ewE", "parcelRequiree49a")
 
 //# sourceMappingURL=index.c05ff127.js.map
