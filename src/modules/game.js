@@ -89,13 +89,16 @@ const game = (() => {
     }
   };
 
-  const changeBgColorIfShipWasSunk = ({ shipIsSunk, shipId, shipName }) => {
+  const NotifyIfShipWasSunk = ({ shipIsSunk, shipId, shipName }) => {
     if (shipIsSunk) {
       const boxSunks = document.querySelectorAll(`.ship-${shipId}`);
       boxSunks.forEach((box) => {
         box.classList.add('ship-sunk');
       });
       displayHittedMessage.textContent = `Congrats your sunk ${shipName}`;
+      const shipyardSunk = document.querySelector(`#computer-ship-${shipId}`);
+      shipyardSunk.style.color = 'red';
+      shipyardSunk.style.textDecoration = 'line-through';
     }
   };
 
@@ -116,7 +119,7 @@ const game = (() => {
           const hittedShipName = getNameOfHittedShip(hitedShipId, AI_PROFIL);
           displayHittedMessage.textContent = `you have hit the ${hittedShipName}`;
           const shipShotedWasSunk = checkIfComputerShipIsSunk(hitedShipId);
-          changeBgColorIfShipWasSunk({
+          NotifyIfShipWasSunk({
             shipIsSunk: shipShotedWasSunk,
             shipId: hitedShipId,
             shipName: hittedShipName,
