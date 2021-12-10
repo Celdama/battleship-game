@@ -1,5 +1,5 @@
 .gameboard {
-  outline: 1px solid red;
+  outline: 1px solid blue;
 
   h3 {
     color: #333;
@@ -9,7 +9,6 @@
   #grable-computer td {
     width: 25px;
     height: 25px;
-    // border: 1px solid silver;
     text-align: center;
     color: black;
   }
@@ -20,5 +19,27 @@
 
   #grable-computer td {
     background-color: #ebebeb;
+  }
+
+
+
+  .missed-circle, .target-circle {
+    padding: 7px 7px;
+    width: 2px;
+    border-radius: 100%;
+    margin: auto;
+    width: 1%;
+  }
+
+  .missed-circle {
+    background-color: gray;
+  }
+
+  .target-circle {
+    background-color: red;
+  }
+
+  .ship-sunk {
+    outline: 1px solid red;
   }
 }

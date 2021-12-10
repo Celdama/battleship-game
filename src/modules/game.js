@@ -78,7 +78,10 @@ const game = (() => {
         boxShottedByComputer.style.color = 'red';
       } else {
         displayHittedMessage.textContent = 'The enemy fires a shot into your waters .... and misses.';
-        boxShottedByComputer.classList.add('missed-shot');
+        const circle = document.createElement('div');
+        circle.classList.add('missed-circle');
+        boxShottedByComputer.appendChild(circle);
+        // boxShottedByComputer.classList.add('missed-shot');
       }
 
       checkIfGameIsOver(checkIfAllPlayerShipAreSunk(HUMAN_PROFIL));
@@ -86,16 +89,11 @@ const game = (() => {
     }
   };
 
-  const changeBgColorIfShipWasSunk = ({
-    shipIsSunk, allBox, shipId, shipName,
-  }) => {
-    const searchText = shipId;
+  const changeBgColorIfShipWasSunk = ({ shipIsSunk, shipId, shipName }) => {
     if (shipIsSunk) {
-      allBox.forEach((box) => {
-        const shipBox = box;
-        if (box.textContent.includes(searchText)) {
-          shipBox.style.backgroundColor = 'red';
-        }
+      const boxSunks = document.querySelectorAll(`.ship-${shipId}`);
+      boxSunks.forEach((box) => {
+        box.classList.add('ship-sunk');
       });
       displayHittedMessage.textContent = `Congrats your sunk ${shipName}`;
     }
@@ -120,7 +118,6 @@ const game = (() => {
           const shipShotedWasSunk = checkIfComputerShipIsSunk(hitedShipId);
           changeBgColorIfShipWasSunk({
             shipIsSunk: shipShotedWasSunk,
-            allBox: computerBox,
             shipId: hitedShipId,
             shipName: hittedShipName,
           });

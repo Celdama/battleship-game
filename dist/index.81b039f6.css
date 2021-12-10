@@ -7,7 +7,7 @@
 }
 
 html {
-  font-size: 10px;
+  font-size: 11px;
 }
 
 a {
@@ -16,14 +16,6 @@ a {
 
 ul {
   list-style: none;
-}
-
-.ship-sunk {
-  background-color: red !important;
-}
-
-.missed-shot {
-  background-color: white;
 }
 
 table {
@@ -52,7 +44,7 @@ p {
 }
 
 .gameboard {
-  outline: 1px solid red;
+  outline: 1px solid blue;
 }
 .gameboard h3 {
   color: #333;
@@ -69,5 +61,21 @@ p {
 }
 .gameboard #grable-computer td {
   background-color: #ebebeb;
+}
+.gameboard .missed-circle, .gameboard .target-circle {
+  padding: 7px 7px;
+  width: 2px;
+  border-radius: 100%;
+  margin: auto;
+  width: 1%;
+}
+.gameboard .missed-circle {
+  background-color: gray;
+}
+.gameboard .target-circle {
+  background-color: red;
+}
+.gameboard .ship-sunk {
+  outline: 1px solid red;
 }
 /*# sourceMappingURL=index.81b039f6.css.map */

@@ -115,14 +115,20 @@ const player = (() => {
     const computerGameboard = renderPlayersGameboardFilled(AI_PROFIL);
     const { coordY, coordX } = event.target.dataset;
     const box = boxReceiveShot;
+    const circle = document.createElement('div');
 
     if (humanAttack({ coordY, coordX })) {
-      box.textContent = computerGameboard[coordY][coordX];
+      const boxTextContent = computerGameboard[coordY][coordX];
+      circle.classList.add('target-circle');
+      box.classList.add(`ship-${boxTextContent}`);
+      box.appendChild(circle);
       box.classList.add('disable-click');
 
-      return box.textContent;
+      return boxTextContent;
     }
-    box.classList.add('missed-shot');
+
+    circle.classList.add('missed-circle');
+    box.appendChild(circle);
     box.classList.add('disable-click');
 
     return false;

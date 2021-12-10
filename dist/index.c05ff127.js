@@ -537,18 +537,20 @@ const game = (()=>{
                 boxShottedByComputer.style.color = 'red';
             } else {
                 displayHittedMessage.textContent = 'The enemy fires a shot into your waters .... and misses.';
-                boxShottedByComputer.classList.add('missed-shot');
+                const circle = document.createElement('div');
+                circle.classList.add('missed-circle');
+                boxShottedByComputer.appendChild(circle);
+            // boxShottedByComputer.classList.add('missed-shot');
             }
             checkIfGameIsOver(checkIfAllPlayerShipAreSunk(HUMAN_PROFIL));
             toggleClickableComputerBox();
         }
     };
-    const changeBgColorIfShipWasSunk = ({ shipIsSunk , allBox , shipId , shipName ,  })=>{
-        const searchText = shipId;
+    const changeBgColorIfShipWasSunk = ({ shipIsSunk , shipId , shipName  })=>{
         if (shipIsSunk) {
-            allBox.forEach((box)=>{
-                const shipBox = box;
-                if (box.textContent.includes(searchText)) shipBox.style.backgroundColor = 'red';
+            const boxSunks = document.querySelectorAll(`.ship-${shipId}`);
+            boxSunks.forEach((box)=>{
+                box.classList.add('ship-sunk');
             });
             displayHittedMessage.textContent = `Congrats your sunk ${shipName}`;
         }
@@ -575,7 +577,6 @@ const game = (()=>{
                     const shipShotedWasSunk = checkIfComputerShipIsSunk(hitedShipId);
                     changeBgColorIfShipWasSunk({
                         shipIsSunk: shipShotedWasSunk,
-                        allBox: computerBox,
                         shipId: hitedShipId,
                         shipName: hittedShipName
                     });
@@ -723,15 +724,20 @@ const player = (()=>{
         const computerGameboard = renderPlayersGameboardFilled(AI_PROFIL);
         const { coordY , coordX  } = event.target.dataset;
         const box = boxReceiveShot;
+        const circle = document.createElement('div');
         if (humanAttack({
             coordY,
             coordX
         })) {
-            box.textContent = computerGameboard[coordY][coordX];
+            const boxTextContent = computerGameboard[coordY][coordX];
+            circle.classList.add('target-circle');
+            box.classList.add(`ship-${boxTextContent}`);
+            box.appendChild(circle);
             box.classList.add('disable-click');
-            return box.textContent;
+            return boxTextContent;
         }
-        box.classList.add('missed-shot');
+        circle.classList.add('missed-circle');
+        box.appendChild(circle);
         box.classList.add('disable-click');
         return false;
     };
