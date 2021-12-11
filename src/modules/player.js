@@ -7,7 +7,8 @@ const player = (() => {
   const computerPlayer = gameboardFactory();
 
   const createShips = ({ profil }) => {
-    const { createShip } = profil === HUMAN_PROFIL ? humanPlayer : computerPlayer;
+    const { createShip } =
+      profil === HUMAN_PROFIL ? humanPlayer : computerPlayer;
 
     const ship1 = createShip({ name: 'carrier', shipId: 1, length: 5 });
     const ship2 = createShip({ name: 'battleship', shipId: 2, length: 4 });
@@ -28,13 +29,13 @@ const player = (() => {
 
     if (vertical) {
       if (coordY + shipLength > 10) {
-        coordY -= (excesVertical - 10);
+        coordY -= excesVertical - 10;
       }
     }
 
     if (!vertical) {
       if (coordX + shipLength > 10) {
-        coordX -= (excesHorizontal - 10);
+        coordX -= excesHorizontal - 10;
       }
     }
 
@@ -42,7 +43,8 @@ const player = (() => {
   };
 
   const setShipPlace = ({ profil, ship }) => {
-    const { placeShipInGameboard } = profil === HUMAN_PROFIL ? humanPlayer : computerPlayer;
+    const { placeShipInGameboard } =
+      profil === HUMAN_PROFIL ? humanPlayer : computerPlayer;
 
     const shipLength = ship.getLength();
     const randomVertical = Math.round(Math.random());
@@ -54,7 +56,10 @@ const player = (() => {
     const coordX = Number(coord[1]);
 
     const resultPlacement = placeShipInGameboard({
-      coordY, coordX, ship, vertical: !!randomVertical,
+      coordY,
+      coordX,
+      ship,
+      vertical: !!randomVertical,
     });
 
     return resultPlacement;
@@ -106,7 +111,8 @@ const player = (() => {
   };
 
   const renderPlayersGameboardFilled = (profil) => {
-    const { renderGameboard } = profil === HUMAN_PROFIL ? humanPlayer : computerPlayer;
+    const { renderGameboard } =
+      profil === HUMAN_PROFIL ? humanPlayer : computerPlayer;
 
     return renderGameboard();
   };
@@ -135,7 +141,8 @@ const player = (() => {
   };
 
   const getNameOfHittedShip = (id, profil) => {
-    const { renderListOfShipInGameboard } = profil === HUMAN_PROFIL ? humanPlayer : computerPlayer;
+    const { renderListOfShipInGameboard } =
+      profil === HUMAN_PROFIL ? humanPlayer : computerPlayer;
 
     const listOfShips = renderListOfShipInGameboard();
 
@@ -145,7 +152,8 @@ const player = (() => {
   };
 
   const computerTurn = () => {
-    const { renderListOfOpponentMissedShot, renderListOfOpponentHittedShot } = humanPlayer;
+    const { renderListOfOpponentMissedShot, renderListOfOpponentHittedShot } =
+      humanPlayer;
     const missedShot = renderListOfOpponentMissedShot();
     const hittedShot = renderListOfOpponentHittedShot();
 
@@ -163,7 +171,8 @@ const player = (() => {
   };
 
   const checkIfAllPlayerShipAreSunk = (profil) => {
-    const { allShipAreSunk } = profil === HUMAN_PROFIL ? humanPlayer : computerPlayer;
+    const { allShipAreSunk } =
+      profil === HUMAN_PROFIL ? humanPlayer : computerPlayer;
 
     return allShipAreSunk();
   };
