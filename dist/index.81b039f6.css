@@ -6,6 +6,14 @@
   font-size: large;
 }
 
+body {
+  display: flex;
+  justify-content: center;
+  background: url("https://images.unsplash.com/photo-1514747975201-4715db583da9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80");
+  padding: 160px;
+  height: 100vh;
+}
+
 html {
   font-size: 11px;
 }
@@ -36,45 +44,102 @@ p {
 }
 
 #app {
-  outline: 1px solid blue;
-  height: 80vh;
   display: flex;
-  justify-content: space-around;
-  align-items: center;
+  flex-direction: column;
+  background-color: white;
+  height: 100%;
+  width: 100%;
+  border-radius: 15px;
+}
+
+#app nav {
+  background-color: palevioletred;
+  padding: 26px 30px;
+  border-top-right-radius: 15px;
+  border-top-left-radius: 15px;
+}
+
+#app .battlefield-game {
+  display: flex;
+  flex-grow: 1;
+  outline: 1px solid red;
+  padding: 30px 60px;
+  background-color: pink;
+}
+
+#app .message {
+  background-color: peachpuff;
+  padding: 42px 30px;
 }
 
 .gameboard {
   outline: 1px solid blue;
+  flex-grow: 2;
+  padding: 20px;
+  background-color: plum;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
+
 .gameboard h3 {
   color: #333;
 }
+
 .gameboard #grable-human td,
 .gameboard #grable-computer td {
-  width: 25px;
-  height: 25px;
+  width: 40px;
+  height: 40px;
   text-align: center;
   color: black;
 }
+
 .gameboard #grable-human td {
   background-color: #dff4ff;
 }
+
 .gameboard #grable-computer td {
   background-color: #ebebeb;
 }
-.gameboard .missed-circle, .gameboard .target-circle {
+
+.gameboard .ships {
+  margin-top: 20px;
+  display: flex;
+  margin-right: 110px;
+}
+
+.gameboard .ships h5 {
+  margin-top: 30px;
+  justify-self: flex-start;
+  transform: rotate(270deg);
+  height: 20px;
+}
+
+.gameboard .ships ul {
+  columns: 2;
+}
+
+.gameboard .ships ul li {
+  padding: 4px 6px;
+}
+
+.gameboard .missed-circle,
+.gameboard .target-circle {
   padding: 7px 7px;
   width: 2px;
   border-radius: 100%;
   margin: auto;
   width: 1%;
 }
+
 .gameboard .missed-circle {
   background-color: gray;
 }
+
 .gameboard .target-circle {
   background-color: red;
 }
+
 .gameboard .ship-sunk {
   outline: 1px solid red;
 }
