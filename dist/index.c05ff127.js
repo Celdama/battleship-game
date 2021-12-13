@@ -554,8 +554,7 @@ const game = (()=>{
             });
             displayHittedMessage.textContent = `Congrats your sunk ${shipName}`;
             const shipyardSunk = document.querySelector(`#computer-ship-${shipId}`);
-            shipyardSunk.style.color = 'red';
-            shipyardSunk.style.textDecoration = 'line-through';
+            shipyardSunk.classList.add('sunk');
         }
     };
     const gameLoop = ()=>{

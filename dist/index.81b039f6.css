@@ -10,7 +10,7 @@ body {
   display: flex;
   justify-content: center;
   background: url("https://images.unsplash.com/photo-1514747975201-4715db583da9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80");
-  padding: 160px;
+  padding: 162px;
   height: 100vh;
 }
 
@@ -24,10 +24,6 @@ a {
 
 ul {
   list-style: none;
-}
-
-table {
-  margin: 10px;
 }
 
 .disable,
@@ -46,85 +42,81 @@ p {
 #app {
   display: flex;
   flex-direction: column;
-  background-color: white;
-  height: 100%;
+  background-color: #fff;
   width: 100%;
   border-radius: 15px;
 }
 
 #app nav {
-  background-color: palevioletred;
   padding: 26px 30px;
   border-top-right-radius: 15px;
   border-top-left-radius: 15px;
 }
 
-#app .battlefield-game {
-  display: flex;
-  flex-grow: 1;
-  outline: 1px solid red;
-  padding: 30px 60px;
-  background-color: pink;
-}
-
 #app .message {
   background-color: peachpuff;
-  padding: 42px 30px;
+  padding: 0;
 }
 
-.gameboard {
-  outline: 1px solid blue;
-  flex-grow: 2;
-  padding: 20px;
-  background-color: plum;
+.battlefield {
+  display: flex;
+}
+
+.battlefield .gameboard {
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.gameboard h3 {
+.battlefield .gameboard h3 {
+  margin: 10px 0px;
   color: #333;
+  padding: 12px 140px;
+  text-transform: uppercase;
+  border-radius: 8px;
+  color: #fff;
 }
 
-.gameboard #grable-human td,
-.gameboard #grable-computer td {
-  width: 40px;
-  height: 40px;
+.battlefield .gameboard .human-gameboard-title {
+  background-color: #ff0055;
+}
+
+.battlefield .gameboard .computer-gameboard-title {
+  background-color: #717c96;
+}
+
+.battlefield .gameboard #grable-human td,
+.battlefield .gameboard #grable-computer td {
+  width: 34px;
+  height: 34px;
   text-align: center;
   color: black;
 }
 
-.gameboard #grable-human td {
+.battlefield .gameboard #grable-human td {
   background-color: #dff4ff;
 }
 
-.gameboard #grable-computer td {
+.battlefield .gameboard #grable-computer td {
   background-color: #ebebeb;
 }
 
-.gameboard .ships {
-  margin-top: 20px;
-  display: flex;
-  margin-right: 110px;
+.battlefield .gameboard .ships {
+  margin: 16px 20px;
 }
 
-.gameboard .ships h5 {
-  margin-top: 30px;
-  justify-self: flex-start;
-  transform: rotate(270deg);
-  height: 20px;
-}
-
-.gameboard .ships ul {
+.battlefield .gameboard .ships ul {
   columns: 2;
 }
 
-.gameboard .ships ul li {
-  padding: 4px 6px;
+.battlefield .gameboard .ships ul li {
+  font-size: 16px;
+  padding: 2px;
 }
 
-.gameboard .missed-circle,
-.gameboard .target-circle {
+.battlefield .gameboard .missed-circle,
+.battlefield .gameboard .target-circle {
   padding: 7px 7px;
   width: 2px;
   border-radius: 100%;
@@ -132,15 +124,20 @@ p {
   width: 1%;
 }
 
-.gameboard .missed-circle {
-  background-color: gray;
+.battlefield .gameboard .missed-circle {
+  background-color: #717c96;
 }
 
-.gameboard .target-circle {
-  background-color: red;
+.battlefield .gameboard .target-circle {
+  background-color: #ff0055;
 }
 
-.gameboard .ship-sunk {
-  outline: 1px solid red;
+.battlefield .gameboard .ship-sunk {
+  outline: 1px solid #ff0055;
+}
+
+.battlefield .gameboard .sunk {
+  color: #ff0055;
+  text-decoration: line-through;
 }
 /*# sourceMappingURL=index.81b039f6.css.map */

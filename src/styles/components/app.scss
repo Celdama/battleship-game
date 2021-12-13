@@ -1,28 +1,23 @@
 #app {
   display: flex;
   flex-direction: column;
-  background-color: white;
-  height: 100%;
+  background-color: #fff;
+  // height: 97vh;
   width: 100%;
   border-radius: 15px;
 
   nav {
-    background-color: palevioletred;
     padding: 26px 30px;
     border-top-right-radius: 15px;
     border-top-left-radius: 15px;
   }
 
   .battlefield-game {
-    display: flex;
-    flex-grow: 1;
-    outline: 1px solid red;
-    padding: 30px 60px;
-    background-color: pink;
+    // padding: 30px 62px;
   }
 
   .message {
     background-color: peachpuff;
-    padding: 42px 30px;
+    padding: 0;
   }
 }

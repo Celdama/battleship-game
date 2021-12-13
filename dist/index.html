@@ -8,39 +8,41 @@
     <script src="/index.c05ff127.js" defer=""></script>
     <title>Battleship Game</title>
   </head>
+
   <body>
     <div id="app">
       <nav>
         <h1>Battleship</h1>
       </nav>
       <main class="battlefield-game">
-        <div class="gameboard">
-          <h3>Your fleet</h3>
-          <table id="grable-human">
-            <tbody class="grody-human"></tbody>
-          </table>
-        </div>
-        <div class="gameboard">
-          <h3>Computer</h3>
-          <table id="grable-computer">
-            <tbody class="grody-computer"></tbody>
-          </table>
-          <div class="ships">
-            <h5>Graveyard</h5>
-            <ul>
-              <li id="computer-ship-1">Carrier (5)</li>
-              <li id="computer-ship-2">Battleship (4)</li>
-              <li id="computer-ship-3">Destroyer (3)</li>
-              <li id="computer-ship-4">Submarine (3)</li>
-              <li id="computer-ship-6">Patrol Boat (2)</li>
-              <li id="computer-ship-5">Rescued Boat (1)</li>
-            </ul>
+        <div class="battlefield">
+          <div class="gameboard">
+            <h3 class="human-gameboard-title">Your fleet</h3>
+            <table id="grable-human">
+              <tbody class="grody-human"></tbody>
+            </table>
+          </div>
+          <div class="gameboard">
+            <h3 class="computer-gameboard-title">Computer</h3>
+            <table id="grable-computer">
+              <tbody class="grody-computer"></tbody>
+            </table>
+            <div class="ships">
+              <ul>
+                <li id="computer-ship-1">Carrier (5)</li>
+                <li id="computer-ship-2">Battleship (4)</li>
+                <li id="computer-ship-3">Destroyer (3)</li>
+                <li id="computer-ship-4">Submarine (3)</li>
+                <li id="computer-ship-6">Patrol Boat (2)</li>
+                <li id="computer-ship-5">Rescued Boat (1)</li>
+              </ul>
+            </div>
           </div>
         </div>
+        <div class="message">
+          <p class="hitted-message">hit</p>
+        </div>
       </main>
-      <div class="message">
-        <p class="hitted-message">hit</p>
-      </div>
     </div>
   </body>
 </html>
