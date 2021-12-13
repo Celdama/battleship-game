@@ -542,9 +542,9 @@ const game = (()=>{
                 boxShottedByComputer.appendChild(circle);
             // boxShottedByComputer.classList.add('missed-shot');
             }
-            checkIfGameIsOver(checkIfAllPlayerShipAreSunk(HUMAN_PROFIL));
             toggleClickableComputerBox();
         }
+        checkIfGameIsOver(checkIfAllPlayerShipAreSunk(HUMAN_PROFIL));
     };
     const NotifyIfShipWasSunk = ({ shipIsSunk , shipId , shipName  })=>{
         if (shipIsSunk) {
