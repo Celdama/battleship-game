@@ -1,82 +1,98 @@
-.battlefield {
-  display: flex;
-  .gameboard {
-    flex-grow: 1;
+.battlefield-game {
+  padding: 30px;
+  .battlefield {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    .gameboard {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 
-    h3 {
-      margin: 10px 0px;
-      color: #333;
-      padding: 12px 140px;
-      text-transform: uppercase;
-      border-radius: 8px;
-      color: #fff;
-    }
+      table {
+        margin-top: 12px;
+      }
 
-    .human-gameboard-title {
-      background-color: $red-color;
-    }
+      h3 {
+        margin: 10px 0px;
+        color: #333;
+        padding: 12px 140px;
+        text-transform: uppercase;
+        border-radius: 8px;
+        color: #fff;
+      }
 
-    .computer-gameboard-title {
-      background-color: $gray-color;
-    }
+      .human-gameboard-title {
+        background-color: $red-color;
+      }
 
-    #grable-human td,
-    #grable-computer td {
-      width: 34px;
-      height: 34px;
-      text-align: center;
-      color: black;
-    }
+      .computer-gameboard-title {
+        background-color: $gray-color;
+      }
 
-    #grable-human td {
-      background-color: #dff4ff;
-    }
 
-    #grable-computer td {
-      background-color: #ebebeb;
-    }
+      #grable-human td,
+      #grable-computer td {
+        width: 34px;
+        height: 34px;
+        text-align: center;
+        color: #000;
+      }
 
-    .ships {
-      margin: 16px 20px;
+      #grable-human td {
+        background-color: $color-human-gameboard;
+      }
 
-      ul {
-        columns: 2;
+      #grable-computer td {
+        background-color: $color-computer-gameboard;
 
-        li {
-          font-size: 16px;
-          padding: 2px;
+        &:hover {
+          cursor: pointer;
+          background-color: $color-computer-gameboard-hover;
         }
       }
-    }
 
-    .missed-circle,
-    .target-circle {
-      padding: 7px 7px;
-      width: 2px;
-      border-radius: 100%;
-      margin: auto;
-      width: 1%;
-    }
+      .ships {
+        margin: 16px 20px;
 
-    .missed-circle {
-      background-color: $gray-color;
-    }
+        ul {
+          columns: 2;
 
-    .target-circle {
-      background-color: $red-color;
-    }
+          li {
+            font-size: 16px;
+            padding: 2px;
+          }
+        }
+      }
 
-    .ship-sunk {
-      outline: 1px solid $red-color;
-    }
+      .missed-circle,
+      .target-circle {
+        padding: 7px 7px;
+        width: 2px;
+        border-radius: 100%;
+        margin: auto;
+        width: 1%;
+      }
 
-    .sunk {
-      color: $red-color;
-      text-decoration: line-through;
+      .missed-circle {
+        background-color: $gray-color;
+      }
+
+      .target-circle {
+        background-color: $red-color;
+      }
+
+      .ship-sunk {
+        outline: 1px solid $red-color;
+      }
+
+      .ship-sunk-list {
+        color: $red-color;
+        text-decoration: line-through;
+      }
     }
   }
+  .message {
+    text-align: center;
+    padding-top: 22px;
+  }
 }
-

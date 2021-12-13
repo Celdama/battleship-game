@@ -69,7 +69,6 @@ const game = (() => {
       const coordComputerShot = computerTurn();
 
       const boxShottedByComputer = document.getElementById(`${coordComputerShot}`);
-      console.log(`look at this, this is a computer shot at coord ${coordComputerShot}`);
 
       if (boxShottedByComputer.textContent) {
         const id = boxShottedByComputer.textContent;
@@ -81,7 +80,6 @@ const game = (() => {
         const circle = document.createElement('div');
         circle.classList.add('missed-circle');
         boxShottedByComputer.appendChild(circle);
-        // boxShottedByComputer.classList.add('missed-shot');
       }
 
       toggleClickableComputerBox();
@@ -97,7 +95,7 @@ const game = (() => {
       });
       displayHittedMessage.textContent = `Congrats your sunk ${shipName}`;
       const shipyardSunk = document.querySelector(`#computer-ship-${shipId}`);
-      shipyardSunk.classList.add('sunk');
+      shipyardSunk.classList.add('ship-sunk-list');
     }
   };
 
@@ -116,7 +114,7 @@ const game = (() => {
         const hitedShipId = humanTurn({ event, boxReceiveShot: box });
         if (hitedShipId) {
           const hittedShipName = getNameOfHittedShip(hitedShipId, AI_PROFIL);
-          displayHittedMessage.textContent = `you have hit the ${hittedShipName}`;
+          displayHittedMessage.textContent = `You have hit the ${hittedShipName}`;
           const shipShotedWasSunk = checkIfComputerShipIsSunk(hitedShipId);
           NotifyIfShipWasSunk({
             shipIsSunk: shipShotedWasSunk,
