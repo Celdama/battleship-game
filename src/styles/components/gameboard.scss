@@ -3,18 +3,18 @@
   .battlefield {
     display: flex;
     .gameboard {
-      flex-grow: 1;
       display: flex;
+      flex-grow: 1;
       flex-direction: column;
       align-items: center;
 
       table {
-        margin-top: 12px;
+        margin-top: 0.8em;
       }
 
       h3 {
-        margin: 10px 0px;
-        padding: 12px 140px;
+        margin: .6em 0;
+        padding: .7em 8em;
         text-transform: uppercase;
         border-radius: 8px;
         color: $white-color;
@@ -31,8 +31,8 @@
 
       #grable-human td,
       #grable-computer td {
-        width: 34px;
-        height: 34px;
+        width: 1.9em;
+        height: 1.9em;
         text-align: center;
       }
 
@@ -50,25 +50,24 @@
       }
 
       .ships {
-        margin: 16px 20px;
+        margin: .8em 1em;
 
         ul {
           columns: 2;
 
           li {
-            font-size: 16px;
-            padding: 2px;
+            font-size: 1.7rem;
+            padding: .1em;
           }
         }
       }
 
       .missed-circle,
       .target-circle {
-        padding: 7px 7px;
-        width: 2px;
+        padding: .4em;
+        width: .1em;
         border-radius: 100%;
         margin: auto;
-        width: 1%;
       }
 
       .missed-circle {
@@ -91,6 +90,6 @@
   }
   .message {
     text-align: center;
-    padding-top: 22px;
+    padding-top: 1.2em;
   }
 }
