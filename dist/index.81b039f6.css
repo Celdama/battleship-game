@@ -35,7 +35,7 @@ ul {
 }
 
 p {
-  color: black;
+  color: #000;
 }
 
 #app {
@@ -54,7 +54,7 @@ p {
 }
 
 .battlefield-game {
-  padding: 30px;
+  padding: 1.8em;
 }
 
 .battlefield-game .battlefield {
@@ -74,7 +74,6 @@ p {
 
 .battlefield-game .battlefield .gameboard h3 {
   margin: 10px 0px;
-  color: #333;
   padding: 12px 140px;
   text-transform: uppercase;
   border-radius: 8px;
@@ -94,7 +93,6 @@ p {
   width: 34px;
   height: 34px;
   text-align: center;
-  color: #000;
 }
 
 .battlefield-game .battlefield .gameboard #grable-human td {
@@ -156,11 +154,11 @@ p {
 
 nav {
   background-color: #ebebeb;
-  margin-bottom: 10px;
+  margin-bottom: 0.5em;
   text-transform: uppercase;
 }
 
 nav h1 {
-  margin-left: 12px;
+  margin-left: 1em;
 }
 /*# sourceMappingURL=index.81b039f6.css.map */

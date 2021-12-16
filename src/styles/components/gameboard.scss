@@ -1,5 +1,5 @@
 .battlefield-game {
-  padding: 30px;
+  padding: 1.8em;
   .battlefield {
     display: flex;
     .gameboard {
@@ -14,11 +14,10 @@
 
       h3 {
         margin: 10px 0px;
-        color: #333;
         padding: 12px 140px;
         text-transform: uppercase;
         border-radius: 8px;
-        color: #fff;
+        color: $white-color;
       }
 
       .human-gameboard-title {
@@ -35,7 +34,6 @@
         width: 34px;
         height: 34px;
         text-align: center;
-        color: #000;
       }
 
       #grable-human td {
