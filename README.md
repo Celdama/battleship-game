@@ -41,6 +41,8 @@ The project is hosted on [vercel](https://vercel.com), like all my projects so f
 
 I will update this readme for every change made to this project from now on. I'll come back to it, in the meantime I'm moving on. I can't wait to tackle React, but it was important before that to practice enough in vanilla JS. This is the last project before ReactJS, so let's go !
 
+![preview app](src/images/preview-app.png)
+
 There are two new features that I will be incorporating next:
 - [] polish the intelligence of computer by having it try adjacent slots after getting a hit
 - [] letting users place their ships
@@ -58,7 +60,7 @@ If you want to test this app, you can clone the local repo and run it in your br
 # git clone https://github.com/Celdama/battleship-game.git
 # cd battleship-game
 # npm install
-# npm run start 
+# npm run start
 # // and if you want to run test
 # npm run test
 ```
